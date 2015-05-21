@@ -1,1 +1,2 @@
-Sample file to test git
+Sample file to test git.
+Checking in changed file.
