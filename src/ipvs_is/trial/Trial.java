@@ -9,6 +9,7 @@ import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.component.CasDumpWriter;
 
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
+import de.tudarmstadt.ukp.dkpro.core.io.xml.XmlWriterInline;
 import de.tudarmstadt.ukp.dkpro.core.jazzy.JazzyChecker;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordCoreferenceResolver;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
@@ -33,9 +34,12 @@ public class Trial {
 				JazzyChecker.class, JazzyChecker.PARAM_MODEL_LOCATION,
 				"resources/words.utf-8.txt");
 
-		AnalysisEngineDescription cc = createEngineDescription(
+		/*AnalysisEngineDescription cc = createEngineDescription(
 				CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
-				"target/Trial.txt");
+				"target/Trial.txt");*/
+		
+		AnalysisEngineDescription cc = createEngineDescription(
+				XmlWriterInline.class, XmlWriterInline.PARAM_TARGET_LOCATION, "target/trial.txt");
 
 		runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, cc);
 		// runPipeline(cr, lang, cc);
