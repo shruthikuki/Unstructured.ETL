@@ -65,5 +65,19 @@
 			<artifactId>de.tudarmstadt.ukp.dkpro.core.jazzy-asl</artifactId>
 			<version>1.7.0</version>
 		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+			<artifactId>de.tudarmstadt.ukp.dkpro.core.ngrams-asl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+			<artifactId>de.tudarmstadt.ukp.dkpro.core.textcat-asl</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+			<artifactId>de.tudarmstadt.ukp.dkpro.core.languagetool-asl</artifactId>
+			<version>1.6.2</version>
+		</dependency>
 	</dependencies>
 </project>
