@@ -9,6 +9,7 @@ import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.component.CasDumpWriter;
 
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
+import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.tudarmstadt.ukp.dkpro.core.io.xml.XmlWriterInline;
 import de.tudarmstadt.ukp.dkpro.core.jazzy.JazzyChecker;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordCoreferenceResolver;
@@ -34,14 +35,16 @@ public class Trial {
 				JazzyChecker.class, JazzyChecker.PARAM_MODEL_LOCATION,
 				"resources/words.utf-8.txt");
 
-		/*AnalysisEngineDescription cc = createEngineDescription(
-				CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
-				"target/Trial.txt");*/
 		
-		AnalysisEngineDescription cc = createEngineDescription(
-				XmlWriterInline.class, XmlWriterInline.PARAM_TARGET_LOCATION, "target/trial.txt");
+		  AnalysisEngineDescription cc = createEngineDescription(
+		  CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
+		  "target/NERTrial.txt");
+		 
 
-		runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, cc);
+		/*AnalysisEngineDescription cc = createEngineDescription(XmiWriter.class,
+				XmiWriter.PARAM_TARGET_LOCATION, "target/trial.txt");*/
+
+		runPipeline(cr, seg, /*tagger,*/ tagger1/*, tagger2*/, cc);
 		// runPipeline(cr, lang, cc);
 
 		/*
@@ -50,5 +53,4 @@ public class Trial {
 		 */
 
 	}
-
 }
