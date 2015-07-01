@@ -3,14 +3,19 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
-  <display-name>Hello Java</display-name>
-  <!-- <servlet>
-    <servlet-name>javax.ws.rs.core.Application</servlet-name>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>javax.ws.rs.core.Application</servlet-name>
-    <url-pattern>/api/*</url-pattern>
-  </servlet-mapping> -->
+	<display-name>Unstructured ETL</display-name>
+	<!-- <servlet> <servlet-name>javax.ws.rs.core.Application</servlet-name> 
+		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>javax.ws.rs.core.Application</servlet-name> 
+		<url-pattern>/api/*</url-pattern> </servlet-mapping> -->
+
+	<servlet>
+		<servlet-name>getResultForFeature</servlet-name>
+		<servlet-class>ipvs_is.servlets.ResultGenerationServlet</servlet-class>
+		<!-- <load-on-startup>1</load-on-startup> -->
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getResultForFeature</servlet-name>
+		<url-pattern>/getResultForFeature</url-pattern>
+	</servlet-mapping>
 
 </web-app>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+	function getResults(featureCode, checkboxElement) {
+		if (checkboxElement.checked) {
+			$.ajax({
+				type : "POST",
+				url : "getResultForFeature",
+				data : {
+					feature : featureCode
+				},
+				success : function(response) {
+					$('#' + featureCode + "-results").html(response)
+					displayLegend(featureCode);
+				}
+			});
+		} else {
+			$('#' + featureCode + '-results').css('display', 'none');
+			$('#' + featureCode + '-legend').css('display', 'none');
+		}
+	}
+	
+	function displayLegend(featureCode) {
+		
+	}
+</script>
+<meta charset="ISO-8859-1">
+<title>The Results!</title>
+</head>
+<body>
+	<div id="language"></div>
+	<input type="checkbox" name="NER" value="NER"
+		onchange="getResults('NER',this)">Named Entity Recognition
+	<input type="checkbox" name="POS" value="POS"
+		onchange="getResults('POS',this)">Parts of Speech Tagger
+	<input type="checkbox" name="SC" value="SC"
+		onchange="getResults('SC',this)">Spell Checker
+	<input type="checkbox" name="CR" value="CR"
+		onchange="getResults('CR',this)">CoReference Resolution
+	<div id="NER-results"></div>
+	<div id="NER-legend"></div>
+	<div id="POS-results"></div>
+	<div id="POS-legend"></div>
+	<div id="SC-results"></div>
+	<div id="SC-legend"></div>
+	<div id="CR-results"></div>
+	<div id="CR-legend"></div>
+</body>
+</html>
