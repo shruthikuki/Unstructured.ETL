@@ -2,7 +2,7 @@ applications:
 - disk_quota: 1024M
   host: unstructured-etl
   name: Unstructured ETL
-  path: webStarterApp.war
+  path: target\UETL.war
   domain: mybluemix.net
   instances: 1
   memory: 512M
