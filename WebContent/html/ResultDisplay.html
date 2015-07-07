@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 	function getResults(featureCode, checkboxElement) {
 		if (checkboxElement.checked) {
 			$.ajax({
 				type : "POST",
-				url : "getResultForFeature",
+				url : "/Unstructured.ETL/getResultForFeature",
 				data : {
-					feature : featureCode
+					featureCode : featureCode
 				},
 				success : function(response) {
+					console.log('response: ' + response);
 					$('#' + featureCode + "-results").html(response)
 					displayLegend(featureCode);
 				}
@@ -21,9 +22,9 @@
 			$('#' + featureCode + '-legend').css('display', 'none');
 		}
 	}
-	
+
 	function displayLegend(featureCode) {
-		
+
 	}
 </script>
 <meta charset="ISO-8859-1">
