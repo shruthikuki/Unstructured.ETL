@@ -1,4 +1,4 @@
-package ipvs_is.database;
+package ipvs_is.trial;
 
 import java.sql.*;
 
@@ -9,11 +9,13 @@ public class DatabaseConnectionHandler {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://us-cdbr-iron-east-02.cleardb.net:3306/ad_97053fa1b7b08e0";
 
-	// Database credentials  
+	// Database credentials
 	static final String USER = "bd6c79c61fba4f";
 	static final String PASS = "9bcd28a7";
 
 	public static void main(String[] args) {
+		MysqlDataSource ds = new MysqlDataSource();
+		
 		Connection conn = null;
 		Statement stmt = null;
 		try {
