@@ -188,7 +188,8 @@
 
                                         <div class="form quick-post">
                                             <!-- Edit profile form (not working)-->
-                                            <form name="Form" class="form-horizontal" onsubmit="return Validate(this);">
+                                           
+                                            <form name="Form" action="../UploadServlet" method="post" enctype="multipart/form-data"  class="form-horizontal"  onsubmit="return Validate(this);">
                                                 <!-- Title -->
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-2" for="title">File input</label>
@@ -274,12 +275,12 @@
 
                                         <div class="form quick-post">
                                             <!-- Edit profile form (not working)-->
-                                            <form name="Form" class="form-horizontal" onsubmit="return Validate(this);">
+                                            <form name="Form" action="../TextInputServlet" method="post" enctype="multipart/form-data"  class="form-horizontal" onsubmit="return Validate(this);">
                                                 <!-- Title -->
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-2" for="title">Text input</label>
                                                     <div class="col-lg-10"> 
-                                                        <textarea name="input_text" class="form-control"></textarea>
+                                                        <textarea  name="input_text" class="form-control"></textarea>
                                                     </div>
                                                 </div>                                          
 
@@ -418,7 +419,7 @@
 
 
 <script language="javascript" type="text/javascript">
-var _validFileExtensions = [".doc", ".txt"];    
+var _validFileExtensions = [".doc", ".txt", ".docx"];    
 function Validate(oForm) {
     var arrInputs = oForm.getElementsByTagName("input");
     for (var i = 0; i < arrInputs.length; i++) {
