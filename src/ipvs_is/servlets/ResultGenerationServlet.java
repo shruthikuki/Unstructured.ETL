@@ -42,13 +42,15 @@ public class ResultGenerationServlet extends HttpServlet {
 
 	private void getResultForPOS(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+		/*StringBuilder originalText = new StringBuilder(
+				databaseConnectionHandler.getDataSourceContent(dataSourceId));*/
 		StringBuilder originalText = new StringBuilder(
-				databaseConnectionHandler.getDataSourceContent(dataSourceId));
+				databaseConnectionHandler.getDataSourceContent());
 		HashMap<String, String> posColorMap = new HashMap<String, String>();
 		posColorMap.put("noun", "red");
 		posColorMap.put("verb", "green");
 		posColorMap.put("adjective", "blue");
-		// get all rows from NER table
+		// get all rows from POS table
 		// for each row
 		// using position of each token, in originalText, append appropriate
 		// divs

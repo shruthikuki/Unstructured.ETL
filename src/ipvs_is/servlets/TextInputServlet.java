@@ -1,6 +1,7 @@
 package ipvs_is.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,45 +18,62 @@ import ipvs_is.trial.Pipeline;
 @WebServlet("/TextInputServlet")
 public class TextInputServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public TextInputServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public TextInputServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//StringBuffer sb = new StringBuffer(request.getParameter("input_text"));
+		// StringBuffer sb = new
+		// StringBuffer(request.getParameter("input_text"));
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-		  String Text = request.getParameter("input_text");
-		  System.out.println(Text);
-		  
-		 // Text="Last year we visited france";
-		  
-		  Pipeline pipeline = new Pipeline();
-			try {
-				System.out.println(Text);
-				pipeline.RunPipelineForTextInput(Text);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			databaseConnectionHandler.insertDataSourceContent(Text,"text");
-		//doGet(request, response);
+		String Text = request.getParameter("input_text");
+		System.out.println(Text);
+
+		// Text="Last year we visited france";
+
+		Pipeline pipeline = new Pipeline();
+		try {
+			System.out.println(Text);
+			pipeline.RunPipelineForTextInput(Text);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		databaseConnectionHandler.insertDataSourceContent(Text, "text");
+		response.setContentType("text/html");
+
+		// New location to be redirected
+		String site = new String("Bootstrap/css_bootstrap/triya_textbox.html");
+
+		response.setStatus(response.SC_MOVED_TEMPORARILY);
+		response.setHeader("Location", site);
+		response.setHeader("sample","sampleValue");
+		
+		PrintWriter out = response.getWriter();
+		out.println("<h1>Text</h1>");
+
+		// doGet(request, response);
 	}
 
 }

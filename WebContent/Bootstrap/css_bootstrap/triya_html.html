@@ -274,7 +274,7 @@
 
                                         <div class="form quick-post">
                                             <!-- Edit profile form (not working)-->
-                                            <form name="Form" action="../../TextInputServlet" method="post" class="form-horizontal" onsubmit="window.location.href='triya_textbox.html'">
+                                            <form name="Form" action="../../TextInputServlet" method="post" class="form-horizontal" onsubmit="redirect();">
                                                 <!-- Title -->
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-2" for="title">Text input</label>
@@ -354,6 +354,11 @@
         <script src="js/charts.js"></script>
         <script src="js/jquery.slimscroll.min.js"></script>
         <script>
+        
+        function redirect() {
+        	console.log("redirecting..");
+        	window.location = 'triya_textbox.html';
+        }
 
             //knob
             $(function () {

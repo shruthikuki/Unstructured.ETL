@@ -43,7 +43,7 @@
         <![endif]-->
 </head>
 
-<body>
+<body onload="init();">
 	<!-- container section start -->
 	<section id="container" class="">
 
@@ -166,25 +166,21 @@
 								<div id="NER-results" class="panel-collapse collapse in">
 									<div class="panel-body">
 										<b class="text-muted">Anim</b><b class="text-muted">
-											
 									</div>
 								</div>
 								<div id="POS-results" class="panel-collapse collapse in">
 									<div class="panel-body">
 										<b class="text-muted">Anim</b><b class="text-muted">
-											
 									</div>
 								</div>
 								<div id="SC-results" class="panel-collapse collapse in">
 									<div class="panel-body">
 										<b class="text-muted">Anim</b><b class="text-muted">
-											
 									</div>
 								</div>
 								<div id="CR-results" class="panel-collapse collapse in">
 									<div class="panel-body">
 										<b class="text-muted">Anim</b><b class="text-muted">
-											
 									</div>
 								</div>
 							</div>
@@ -244,6 +240,16 @@
 	<script src="js/jquery.slimscroll.min.js"></script>
 	<script>
 		//knob
+
+		function init() {
+			console.log('called!');
+			var req = new XMLHttpRequest();
+			req.open('GET', document.location, false);
+			req.send(null);
+			var headers = req.getAllResponseHeaders().toLowerCase();
+			alert(headers);
+		}
+
 		$(function() {
 			$(".knob").knob({
 				'draw' : function() {
@@ -360,13 +366,14 @@
 
 	<script type="text/javascript" src="../../js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript">
-		function getResults(featureCode, checkboxElement) {
+		function getResults(featureCode, dataSourceId, checkboxElement) {
 			if (checkboxElement.checked) {
 				$.ajax({
 					type : "POST",
 					url : "/Unstructured.ETL/getResultForFeature",
 					data : {
-						featureCode : featureCode
+						featureCode : featureCode,
+						dataSourceId : dataSourceId
 
 					},
 					success : function(response) {
