@@ -19,13 +19,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ResultGenerationServlet extends HttpServlet {
+	String dataSourceId;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String featureCode = request.getParameter("featureCode");
+		dataSourceId = request.getParameter("dataSourceId");
 		response.getWriter().println(featureCode);
 		System.out.println("featureCode:  " + featureCode);
+		System.out.println("dataSourceId: " + dataSourceId);
 		if (featureCode.equals("NER")) {
 			getResultForNER(response);
 		} else if (featureCode.equals("POS")) {
@@ -37,10 +40,10 @@ public class ResultGenerationServlet extends HttpServlet {
 		}
 	};
 
-	private void getResultForNER(ServletResponse response) {
+	private void getResultForPOS(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		StringBuilder originalText = new StringBuilder(
-				databaseConnectionHandler.getDataSourceContent());
+				databaseConnectionHandler.getDataSourceContent(dataSourceId));
 		HashMap<String, String> posColorMap = new HashMap<String, String>();
 		posColorMap.put("noun", "red");
 		posColorMap.put("verb", "green");
@@ -80,9 +83,9 @@ public class ResultGenerationServlet extends HttpServlet {
 		 * 
 		 * }
 		 */
-
+		databaseConnectionHandler.writeResultData(originalText.toString(),
+				dataSourceId);
 		PrintWriter out = null;
-
 		try {
 			out = response.getWriter();
 			out.println(originalText);
@@ -92,7 +95,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		}
 	}
 
-	private void getResultForPOS(ServletResponse response) {
+	private void getResultForNER(ServletResponse response) {
 		String originalText;
 		// get all rows from NER table
 		// for each row

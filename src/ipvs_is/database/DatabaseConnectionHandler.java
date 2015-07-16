@@ -15,6 +15,22 @@ public class DatabaseConnectionHandler {
 	static final String USER = "bd6c79c61fba4f";
 	static final String PASS = "9bcd28a7";
 
+	Connection connection = null;
+
+	public DatabaseConnectionHandler() {
+		// TODO Auto-generated constructor stub
+		// Register JDBC driver
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			// Open a connection
+			System.out.println("Connecting to database...");
+			// connection = DriverManager.getConnection(DB_URL, USER, PASS);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static void main(String[] args) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -72,7 +88,7 @@ public class DatabaseConnectionHandler {
 		System.out.println("Goodbye!");
 	}// end main
 
-	public String getDataSourceContent() {
+	public String getDataSourceContent(String dataSourceId) {
 		Connection conn = null;
 		Statement stmt = null;
 		String dataSourceContent = null;
@@ -88,7 +104,8 @@ public class DatabaseConnectionHandler {
 			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT * from DATA_SOURCE";
+			sql = "SELECT * from DATA_SOURCE WHERE DATASOURCEID = "
+					+ dataSourceId;
 			ResultSet rs = stmt.executeQuery(sql);
 
 			// STEP 5: Extract data from result set
@@ -125,7 +142,6 @@ public class DatabaseConnectionHandler {
 		}// end try
 		System.out.println("Goodbye!");
 		return dataSourceContent;
-
 	}
 
 	public ArrayList<String> getAllPOSData() {
@@ -187,7 +203,50 @@ public class DatabaseConnectionHandler {
 		}// end try
 		System.out.println("Goodbye!");
 		return posDataList;
+	}
 
+	public void writeResultData(String resultText, String dataSourceId) {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			stmt = conn.createStatement();
+			String sql;
+			sql = "INSERT INTO RESULT_DATA (resultText, dataSourceId) VALUES ('"
+					+ resultText + "'," + dataSourceId + ");";
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			}// nothing we can do
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}// end finally try
+		}// end try
+		System.out.println("Goodbye!");
 	}
 
 }
