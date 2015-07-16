@@ -1,12 +1,14 @@
 package ipvs_is.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ipvs_is.database.DatabaseConnectionHandler;
 import ipvs_is.trial.Pipeline;
 
 /**
@@ -38,8 +40,10 @@ public class TextInputServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//StringBuffer sb = new StringBuffer(request.getParameter("input_text"));
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		  String Text = request.getParameter("input_text");
 		  System.out.println(Text);
+		  
 		 // Text="Last year we visited france";
 		  
 		  Pipeline pipeline = new Pipeline();
@@ -50,6 +54,7 @@ public class TextInputServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			databaseConnectionHandler.insertDataSourceContent(Text,"text");
 		//doGet(request, response);
 	}
 

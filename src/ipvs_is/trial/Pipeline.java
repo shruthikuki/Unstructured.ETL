@@ -3,6 +3,7 @@ package ipvs_is.trial;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.*;
 import static org.apache.uima.fit.factory.CollectionReaderFactory.*;
 import static org.apache.uima.fit.pipeline.SimplePipeline.*;
+import ipvs_is.database.DatabaseConnectionHandler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,13 +16,15 @@ import java.sql.Statement;*/
 import java.io.InputStream;
 
 
+
 import javax.servlet.*;
+
 import org.apache.commons.jxpath.ri.model.beans.LangAttributePointer;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.component.CasDumpWriter;
-
 import org.knallgrau.utils.textcat.TextCategorizer;
+
 import de.tudarmstadt.ukp.dkpro.core.io.text.StringReader;
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
 import de.tudarmstadt.ukp.dkpro.core.io.xml.XmlWriterInline;
@@ -64,6 +67,8 @@ public class Pipeline
 		    String language = guesser.categorize(fileText);
 		    
 			System.out.println(sb.toString());
+			DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+			databaseConnectionHandler.insertDataSourceContent(sb.toString(), "file");
 		System.out.println(language + ": " + language.substring(0, 2).toLowerCase());
 		
 		
@@ -90,7 +95,7 @@ public class Pipeline
 //			AnalysisEngineDescription cc = createEngineDescription(
 //					XmlWriterInline.class, XmlWriterInline.PARAM_TARGET_LOCATION, "target/xmlTrial.txt");
 	//
-		runPipeline(cr,seg, tagger, tagger1, tagger2, tagger3, tagger4, cc);
+		runPipeline(cr,seg, tagger/*, tagger1, tagger2, tagger3, tagger4*/, cc);
 		System.out.println("Completed");
 	//	
 	//*/

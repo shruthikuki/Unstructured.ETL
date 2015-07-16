@@ -9,7 +9,8 @@
 				type : "POST",
 				url : "/Unstructured.ETL/getResultForFeature",
 				data : {
-					featureCode : featureCode
+					featureCode : featureCode,
+					dataSourceId : dataSourceId
 				},
 				success : function(response) {
 					console.log('response: ' + response);

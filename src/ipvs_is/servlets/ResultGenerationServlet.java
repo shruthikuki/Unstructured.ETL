@@ -83,8 +83,8 @@ public class ResultGenerationServlet extends HttpServlet {
 		 * 
 		 * }
 		 */
-		databaseConnectionHandler.writeResultData(originalText.toString(),
-				dataSourceId);
+		/*databaseConnectionHandler.writeResultData(originalText.toString(),
+				dataSourceId);*/
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
