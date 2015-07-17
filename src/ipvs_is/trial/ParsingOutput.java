@@ -21,7 +21,7 @@ public class ParsingOutput {
 	}
 
 	public void POS() throws Exception {
-		System.out.println("deleting POS");
+//		System.out.println("deleting POS");
 		DatabaseConnectionHandler databaseConnectionHandler1 = new DatabaseConnectionHandler();
 		databaseConnectionHandler1.deleteTableContents("POS_DATA");
 
@@ -41,7 +41,6 @@ public class ParsingOutput {
 				posValue = br.readLine();
 				if (posValue.contains("NN") || posValue.contains("NNS") || posValue.contains("NNP")
 						|| posValue.contains("NNPS")) {
-					System.out.println("Noun" + previousLine);
 					length = previousLine.length();
 					previousLine = previousLine.substring(1, length - 1);
 					begin = begin.replace("begin: ", " ");
@@ -58,7 +57,6 @@ public class ParsingOutput {
 					posValue = br.readLine();
 					if (posValue.contains("VB") || posValue.contains("VBD") || posValue.contains("VBG")
 							|| posValue.contains("VBN") || posValue.contains("VBP") || posValue.contains("VBZ")) {
-						System.out.println("Verb" + previousLine);
 						length = previousLine.length();
 						previousLine = previousLine.substring(1, length - 1);
 						begin = begin.replace("begin: ", " ");
@@ -76,7 +74,6 @@ public class ParsingOutput {
 						end = br.readLine();
 						posValue = br.readLine();
 						if (posValue.contains("JJ") || posValue.contains("JJR") || posValue.contains("JJZ")) {
-							System.out.println("Adjective" + previousLine);
 							length = previousLine.length();
 							previousLine = previousLine.substring(1, length - 1);
 							begin = begin.replace("begin: ", " ");
@@ -107,7 +104,6 @@ public class ParsingOutput {
 				buffer = br.readLine();
 				begin = br.readLine();
 				end = br.readLine();
-				System.out.println("Person" + previousLine);
 
 				length = previousLine.length();
 				previousLine = previousLine.substring(1, length - 1);
@@ -123,7 +119,6 @@ public class ParsingOutput {
 					buffer = br.readLine();
 					begin = br.readLine();
 					end = br.readLine();
-					System.out.println("Location" + previousLine);
 
 					length = previousLine.length();
 					previousLine = previousLine.substring(1, length - 1);
@@ -140,7 +135,6 @@ public class ParsingOutput {
 					buffer = br.readLine();
 					begin = br.readLine();
 					end = br.readLine();
-					System.out.println("Organization" + previousLine);
 
 					length = previousLine.length();
 					previousLine = previousLine.substring(1, length - 1);

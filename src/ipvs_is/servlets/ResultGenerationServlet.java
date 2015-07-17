@@ -21,14 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ResultGenerationServlet extends HttpServlet {
 	String dataSourceId;
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String featureCode = request.getParameter("featureCode");
-		dataSourceId = request.getParameter("dataSourceId");
-		response.getWriter().println(featureCode);
-		System.out.println("featureCode:  " + featureCode);
-		System.out.println("dataSourceId: " + dataSourceId);
+		// dataSourceId = request.getParameter("dataSourceId");
+		// System.out.println("featureCode: " + featureCode);
+		// System.out.println("dataSourceId: " + dataSourceId);
 		if (featureCode.equals("NER")) {
 			getResultForNER(response);
 		} else if (featureCode.equals("POS")) {
@@ -42,21 +40,21 @@ public class ResultGenerationServlet extends HttpServlet {
 
 	private void getResultForPOS(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-		/*StringBuilder originalText = new StringBuilder(
-				databaseConnectionHandler.getDataSourceContent(dataSourceId));*/
-		StringBuilder originalText = new StringBuilder(
-				databaseConnectionHandler.getDataSourceContent());
+		/*
+		 * StringBuilder originalText = new StringBuilder(
+		 * databaseConnectionHandler.getDataSourceContent(dataSourceId));
+		 */
+		StringBuilder originalText = new StringBuilder(databaseConnectionHandler.getDataSourceContent());
 		HashMap<String, String> posColorMap = new HashMap<String, String>();
-		posColorMap.put("noun", "red");
-		posColorMap.put("verb", "green");
-		posColorMap.put("adjective", "blue");
+		posColorMap.put("noun", "#F79898");
+		posColorMap.put("verb", "#98F7C4");
+		posColorMap.put("adjective", "#4A7FF0");
 		// get all rows from POS table
 		// for each row
 		// using position of each token, in originalText, append appropriate
 		// divs
 
-		ArrayList<String> posDataList = databaseConnectionHandler
-				.getAllPOSData();
+		ArrayList<String> posDataList = databaseConnectionHandler.getAllPOSData();
 
 		for (int i = 0; i < posDataList.size(); i++) {
 			int begin = Integer.parseInt(posDataList.get(i));
@@ -64,11 +62,17 @@ public class ResultGenerationServlet extends HttpServlet {
 			String posType = posDataList.get(i + 2);
 			i = i + 2;
 			originalText.insert(end, "</font>");
-			originalText.insert(begin, " <font style = 'background-color:"
-					+ posColorMap.get(posType.toLowerCase()) + "'>");
+			originalText.insert(begin,
+					" <font style = 'background-color:" + posColorMap.get(posType.toLowerCase()) + "'>");
 
 		}
-		System.out.println("highlighted text: " + originalText);
+
+//		for (int j = 0; j < originalText.length(); j++) {
+//			if (originalText.charAt(j) == '\n') {
+//				originalText.insert(j, "<br>");
+//			}
+//		}
+		// System.out.println("highlighted text: " + originalText);
 
 		/*
 		 * ArrayList<Integer> beginIndexList = new
@@ -85,8 +89,10 @@ public class ResultGenerationServlet extends HttpServlet {
 		 * 
 		 * }
 		 */
-		/*databaseConnectionHandler.writeResultData(originalText.toString(),
-				dataSourceId);*/
+		/*
+		 * databaseConnectionHandler.writeResultData(originalText.toString(),
+		 * dataSourceId);
+		 */
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();

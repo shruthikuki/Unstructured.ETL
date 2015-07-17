@@ -43,7 +43,7 @@
         <![endif]-->
 </head>
 
-<body onload="init();">
+<body>
 	<!-- container section start -->
 	<section id="container" class="">
 
@@ -159,28 +159,28 @@
 								<div class="panel-heading">
 									<h4 class="panel-title">
 										<a class="accordion-toggle" data-toggle="collapse"
-											data-parent="#accordion" href="#collapseOne"> Collapsible
-											Group Item #1 </a>
+											data-parent="#accordion" href="#collapseOne"> Parts of
+											Speech Tagger</a>
 									</h4>
 								</div>
-								<div id="NER-results" class="panel-collapse collapse in">
+								<div class="panel-collapse collapse in">
 									<div class="panel-body">
-										<b class="text-muted">Anim</b><b class="text-muted">
+										<b id="NER-results" style="color: black;"></b>
 									</div>
 								</div>
-								<div id="POS-results" class="panel-collapse collapse in">
+								<div class="panel-collapse collapse in">
 									<div class="panel-body">
-										<b class="text-muted">Anim</b><b class="text-muted">
+										<b id="POS-results" style="color: black;"></b>
 									</div>
 								</div>
-								<div id="SC-results" class="panel-collapse collapse in">
+								<div class="panel-collapse collapse in">
 									<div class="panel-body">
-										<b class="text-muted">Anim</b><b class="text-muted">
+										<b id="SC-results" style="color: black;"></b>
 									</div>
 								</div>
-								<div id="CR-results" class="panel-collapse collapse in">
+								<div class="panel-collapse collapse in">
 									<div class="panel-body">
-										<b class="text-muted">Anim</b><b class="text-muted">
+										<b id="CR-results" style="color: black;"></b>
 									</div>
 								</div>
 							</div>
@@ -241,14 +241,14 @@
 	<script>
 		//knob
 
-		function init() {
+		/* function init() {
 			console.log('called!');
 			var req = new XMLHttpRequest();
 			req.open('GET', document.location, false);
 			req.send(null);
 			var headers = req.getAllResponseHeaders().toLowerCase();
 			alert(headers);
-		}
+		} */
 
 		$(function() {
 			$(".knob").knob({
@@ -366,14 +366,13 @@
 
 	<script type="text/javascript" src="../../js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript">
-		function getResults(featureCode, dataSourceId, checkboxElement) {
+		function getResults(featureCode, checkboxElement) {
 			if (checkboxElement.checked) {
 				$.ajax({
 					type : "POST",
-					url : "/Unstructured.ETL/getResultForFeature",
+					url : "/UETL/getResultForFeature",
 					data : {
-						featureCode : featureCode,
-						dataSourceId : dataSourceId
+						featureCode : featureCode
 
 					},
 					success : function(response) {

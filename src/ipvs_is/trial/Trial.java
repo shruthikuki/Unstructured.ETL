@@ -94,7 +94,7 @@ public class Trial {
 				se.printStackTrace();
 			}// end finally try
 		}// end try
-		System.out.println("Goodbye!");
+
 	
 
 		

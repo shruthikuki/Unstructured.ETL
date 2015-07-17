@@ -48,7 +48,6 @@ public class UploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
 			throws ServletException, IOException {
-		System.out.println("Started");
 		// checks if the request actually contains upload file
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			PrintWriter writer = response.getWriter();
@@ -114,8 +113,15 @@ public class UploadServlet extends HttpServlet {
 			}
 			//request.setAttribute("message", "Upload has been done successfully!");
 			//request.setAttribute("message", uploadPath.toString());
-			System.out.println( "Upload has been done successfully!");
+//			System.out.println( "Upload has been done successfully!");
 //			System.out.println(sb.toString());
+			response.setContentType("text/html");
+
+			// New location to be redirected
+			String site = new String("Bootstrap/css_bootstrap/triya_textbox.html");
+
+			response.setStatus(response.SC_MOVED_TEMPORARILY);
+			response.setHeader("Location", site);
 			
 		} catch (Exception ex) {
 			//request.setAttribute("message", "There was an error: " + ex.getMessage());

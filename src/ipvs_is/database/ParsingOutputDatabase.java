@@ -26,7 +26,6 @@ public class ParsingOutputDatabase {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql = "INSERT INTO DATA_SOURCE (CONTENT) VALUES (" + "'Peter went to a part in Stuttgart. He liked it very much. Then he visited Audi museum. He felt that it is very beautiful'" + ")";
-			System.out.println("query:" + sql);
 			stmt.executeUpdate(sql); 
 
 			// STEP 5: Extract data from result set
@@ -68,7 +67,6 @@ public class ParsingOutputDatabase {
 			stmt = conn.createStatement();
 			String sql = "INSERT INTO POS_DATA (TOKEN, BEGIN, END, TYPE) VALUES ("
 					+ "'" + token + "'" + "," + begin + "," + end + "," + "'" + type + "'" +");";
-			System.out.println("query:" + sql);
 			stmt.executeUpdate(sql); 
 		} 
 		
@@ -117,7 +115,6 @@ public class ParsingOutputDatabase {
 			stmt = conn.createStatement();
 			String sql = "INSERT INTO NAMED_ENTITY_DATA (TOKEN, BEGIN, END, TYPE) VALUES ("
 					+ "'" + token + "'" + "," + begin + "," + end + "," + "'" + type + "'" +");";
-			System.out.println("query:" + sql);
 			stmt.executeUpdate(sql); 
 		} 
 		
@@ -166,7 +163,6 @@ public class ParsingOutputDatabase {
 			stmt = conn.createStatement();
 			String sql = "INSERT INTO COREFERENCE_DATA (TOKEN, BEGIN, END, TYPE) VALUES ("
 					+ "'" + token + "'" + "," + begin + "," + end + "," + nextBegin + "," + nextEnd +");";
-			System.out.println("query:" + sql);
 			stmt.executeUpdate(sql); 
 		} 
 		

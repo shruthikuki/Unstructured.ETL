@@ -23,7 +23,6 @@ public class DatabaseConnectionHandler {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// Open a connection
-			System.out.println("Connecting to database...");
 			// connection = DriverManager.getConnection(DB_URL, USER, PASS);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -39,11 +38,9 @@ public class DatabaseConnectionHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			// STEP 4: Execute a query
-			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
 			sql = "SELECT * from POS_DATA";
@@ -54,12 +51,6 @@ public class DatabaseConnectionHandler {
 				// Retrieve by column name
 				int id = rs.getInt("id");
 				String first = rs.getString("name");
-
-				// Display values
-				System.out.print("ID: " + id);
-
-				System.out.print(", First: " + first);
-
 			}
 			// STEP 6: Clean-up environment
 			rs.close();
@@ -85,7 +76,6 @@ public class DatabaseConnectionHandler {
 				se.printStackTrace();
 			}// end finally try
 		}// end try
-		System.out.println("Goodbye!");
 	}// end main
 	
 	public void deleteTableContents(String tableName) {
@@ -96,11 +86,9 @@ public class DatabaseConnectionHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			// STEP 4: Execute a query
-			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
 			sql = "DELETE FROM " + tableName + ";";
@@ -128,9 +116,6 @@ public class DatabaseConnectionHandler {
 				se.printStackTrace();
 			}// end finally try
 		}// end try
-		System.out.println("Goodbye!");
-
-
 	}
 
 	public void insertDataSourceContent(String dataSourceContent, String type) {
@@ -141,11 +126,9 @@ public class DatabaseConnectionHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			// STEP 4: Execute a query
-			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
 			sql = "INSERT INTO DATA_SOURCE (content, type) VALUES ('"
@@ -174,8 +157,6 @@ public class DatabaseConnectionHandler {
 				se.printStackTrace();
 			}// end finally try
 		}// end try
-		System.out.println("Goodbye!");
-
 	}
 
 	public String getDataSourceContent(String dataSourceId) {
@@ -187,11 +168,9 @@ public class DatabaseConnectionHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			// STEP 4: Execute a query
-			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
 			sql = "SELECT * from DATA_SOURCE WHERE DATASOURCEID = "
@@ -202,9 +181,6 @@ public class DatabaseConnectionHandler {
 			while (rs.next()) {
 				// Retrieve by column name
 				dataSourceContent = rs.getString("content");
-
-				System.out.print("content: " + dataSourceContent);
-
 			}
 			// STEP 6: Clean-up environment
 			rs.close();
@@ -230,7 +206,6 @@ public class DatabaseConnectionHandler {
 				se.printStackTrace();
 			}// end finally try
 		}// end try
-		System.out.println("Goodbye!");
 		return dataSourceContent;
 	}
 	
@@ -243,23 +218,18 @@ public class DatabaseConnectionHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			// STEP 4: Execute a query
-			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT * from DATA_SOURCE";
+			sql = "SELECT * from DATA_SOURCE WHERE ID = (SELECT MAX(ID) FROM DATA_SOURCE)";
 			ResultSet rs = stmt.executeQuery(sql);
 
 			// STEP 5: Extract data from result set
 			while (rs.next()) {
 				// Retrieve by column name
 				dataSourceContent = rs.getString("content");
-
-				System.out.print("content: " + dataSourceContent);
-
 			}
 			// STEP 6: Clean-up environment
 			rs.close();
@@ -300,11 +270,9 @@ public class DatabaseConnectionHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			// STEP 4: Execute a query
-			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
 			sql = "SELECT BEGIN , END , TYPE from POS_DATA ORDER BY BEGIN DESC;";
@@ -316,8 +284,6 @@ public class DatabaseConnectionHandler {
 				int begin = rs.getInt("begin");
 				int end = rs.getInt("end");
 				String posType = rs.getString("type");
-				System.out.print("begin: " + begin + " end: " + end + " pos: "
-						+ posType);
 				posDataList.add(String.valueOf(begin));
 				posDataList.add(String.valueOf(end));
 				posDataList.add(posType);
@@ -346,7 +312,6 @@ public class DatabaseConnectionHandler {
 				se.printStackTrace();
 			}// end finally try
 		}// end try
-		System.out.println("Goodbye!");
 		return posDataList;
 	}
 
@@ -358,11 +323,9 @@ public class DatabaseConnectionHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			// STEP 4: Execute a query
-			System.out.println("Creating statement...");
 			stmt = conn.createStatement();
 			String sql;
 			sql = "INSERT INTO RESULT_DATA (resultText, dataSourceId) VALUES ('"
@@ -391,7 +354,6 @@ public class DatabaseConnectionHandler {
 				se.printStackTrace();
 			}// end finally try
 		}// end try
-		System.out.println("Goodbye!");
 	}
 
 }

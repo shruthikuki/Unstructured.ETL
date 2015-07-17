@@ -70,8 +70,6 @@ public class TextInputServlet extends HttpServlet {
 		response.setHeader("Location", site);
 		response.setHeader("sample","sampleValue");
 		
-		PrintWriter out = response.getWriter();
-		out.println("<h1>Text</h1>");
 
 		// doGet(request, response);
 	}
