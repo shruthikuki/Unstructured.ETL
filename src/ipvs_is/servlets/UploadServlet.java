@@ -118,7 +118,7 @@ public class UploadServlet extends HttpServlet {
 			response.setContentType("text/html");
 
 			// New location to be redirected
-			String site = new String("Bootstrap/css_bootstrap/ResultDisplay.html");
+			String site = new String("html/ResultDisplay.html");
 
 			response.setStatus(response.SC_MOVED_TEMPORARILY);
 			response.setHeader("Location", site);
