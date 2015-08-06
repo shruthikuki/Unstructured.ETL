@@ -173,7 +173,7 @@ public class CustomWriter extends CasConsumer_ImplBase {
 		while (annotationIterator.hasNext()) {
 			AnnotationFS annotation = annotationIterator.next();
 			System.out.println("covered text: " + annotation.getCoveredText() + "  annotation: "
-					+ annotation.getType().getShortName() + " begin: " + annotation.getBegin());
+					+ annotation.getType().getFeatureByBaseName("uima.tcas.Annotation:posValue") + " begin: " + annotation.getBegin());
 			if (!typesToPrint.contains(annotation.getType().getName())) {
 				continue;
 			}
