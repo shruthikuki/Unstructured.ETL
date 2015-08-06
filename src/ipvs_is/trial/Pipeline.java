@@ -87,7 +87,10 @@ public class Pipeline {
 		AnalysisEngineDescription tagger4 = createEngineDescription(JazzyChecker.class,
 				JazzyChecker.PARAM_MODEL_LOCATION, new File("resources/words.utf-8.txt"));
 
-		AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
+		/*AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
+				"resources/output.txt");*/
+		
+		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class, CustomWriter.PARAM_OUTPUT_FILE,
 				"resources/output.txt");
 
 		// AnalysisEngineDescription cc = createEngineDescription(
@@ -132,7 +135,7 @@ public class Pipeline {
 		AnalysisEngineDescription tagger4 = createEngineDescription(JazzyChecker.class,
 				JazzyChecker.PARAM_MODEL_LOCATION, new File("resources/words.utf-8.txt"));
 
-		AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
+		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class, CustomWriter.PARAM_OUTPUT_FILE,
 				"resources/output.txt");
 
 		// AnalysisEngineDescription cc = createEngineDescription(
