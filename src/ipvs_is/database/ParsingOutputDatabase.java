@@ -67,7 +67,7 @@ public class ParsingOutputDatabase {
 			stmt = conn.createStatement();
 			String sql = "INSERT INTO POS_DATA (TOKEN, BEGIN, END, TYPE) VALUES ("
 					+ "'" + token + "'" + "," + begin + "," + end + "," + "'" + type + "'" +");";
-			stmt.executeUpdate(sql); 
+		 
 		} 
 		
 		catch (SQLException se) {

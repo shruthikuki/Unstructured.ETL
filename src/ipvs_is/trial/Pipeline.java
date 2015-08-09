@@ -90,8 +90,7 @@ public class Pipeline {
 		/*AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
 				"resources/output.txt");*/
 		
-		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class, CustomWriter.PARAM_OUTPUT_FILE,
-				"resources/output.txt");
+		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class);
 
 		// AnalysisEngineDescription cc = createEngineDescription(
 		// XmlWriterInline.class, XmlWriterInline.PARAM_TARGET_LOCATION,
@@ -99,8 +98,7 @@ public class Pipeline {
 		//
 		runPipeline(cr, seg, tagger/* , tagger1, tagger2, tagger3, tagger4 */, cc);
 //		System.out.println("Completed");
-		ParsingOutput parsingOutput = new ParsingOutput();
-		parsingOutput.POS();
+		
 		//
 		// */
 		// /*
@@ -135,8 +133,7 @@ public class Pipeline {
 		AnalysisEngineDescription tagger4 = createEngineDescription(JazzyChecker.class,
 				JazzyChecker.PARAM_MODEL_LOCATION, new File("resources/words.utf-8.txt"));
 
-		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class, CustomWriter.PARAM_OUTPUT_FILE,
-				"resources/output.txt");
+		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class);
 
 		// AnalysisEngineDescription cc = createEngineDescription(
 		// XmlWriterInline.class, XmlWriterInline.PARAM_TARGET_LOCATION,
@@ -144,8 +141,7 @@ public class Pipeline {
 		//
 		runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, tagger4, cc);
 //		System.out.println("Completed");
-		ParsingOutput parsingOutput = new ParsingOutput();
-		parsingOutput.POS();
+		
 		//
 		// */
 		// /*

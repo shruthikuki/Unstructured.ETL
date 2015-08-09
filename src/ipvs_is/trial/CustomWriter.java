@@ -1,300 +1,78 @@
 package ipvs_is.trial;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.FeatureStructure;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.component.CasConsumer_ImplBase;
-import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.springframework.util.DigestUtils;
-import com.sun.org.apache.xalan.internal.utils.FeatureManager.Feature;
 
-/**
- * Dumps CAS content to a text file. This is useful when setting up test cases
- * which contain a reference output to which an actually produced CAS is
- * compared. The format produced by this component is more easily comparable
- * than a XCAS or XMI format.
- * 
- */
+import ipvs_is.database.DatabaseConnectionHandler;
+import ipvs_is.database.ParsingOutputDatabase;
+
 public class CustomWriter extends CasConsumer_ImplBase {
-	/**
-	 * Pattern inclusion prefix.
-	 */
-	public static final String INCLUDE_PREFIX = "+|";
-
-	/**
-	 * Pattern exclusion prefix.
-	 */
-	public static final String EXCLUDE_PREFIX = "-|";
-
-	/**
-	 * Output file. If multiple CASes as processed, their contents are
-	 * concatenated into this file. Mind that a test case using this consumer
-	 * with multiple CASes requires a reader which produced the CASes always in
-	 * the same order. When this file is set to "-", the dump does to
-	 * {@link System#out} (default).
-	 */
-	public static final String PARAM_OUTPUT_FILE = "outputFile";
-
-	@ConfigurationParameter(name = PARAM_OUTPUT_FILE, mandatory = true, defaultValue = "-")
-	private File outputFile;
-
-	/**
-	 * Whether to dump the content of the {@link CAS#getDocumentAnnotation()}.
-	 */
-	public static final String PARAM_WRITE_DOCUMENT_META_DATA = "writeDocumentMetaData";
-
-	@ConfigurationParameter(name = PARAM_WRITE_DOCUMENT_META_DATA, mandatory = true, defaultValue = "true")
-	private boolean writeDocumentMetaData;
-
-	/**
-	 * Include/exclude features according to the following patterns. Mind that
-	 * the patterns do not actually match feature names but lines produced by
-	 * {@code FeatureStructure.toString()}.
-	 */
-	public static final String PARAM_FEATURE_PATTERNS = "featurePatterns";
-
-	@ConfigurationParameter(name = PARAM_FEATURE_PATTERNS, mandatory = true, defaultValue = { "+|.*",
-			"-|^.*documentUri:.*$", "-|^.*collectionId:.*$", "-|^.*documentBaseUri:.*$" })
-	private String[] featurePatterns;
-
-	private InExPattern[] cookedFeaturePatterns;
-
-	/**
-	 * Include/exclude specified UIMA types in the output.
-	 */
-	public static final String PARAM_TYPE_PATTERNS = "typePatterns";
-
-	@ConfigurationParameter(name = PARAM_TYPE_PATTERNS, mandatory = true, defaultValue = { "+|.*" })
-	private String[] typePatterns;
-
-	private InExPattern[] cookedTypePatterns;
-
-	private PrintWriter out;
 
 	private int iCas;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-
-		try {
-			if (out == null) {
-				if ("-".equals(outputFile.getName())) {
-					out = new PrintWriter(new CloseShieldOutputStream(System.out));
-				} else {
-					if (outputFile.getParentFile() != null) {
-						outputFile.getParentFile().mkdirs();
-					}
-					out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8"));
-				}
-			}
-		} catch (IOException e) {
-			throw new ResourceInitializationException(e);
-		}
-
-		cookedTypePatterns = compilePatterns(typePatterns);
-		cookedFeaturePatterns = compilePatterns(featurePatterns);
 	}
 
 	@Override
 	public void process(CAS aCAS) throws AnalysisEngineProcessException {
-		out.println("======== CAS " + iCas + " begin ==================================");
-		out.println();
-
 		Iterator<CAS> viewIt = aCAS.getViewIterator();
 		while (viewIt.hasNext()) {
 			CAS view = viewIt.next();
-			try {
-				System.out.println(view.getJCas().getDocumentText() + " : " + view.getJCas().getSofaDataString());
-			} catch (CASException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			processView(view);
-
-			if (view.getDocumentText() == null && view.getSofaDataStream() != null) {
-				processSofaData(view);
-			}
+			processFeatureStructures(view);
 		}
-
-		out.println("======== CAS " + iCas + " end ==================================");
-		out.println();
-		out.println();
-		out.flush();
-
 		iCas++;
 	}
-
-	@Override
-	public void collectionProcessComplete() {
-		IOUtils.closeQuietly(out);
-		out = null;
-	}
-
-	private void processDocumentMetadata(CAS aCAS) {
-		if (!writeDocumentMetaData) {
-			return;
-		}
-
-		processFeatureStructure(aCAS.getDocumentAnnotation());
-	}
-
-	private void processDocumentText(CAS aCAS) {
-		out.println();
-		out.println("CAS-Text:");
-		out.println(aCAS.getDocumentText());
-	}
-
+	
 	private void processFeatureStructures(CAS aCAS) {
-		org.apache.uima.cas.Feature feature = aCAS.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:posValue");
-		System.out.println(feature.getShortName());
-		Set<String> typesToPrint = getTypes(aCAS);
+		DatabaseConnectionHandler databaseConnectionHandler1 = new DatabaseConnectionHandler();
+		databaseConnectionHandler1.deleteTableContents("POS_DATA");
+//		databaseConnectionHandler1.deleteTableContents("NAMED_ENTITY_DATA");
+		ParsingOutputDatabase databaseConnectionHandler = new ParsingOutputDatabase();
 		FSIterator<AnnotationFS> annotationIterator = aCAS.getAnnotationIndex().iterator();
 		while (annotationIterator.hasNext()) {
 			AnnotationFS annotation = annotationIterator.next();
-			System.out.println("covered text: " + annotation.getCoveredText() + "  annotation: "
-					+ annotation.getType().getFeatureByBaseName("uima.tcas.Annotation:posValue") + " begin: " + annotation.getBegin());
-			if (!typesToPrint.contains(annotation.getType().getName())) {
-				continue;
+			
+			String type = annotation.getType().getName();
+			if (type.contains(".pos")) {
+				if (type.split("\\.")[type.split("\\.").length - 1].startsWith("N")) {
+					System.out.println("noun for: " + annotation.getCoveredText());
+					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+							annotation.getEnd(), "Noun");
+				} else if (type.split("\\.")[type.split("\\.").length - 1].startsWith("V")) {
+					
+					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+							annotation.getEnd(), "Verb");
+				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("ADJ")) {
+					
+					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+							annotation.getEnd(), "Adjective");
+				} 
 			}
-			try {
-				out.println("[" + annotation.getCoveredText() + "]");
-			} catch (IndexOutOfBoundsException e) {
-				out.println("<OFFSETS OUT OF BOUNDS>");
-			}
-			processFeatureStructure(annotation);
-		}
-	}
-
-	private void processFeatureStructure(FeatureStructure aFS) {
-		// System.out.println("feature struct: " + aFS + " : ");
-		String meta = aFS.toString();
-		for (String line : meta.split("\n")) {
-			boolean print = false;
-			for (InExPattern p : cookedFeaturePatterns) {
-				p.matchter.reset(line);
-				if (p.matchter.matches()) {
-					print = p.includeInOutput;
-					/* System.out.println("line: " + line); */
-				}
-			}
-			if (print) {
-				out.println(line);
-			}
-		}
-	}
-
-	private void processView(CAS aCAS) {
-		out.println("-------- View " + aCAS.getViewName() + " begin ----------------------------------");
-		out.println();
-
-		processDocumentMetadata(aCAS);
-		processDocumentText(aCAS);
-		processFeatureStructures(aCAS);
-
-		out.println("-------- View " + aCAS.getViewName() + " end ----------------------------------");
-		out.println();
-	}
-
-	private void processSofaData(CAS aCAS) throws AnalysisEngineProcessException {
-		out.println("Sofa data:");
-
-		//
-
-		// Mime type
-		String mimeType = aCAS.getSofaMimeType();
-		if (mimeType != null) {
-			out.println("   mime type:\t" + mimeType);
-		}
-		// Data
-		byte[] bytes = null;
-		InputStream in = null;
-		try {
-			in = aCAS.getSofaDataStream();
-			bytes = IOUtils.toByteArray(in);
-		} catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
-		} finally {
-			IOUtils.closeQuietly(in);
-		}
-		if (bytes != null) {
-			// Data size
-			out.println("   size:\t" + bytes.length + " byte(s)");
-			// Hash value of the bytes
-			String hash = DigestUtils.md5DigestAsHex(bytes);
-			out.println("   hash value:\t" + hash);
-		}
-
-		out.println();
-	}
-
-	private static InExPattern[] compilePatterns(String[] aPatterns) {
-		InExPattern[] patterns = new InExPattern[aPatterns.length];
-		for (int i = 0; i < aPatterns.length; i++) {
-			if (aPatterns[i].startsWith(INCLUDE_PREFIX)) {
-				patterns[i] = new InExPattern(aPatterns[i].substring(INCLUDE_PREFIX.length()), true);
-			} else if (aPatterns[i].startsWith(EXCLUDE_PREFIX)) {
-				patterns[i] = new InExPattern(aPatterns[i].substring(EXCLUDE_PREFIX.length()), false);
-			} else {
-				patterns[i] = new InExPattern(aPatterns[i], false);
-			}
-		}
-		return patterns;
-	}
-
-	private Set<String> getTypes(CAS cas) {
-		Set<String> types = new HashSet<String>();
-		Iterator<Type> typeIt = cas.getTypeSystem().getTypeIterator();
-		nextType: while (typeIt.hasNext()) {
-			Type type = typeIt.next();
-
-			if (type.getName().equals(cas.getDocumentAnnotation().getType().getName())) {
-				continue;
-			}
-
-			for (InExPattern p : cookedTypePatterns) {
-				p.matchter.reset(type.getName());
-				if (p.matchter.matches()) {
-					if (p.includeInOutput) {
-						types.add(type.getName());
-					} else {
-						types.remove(type.getName());
-					}
-					continue nextType;
-				}
-			}
-		}
-		return types;
-	}
-
-	private static class InExPattern {
-		final boolean includeInOutput;
-
-		final Matcher matchter;
-
-		public InExPattern(String aPattern, boolean aInclude) {
-			includeInOutput = aInclude;
-			matchter = Pattern.compile(aPattern).matcher("");
+			
+			/*if (type.contains(".ner")) {
+				if (type.split("\\.")[type.split("\\.").length - 1].equals("Location")) {
+				
+					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+							annotation.getEnd(), "Noun");
+				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Organization")) {
+					
+					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+							annotation.getEnd(), "Verb");
+				} else if (type.split("\\.")[type.split("\\.").length - 1].startsWith("ADJ")) {
+					
+					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+							annotation.getEnd(), "Adjective");
+				} 
+			}*/
 		}
 	}
 }
