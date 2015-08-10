@@ -28,7 +28,7 @@ import ipvs_is.trial.Pipeline;
 @WebServlet(name = "UploadServlet", urlPatterns = {"/UploadServlet"})
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String UPLOAD_DIRECTORY = "E:\\upload";
+	private static final String UPLOAD_DIRECTORY = "upload";
 	private static final int THRESHOLD_SIZE = 1024 * 1024 * 3; // 3MB
 	private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; // 40MB
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
@@ -62,16 +62,16 @@ public class UploadServlet extends HttpServlet {
 		factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
 		//factory.setRepository(new File(("E:\\Study")));
 		ServletFileUpload upload = new ServletFileUpload(factory);
-		upload.setFileSizeMax(MAX_FILE_SIZE);
-		upload.setSizeMax(MAX_REQUEST_SIZE);
+		/*upload.setFileSizeMax(MAX_FILE_SIZE);
+		upload.setSizeMax(MAX_REQUEST_SIZE);*/
 
 		// constructs the directory path to store upload file
-		String uploadPath = UPLOAD_DIRECTORY;
+	/*	String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
 		// creates the directory if it does not exist
 		File uploadDir = new File(uploadPath);
 		if (!uploadDir.exists()) {
 			uploadDir.mkdir();
-		}
+		}*/
 
 		try {
 			// parses the request's content to extract file data
@@ -84,16 +84,16 @@ public class UploadServlet extends HttpServlet {
 				// processes only fields that are not form fields
 				if (!item.isFormField()) {
 					
-					String fileName = new File(item.getName()).getName();
+					/*String fileName = new File(item.getName()).getName();
 					String filePath = uploadPath + File.separator + fileName;
 					//String filePath = "E:\\Study";
 					File storeFile = new File(filePath);
 					// saves the file on disk
-					item.write(storeFile);
+					item.write(storeFile);*/
 					
 					Pipeline pipeline = new Pipeline();
-					pipeline.RunPipelineForFileUpload(filePath);
-					/*BufferedReader br = new BufferedReader(new FileReader(filePath));
+					pipeline.RunPipeline(item.getString());
+				/*	BufferedReader br = new BufferedReader(new FileReader(filePath));
 				    try {
 				        sb = new StringBuilder();
 				        String line = br.readLine();
@@ -106,8 +106,8 @@ public class UploadServlet extends HttpServlet {
 				        fileText = sb.toString();
 				    } finally {
 				        br.close();
-				    }*/
-					
+				    }
+					*/
 					
 				}
 			}

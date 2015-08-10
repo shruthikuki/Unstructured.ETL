@@ -55,7 +55,7 @@ public class TextInputServlet extends HttpServlet {
 		Pipeline pipeline = new Pipeline();
 		try {
 			System.out.println(Text);
-			pipeline.RunPipelineForTextInput(Text);
+			pipeline.RunPipeline(Text);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

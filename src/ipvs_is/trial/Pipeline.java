@@ -39,9 +39,9 @@ public class Pipeline {
 	/*
 	 * public Pipeline(String path) { filePath=path; }
 	 */
-	public void RunPipelineForFileUpload(String filePath) throws Exception {
+	public void RunPipelineForFileUpload(String fileText) throws Exception {
 
-		String fileText;
+		/*String fileText;
 		StringBuilder sb;
 
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -57,14 +57,14 @@ public class Pipeline {
 			fileText = sb.toString();
 		} finally {
 			br.close();
-		}
+		}*/
 
 		TextCategorizer guesser = new TextCategorizer();
 		String language = guesser.categorize(fileText);
 
-		System.out.println(sb.toString());
+		System.out.println(fileText.toString());
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-		databaseConnectionHandler.insertDataSourceContent(sb.toString(), "file");
+		databaseConnectionHandler.insertDataSourceContent(fileText.toString(), "file");
 //		System.out.println(language + ": " + language.substring(0, 2).toLowerCase());
 
 		// CollectionReaderDescription cr = createReaderDescription(
@@ -72,7 +72,7 @@ public class Pipeline {
 		// filePath, TextReader.PARAM_LANGUAGE, language.substring(0,
 		// 2).toLowerCase());
 		CollectionReaderDescription cr = createReaderDescription(StringReader.class, StringReader.PARAM_DOCUMENT_TEXT,
-				sb.toString(), TextReader.PARAM_LANGUAGE, language.substring(0, 2).toLowerCase());
+				fileText.toString(), TextReader.PARAM_LANGUAGE, language.substring(0, 2).toLowerCase());
 		/*
 		 * CollectionReaderDescription cr = createReaderDescription(
 		 * StringReader.class, StringReader.PARAM_DOCUMENT_TEXT, "",
@@ -96,7 +96,7 @@ public class Pipeline {
 		// XmlWriterInline.class, XmlWriterInline.PARAM_TARGET_LOCATION,
 		// "target/xmlTrial.txt");
 		//
-		runPipeline(cr, seg, tagger/* , tagger1, tagger2, tagger3, tagger4 */, cc);
+		runPipeline(cr, seg, tagger , tagger1, tagger2, tagger3, tagger4 , cc);
 //		System.out.println("Completed");
 		
 		//
@@ -108,7 +108,7 @@ public class Pipeline {
 //		System.out.println("File write complete! Saved to: " + new File("target/Trial.txt").getAbsolutePath());
 	}
 
-	public void RunPipelineForTextInput(String Text) throws Exception {
+	public void RunPipeline(String Text) throws Exception {
 
 		TextCategorizer guesser = new TextCategorizer();
 		String language = guesser.categorize(Text);
