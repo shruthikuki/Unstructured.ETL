@@ -355,5 +355,56 @@ public class DatabaseConnectionHandler {
 			}// end finally try
 		}// end try
 	}
+	public ArrayList<String> getFileDataSource () {
+		Connection conn = null;
+		Statement stmt = null;
+		
+		ArrayList<String> datalist = new ArrayList<String>();
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
 
+			// STEP 3: Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT * from DATA_SOURCE WHERE where type='file'";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			// STEP 5: Extract data from result set
+			while (rs.next()) {
+				// Retrieve by column name
+				datalist.add("content");
+			}
+			// STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			}// nothing we can do
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}// end finally try
+		}// end try
+		
+		return datalist;
+	}
+
+	
 }
