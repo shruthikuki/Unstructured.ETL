@@ -58,21 +58,21 @@ public class CustomWriter extends CasConsumer_ImplBase {
 				} 
 			}
 			
-			/*if (type.contains(".ner")) {
+			if (type.contains(".ner")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].equals("Location")) {
 				
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
-							annotation.getEnd(), "Noun");
+							annotation.getEnd(), "Location");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Organization")) {
 					
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
-							annotation.getEnd(), "Verb");
-				} else if (type.split("\\.")[type.split("\\.").length - 1].startsWith("ADJ")) {
+							annotation.getEnd(), "Organization");
+				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Person")) {
 					
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
-							annotation.getEnd(), "Adjective");
+							annotation.getEnd(), "Person");
 				} 
-			}*/
+			}
 		}
 	}
 }

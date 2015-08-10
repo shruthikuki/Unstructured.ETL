@@ -67,32 +67,6 @@ public class ResultGenerationServlet extends HttpServlet {
 
 		}
 
-//		for (int j = 0; j < originalText.length(); j++) {
-//			if (originalText.charAt(j) == '\n') {
-//				originalText.insert(j, "<br>");
-//			}
-//		}
-		// System.out.println("highlighted text: " + originalText);
-
-		/*
-		 * ArrayList<Integer> beginIndexList = new
-		 * ArrayList<Integer>(indexMap.keySet()); ArrayList<Integer>
-		 * descendingBeginIndexList = Collections.sort(beginIndexList,
-		 * Collections.reverseOrder());
-		 */
-		/*
-		 * TreeMap<Integer, Integer> descendingIndexMap = new TreeMap<Integer,
-		 * Integer>( Collections.reverseOrder());
-		 * descendingIndexMap.putAll(indexMap); for (int begin :
-		 * descendingIndexMap.keySet()) { int end =
-		 * descendingIndexMap.get(begin);
-		 * 
-		 * }
-		 */
-		/*
-		 * databaseConnectionHandler.writeResultData(originalText.toString(),
-		 * dataSourceId);
-		 */
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
@@ -104,17 +78,38 @@ public class ResultGenerationServlet extends HttpServlet {
 	}
 
 	private void getResultForNER(ServletResponse response) {
-		String originalText;
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+		/*
+		 * StringBuilder originalText = new StringBuilder(
+		 * databaseConnectionHandler.getDataSourceContent(dataSourceId));
+		 */
+		StringBuilder originalText = new StringBuilder(databaseConnectionHandler.getDataSourceContent());
+		HashMap<String, String> nerColorMap = new HashMap<String, String>();
+		nerColorMap.put("person", "#F79898");
+		nerColorMap.put("location", "#98F7C4");
+		nerColorMap.put("organization", "#4A7FF0");
 		// get all rows from NER table
 		// for each row
-		// using position of each token, in originalText, append approproaite
+		// using position of each token, in originalText, append appropriate
 		// divs
 
-		PrintWriter out = null;
+		ArrayList<String> nerDataList = databaseConnectionHandler.getAllNERData();
 
+		for (int i = 0; i < nerDataList.size(); i++) {
+			int begin = Integer.parseInt(nerDataList.get(i));
+			int end = Integer.parseInt(nerDataList.get(i + 1));
+			String nerType = nerDataList.get(i + 2);
+			i = i + 2;
+			originalText.insert(end, "</font>");
+			originalText.insert(begin,
+					" <font style = 'background-color:" + nerColorMap.get(nerType.toLowerCase()) + "'>");
+
+		}
+
+		PrintWriter out = null;
 		try {
 			out = response.getWriter();
-			out.println("<div><b>Response for POS!!!</b></div>");
+			out.println(originalText);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,7 +120,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		String originalText;
 		// get all rows from NER table
 		// for each row
-		// using position of each token, in originalText, append approproaite
+		// using position of each token, in originalText, append appropriate
 		// divs
 
 		PrintWriter out = null;
