@@ -35,7 +35,7 @@ public class CustomWriter extends CasConsumer_ImplBase {
 	private void processFeatureStructures(CAS aCAS) {
 		DatabaseConnectionHandler databaseConnectionHandler1 = new DatabaseConnectionHandler();
 		databaseConnectionHandler1.deleteTableContents("POS_DATA");
-//		databaseConnectionHandler1.deleteTableContents("NAMED_ENTITY_DATA");
+		databaseConnectionHandler1.deleteTableContents("NAMED_ENTITY_DATA");
 		ParsingOutputDatabase databaseConnectionHandler = new ParsingOutputDatabase();
 		FSIterator<AnnotationFS> annotationIterator = aCAS.getAnnotationIndex().iterator();
 		while (annotationIterator.hasNext()) {
