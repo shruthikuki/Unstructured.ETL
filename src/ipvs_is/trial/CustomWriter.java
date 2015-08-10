@@ -35,7 +35,7 @@ public class CustomWriter extends CasConsumer_ImplBase {
 	private void processFeatureStructures(CAS aCAS) {
 		DatabaseConnectionHandler databaseConnectionHandler1 = new DatabaseConnectionHandler();
 		databaseConnectionHandler1.deleteTableContents("POS_DATA");
-//		databaseConnectionHandler1.deleteTableContents("NAMED_ENTITY_DATA");
+		databaseConnectionHandler1.deleteTableContents("NAMED_ENTITY_DATA");
 		ParsingOutputDatabase databaseConnectionHandler = new ParsingOutputDatabase();
 		FSIterator<AnnotationFS> annotationIterator = aCAS.getAnnotationIndex().iterator();
 		while (annotationIterator.hasNext()) {
@@ -58,21 +58,21 @@ public class CustomWriter extends CasConsumer_ImplBase {
 				} 
 			}
 			
-			/*if (type.contains(".ner")) {
+			if (type.contains(".ner")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].equals("Location")) {
 				
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
-							annotation.getEnd(), "Noun");
+							annotation.getEnd(), "Location");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Organization")) {
 					
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
-							annotation.getEnd(), "Verb");
-				} else if (type.split("\\.")[type.split("\\.").length - 1].startsWith("ADJ")) {
+							annotation.getEnd(), "Organization");
+				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Person")) {
 					
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
-							annotation.getEnd(), "Adjective");
+							annotation.getEnd(), "Person");
 				} 
-			}*/
+			}
 		}
 	}
 }
