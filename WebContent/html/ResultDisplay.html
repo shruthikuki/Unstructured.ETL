@@ -18,7 +18,8 @@
 <link href="../css/elegant-icons-style.css" rel="stylesheet" />
 <link href="../css/font-awesome.min.css" rel="stylesheet" />
 <!-- full calendar css-->
-<link href="../assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css"
+<link
+	href="../assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css"
 	rel="stylesheet" />
 <link href="../assets/fullcalendar/fullcalendar/fullcalendar.css"
 	rel="stylesheet" />
@@ -43,7 +44,7 @@
         <![endif]-->
 </head>
 
-<body>
+<body onload="init()">
 	<!-- container section start -->
 	<section id="container" class="">
 
@@ -62,9 +63,7 @@
 				<!--  search form start -->
 				<ul class="nav top-menu">
 					<li>
-						<form class="navbar-form">
-							<input class="form-control" placeholder="Search" type="text">
-						</form>
+						
 					</li>
 				</ul>
 				<!--  search form end -->
@@ -73,14 +72,7 @@
 			<div class="top-nav notification-row">
 				<!-- notificatoin dropdown start-->
 				<ul class="nav pull-right top-menu">
-					<!-- task notificatoin start -->
-					<!-- alert notification end-->
-					<!-- user login dropdown start-->
-					<li><a href="#"> <span class="profile-ava"> <img
-								alt="" src="../img/avatar1_small.jpg">
-						</span> <span class="username">ETL Member</span> <b class="caret"></b>
-					</a></li>
-					<!-- user login dropdown end -->
+					
 				</ul>
 				<!-- notificatoin dropdown end-->
 			</div>
@@ -92,10 +84,10 @@
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
-					<li class="active"><a class="" href="index.html"> <i
-							class="icon_house_alt"></i> <span>Dashboard</span>
+					<li class="active"><a class="" href="HomePage.html"> <i
+							class="icon_house_alt"></i> <span>Home</span>
 					</a></li>
-					<li class="sub-menu"><a class=""> <i
+					<li class="sub-menu"><a class="" href="FileArchive.html"> <i
 							class="icon_documents_alt"></i> <span>File Archive</span>
 					</a></li>
 					<li class="sub-menu"><a class=""> <i
@@ -119,11 +111,11 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h3 class="page-header">
-							<i class="fa fa-laptop"></i> Dashboard
+							<i class="fa fa-laptop"></i> Analysis Result
 						</h3>
 						<ol class="breadcrumb">
-							<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-							<li><i class="fa fa-laptop"></i>Dashboard</li>
+							<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li>
+							<li><i class="fa fa-laptop"></i>Analysis Result</li>
 						</ol>
 					</div>
 				</div>
@@ -140,12 +132,12 @@
 									onchange="getResults('NER',this)"> Named Entity
 									Recognition
 								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox3" name="CR" value="CR"
-									onchange="getResults('CR',this)"> Co-Reference
-									Resolution
-								</label> <label class="checkbox-inline"> <input type="checkbox"
 									id="inlineCheckbox3" name="SC" value="SC"
 									onchange="getResults('SC',this)"> Spell Checker
+								</label> <label class="checkbox-inline"> <input type="checkbox"
+									id="inlineCheckbox3" name="CR" value="CR"
+									onchange="getResults('CR',this)"> CoReference
+									Resolution
 								</label>
 
 							</div>
@@ -156,40 +148,107 @@
 					<div class="col-md-12 portlets">
 						<div class="panel-group m-bot20" id="accordion">
 							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a class="accordion-toggle" data-toggle="collapse"
-											data-parent="#accordion" href="#collapseOne"> Parts of
-											Speech Tagger</a>
-									</h4>
-								</div>
-								<div class="panel-collapse collapse in">
-									<div class="panel-body">
-										<b id="NER-results" style="color: black;"></b>
+								<div id="POS">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne"> Parts of
+												Speech Tagger</a>
+										</h4>
+									</div>
+									<div style="display: inline-flex;">
+										<div class="panel-collapse collapse in">
+											<div class="panel-body" style="width: 1000px">
+												<b id="POS-results" style="color: black;"></b>
+											</div>
+										</div>
+										<div id="POS-legend">
+											<table style="margin-right: 20px; margin-left: auto">
+												<tr>
+													<td style="width: 24px; background-color: #F79898;"></td>
+													<td style="padding-left: 10px">Nouns</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #98F7C4;"></td>
+													<td style="padding-left: 10px">Verbs</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #4A7FF0;"></td>
+													<td style="padding-left: 10px">Adjectives</td>
+												</tr>
+											</table>
+										</div>
 									</div>
 								</div>
-								<div class="panel-collapse collapse in">
-									<div class="panel-body">
-										<b id="POS-results" style="color: black;"></b>
+
+								<div id="NER">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne">Named
+												Entity Recognition</a>
+										</h4>
 									</div>
-								</div>
-								<div class="panel-collapse collapse in">
-									<div class="panel-body">
-										<b id="SC-results" style="color: black;"></b>
+									<div style="display: inline-flex;">
+										<div class="panel-collapse collapse in">
+											<div class="panel-body" style="width: 1000px">
+												<b id="NER-results" style="color: black;"></b>
+											</div>
+										</div>
+										<div id="NER-legend">
+											<table style="margin-right: 20px; margin-left: auto">
+												<tr>
+													<td style="width: 24px; background-color: #F79898;"></td>
+													<td style="padding-left: 10px">Person</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #98F7C4;"></td>
+													<td style="padding-left: 10px">Location</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #4A7FF0;"></td>
+													<td style="padding-left: 10px">Organisation</td>
+												</tr>
+											</table>
+										</div>
 									</div>
-								</div>
-								<div class="panel-collapse collapse in">
-									<div class="panel-body">
-										<b id="CR-results" style="color: black;"></b>
+									
+									<div id="SC">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a class="accordion-toggle" data-toggle="collapse"
+													data-parent="#accordion" href="#collapseOne"> Spell
+													Checker</a>
+											</h4>
+										</div>
+										<div class="panel-collapse collapse in">
+											<div class="panel-body">
+												<b id="SC-results" style="color: black;"></b>
+											</div>
+										</div>
+										<div id="SC-legend"></div>
+									</div>
+									<div id="CR">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a class="accordion-toggle" data-toggle="collapse"
+													data-parent="#accordion" href="#collapseOne">CoReference
+													Resolution</a>
+											</h4>
+										</div>
+										<div class="panel-collapse collapse in">
+											<div class="panel-body">
+												<b id="CR-results" style="color: black;"></b>
+											</div>
+										</div>
+										<div id="CR-legend"></div>
 									</div>
 								</div>
 							</div>
 						</div>
+
 					</div>
-
-				</div>
-				<!-- project team & activity end -->
-
+					<!-- project team & activity end -->
 			</section>
 		</section>
 		<!--main content end-->
@@ -200,7 +259,8 @@
 	<script src="../js/jquery.js"></script>
 	<script src="../js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../js/jquery-1.8.3.min.js"></script>
-	<script type="../text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="../text/javascript"
+		src="../js/jquery-ui-1.9.2.custom.min.js"></script>
 	<!-- bootstrap -->
 	<script src="../js/bootstrap.min.js"></script>
 	<!-- nice scroll -->
@@ -366,8 +426,16 @@
 
 	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript">
+		function init() {
+			$("#POS").hide();
+			$("#NER").hide();
+			$("#SC").hide();
+			$("#CR").hide();
+		}
+
 		function getResults(featureCode, checkboxElement) {
 			if (checkboxElement.checked) {
+				$("#" + featureCode + "").show();
 				$.ajax({
 					type : "POST",
 					url : "/UETL/getResultForFeature",
@@ -377,13 +445,12 @@
 					},
 					success : function(response) {
 						console.log('response: ' + response);
-						$('#' + featureCode + "-results").html(response)
+						$("#" + featureCode + "-results").html(response)
 						displayLegend(featureCode);
 					}
 				});
 			} else {
-				$('#' + featureCode + '-results').css('display', 'none');
-				$('#' + featureCode + '-legend').css('display', 'none');
+				$("#" + featureCode + "").hide();
 			}
 		}
 

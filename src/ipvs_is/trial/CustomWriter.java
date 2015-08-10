@@ -44,7 +44,6 @@ public class CustomWriter extends CasConsumer_ImplBase {
 			String type = annotation.getType().getName();
 			if (type.contains(".pos")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].startsWith("N")) {
-					System.out.println("noun for: " + annotation.getCoveredText());
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Noun");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].startsWith("V")) {
@@ -61,15 +60,15 @@ public class CustomWriter extends CasConsumer_ImplBase {
 			if (type.contains(".ner")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].equals("Location")) {
 				
-					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Location");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Organization")) {
 					
-					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Organization");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Person")) {
 					
-					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Person");
 				} 
 			}

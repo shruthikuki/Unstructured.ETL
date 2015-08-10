@@ -331,7 +331,7 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT BEGIN , END , TYPE from NER_DATA ORDER BY BEGIN DESC;";
+			sql = "SELECT BEGIN , END , TYPE from NAMED_ENTITY_DATA ORDER BY BEGIN DESC;";
 			ResultSet rs = stmt.executeQuery(sql);
 
 			// STEP 5: Extract data from result set
