@@ -434,13 +434,15 @@
 		}
 
 		function getResults(featureCode, checkboxElement) {
+			var id = location.search.split('id=')[1];
 			if (checkboxElement.checked) {
 				$("#" + featureCode + "").show();
 				$.ajax({
 					type : "POST",
 					url : "/UETL/getResultForFeature",
 					data : {
-						featureCode : featureCode
+						featureCode : featureCode,
+						id : id
 
 					},
 					success : function(response) {

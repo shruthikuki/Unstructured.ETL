@@ -60,12 +60,14 @@ public class TextInputServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		databaseConnectionHandler.insertDataSourceContent(Text, "text");
+		int id;
+		id = databaseConnectionHandler.insertDataSourceContent(Text, "text");
+		databaseConnectionHandler.writeResultData(id);
 		response.setContentType("text/html");
 
 		// New location to be redirected
-		String site = new String("html/ResultDisplay.html");
-
+		String site = new String("html/ResultDisplay.html?id=" +id);
+		//response.setIntHeader("id", id);
 		response.setStatus(response.SC_MOVED_TEMPORARILY);
 		response.setHeader("Location", site);
 		response.setHeader("sample","sampleValue");

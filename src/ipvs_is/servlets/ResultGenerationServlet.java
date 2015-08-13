@@ -19,14 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ResultGenerationServlet extends HttpServlet {
-	String dataSourceId;
+	String dataSourceId, id;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String featureCode = request.getParameter("featureCode");
-		// dataSourceId = request.getParameter("dataSourceId");
-		// System.out.println("featureCode: " + featureCode);
-		// System.out.println("dataSourceId: " + dataSourceId);
+		id = request.getParameter("id");
 		if (featureCode.equals("NER")) {
 			getResultForNER(response);
 		} else if (featureCode.equals("POS")) {
@@ -44,7 +42,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		 * StringBuilder originalText = new StringBuilder(
 		 * databaseConnectionHandler.getDataSourceContent(dataSourceId));
 		 */
-		StringBuilder originalText = new StringBuilder(databaseConnectionHandler.getDataSourceContent());
+		StringBuilder originalText = new StringBuilder(databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
 		HashMap<String, String> posColorMap = new HashMap<String, String>();
 		posColorMap.put("noun", "#F79898");
 		posColorMap.put("verb", "#98F7C4");
@@ -63,10 +61,10 @@ public class ResultGenerationServlet extends HttpServlet {
 			i = i + 2;
 			originalText.insert(end, "</font>");
 			originalText.insert(begin,
-					" <font style = 'background-color:" + posColorMap.get(posType.toLowerCase()) + "'>");
+					" <font style = \"background-color:" + posColorMap.get(posType.toLowerCase()) + "\">");
 
 		}
-
+		databaseConnectionHandler.updatePOSResultData(originalText.toString(), Integer.parseInt(id));
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
@@ -102,10 +100,11 @@ public class ResultGenerationServlet extends HttpServlet {
 			i = i + 2;
 			originalText.insert(end, "</font>");
 			originalText.insert(begin,
-					" <font style = 'background-color:" + nerColorMap.get(nerType.toLowerCase()) + "'>");
+					" <font style = \"background-color:" + nerColorMap.get(nerType.toLowerCase()) + "\">");
 
 		}
 
+		databaseConnectionHandler.updateNERResultData(originalText.toString(), Integer.parseInt(id));
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
