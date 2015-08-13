@@ -68,16 +68,16 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 	}// end main
-	
+
 	public void deleteTableContents(String tableName) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -108,17 +108,17 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 	}
 
-	public int insertDataSourceContent(String dataSourceContent, String type) {
+	public int insertDataSourceContent(String dataSourceContent, String type, String name) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int id = 0;
@@ -131,8 +131,8 @@ public class DatabaseConnectionHandler {
 
 			// STEP 4: Execute a query
 			String sql;
-			sql = "INSERT INTO DATA_SOURCE (content, type) VALUES ('"
-					+ dataSourceContent + "','" + type + "');";
+			sql = "INSERT INTO DATA_SOURCE (content, type,name) VALUES ('" + dataSourceContent + "','" + type + "','"
+					+ name + "');";
 			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.executeUpdate();
 			ResultSet rs = pstmt.getGeneratedKeys();
@@ -153,14 +153,14 @@ public class DatabaseConnectionHandler {
 				if (pstmt != null)
 					pstmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 		return id;
 	}
 
@@ -178,8 +178,7 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT * from DATA_SOURCE WHERE ID = "
-					+ id;
+			sql = "SELECT * from DATA_SOURCE WHERE ID = " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 
 			// STEP 5: Extract data from result set
@@ -203,17 +202,17 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 		return dataSourceContent;
 	}
-	
+
 	public String getDataSourceContent() {
 		Connection conn = null;
 		Statement stmt = null;
@@ -252,16 +251,63 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 		System.out.println("Goodbye!");
 		return dataSourceContent;
+	}
+
+	public String getResultData(String columnName, int id) {
+		Connection conn = null;
+		Statement stmt = null;
+		String result = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT " + columnName + " from RESULT_DATA WHERE DATASOURCEID = " + id;
+			ResultSet rs = stmt.executeQuery(sql);
+
+			// STEP 5: Extract data from result set
+			rs.next();
+			result = rs.getString(columnName);
+			// STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			} // nothing we can do
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		return result;
 	}
 
 	public ArrayList<String> getAllPOSData() {
@@ -309,14 +355,14 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 		return posDataList;
 	}
 
@@ -365,14 +411,14 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 		return nerDataList;
 	}
 
@@ -389,8 +435,7 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "INSERT INTO RESULT_DATA (DATASOURCEID,POSRESULT,NERRESULT) VALUES ("
-					+ dataSourceId + ",'','');";
+			sql = "INSERT INTO RESULT_DATA (DATASOURCEID,POSRESULT,NERRESULT,SCRESULT) VALUES (" + dataSourceId + ",'','','');";
 			stmt.executeUpdate(sql);
 
 			stmt.close();
@@ -407,17 +452,17 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 	}
-	
-	public void updatePOSResultData(String resultText,  int dataSourceId) {
+
+	public void updatePOSResultData(String resultText, int dataSourceId) {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -430,9 +475,7 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			System.out.println("result: " + resultText);
 			sql = "UPDATE RESULT_DATA SET POSRESULT = '" + resultText + "' WHERE DATASOURCEID = " + dataSourceId + ";";
-			System.out.println("sql: " + sql);
 			stmt.executeUpdate(sql);
 
 			stmt.close();
@@ -449,17 +492,17 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 	}
-	
-	public void updateNERResultData(String resultText,  int dataSourceId) {
+
+	public void updateNERResultData(String resultText, int dataSourceId) {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -491,20 +534,20 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 	}
 
-	public ArrayList<String> getFileDataSource () {
+	public ArrayList<String> getDataSource(String DataSourceType) {
 		Connection conn = null;
 		Statement stmt = null;
-		
+
 		ArrayList<String> datalist = new ArrayList<String>();
 		try {
 			// STEP 2: Register JDBC driver
@@ -516,13 +559,14 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT * from DATA_SOURCE WHERE where type='file'";
+			sql = "SELECT id,name from DATA_SOURCE WHERE  type='" + DataSourceType + "';";
 			ResultSet rs = stmt.executeQuery(sql);
 
 			// STEP 5: Extract data from result set
 			while (rs.next()) {
 				// Retrieve by column name
-				datalist.add("content");
+				datalist.add(rs.getString("id"));
+				datalist.add(rs.getString("name"));
 			}
 			// STEP 6: Clean-up environment
 			rs.close();
@@ -540,17 +584,112 @@ public class DatabaseConnectionHandler {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
-		
+			} // end finally try
+		} // end try
+
 		return datalist;
 	}
 
+	public ArrayList<String> getAllSCData() {
+		HashMap<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
+		ArrayList<String> scDataList = new ArrayList<String>();
+		Connection conn = null;
+		Statement stmt = null;
+		String dataSourceContent = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT BEGIN , END from SC_DATA ORDER BY BEGIN DESC;";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			// STEP 5: Extract data from result set
+			while (rs.next()) {
+				// Retrieve by column name
+				int begin = rs.getInt("begin");
+				int end = rs.getInt("end");
+				scDataList.add(String.valueOf(begin));
+				scDataList.add(String.valueOf(end));
+			}
+			// STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			} // nothing we can do
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		return scDataList;
+	}
 	
+	public void updateSCResultData(String resultText, int dataSourceId) {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			stmt = conn.createStatement();
+			String sql;
+			System.out.println("result: " + resultText);
+			sql = "UPDATE RESULT_DATA SET SCRESULT = '" + resultText + "' WHERE DATASOURCEID = " + dataSourceId + ";";
+			System.out.println("sql: " + sql);
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			} // nothing we can do
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+	}
+
 }

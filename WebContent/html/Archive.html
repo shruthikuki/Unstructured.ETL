@@ -18,7 +18,8 @@
 <link href="../css/elegant-icons-style.css" rel="stylesheet" />
 <link href="../css/font-awesome.min.css" rel="stylesheet" />
 <!-- full calendar css-->
-<link href="../assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css"
+<link
+	href="../assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css"
 	rel="stylesheet" />
 <link href="../assets/fullcalendar/fullcalendar/fullcalendar.css"
 	rel="stylesheet" />
@@ -43,7 +44,7 @@
         <![endif]-->
 </head>
 
-<body>
+<body onload="loadArchives();">
 	<!-- container section start -->
 	<section id="container" class="">
 
@@ -60,14 +61,14 @@
 
 			<div class="nav search-row" id="top_menu">
 				<!--  search form start -->
-				
+
 				<!--  search form end -->
 			</div>
 
 			<div class="top-nav notification-row">
 				<!-- notificatoin dropdown start-->
 				<ul class="nav pull-right top-menu">
-				
+
 				</ul>
 				<!-- notificatoin dropdown end-->
 			</div>
@@ -115,65 +116,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<!-- <div class="col-md-12 portlets">
-						<div class="form-group">
-							<div class="col-lg-10">
-								<label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox1" name="POS" value="POS"
-									onchange="getResults('POS',this)"> Parts Of Speech
-									Tagger
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox2" name="NER" value="NER"
-									onchange="getResults('NER',this)"> Named Entity
-									Recognition
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox3" name="CR" value="CR"
-									onchange="getResults('CR',this)"> Co-Reference
-									Resolution
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox3" name="SC" value="SC"
-									onchange="getResults('SC',this)"> Spell Checker
-								</label>
-
-							</div>
-						</div>
-					</div> -->
-				</div>
-				<div class="row">
-					<!-- <div class="col-md-12 portlets">
-						<div class="panel-group m-bot20" id="accordion">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a class="accordion-toggle" data-toggle="collapse"
-											data-parent="#accordion" href="#collapseOne"> Parts of
-											Speech Tagger</a>
-									</h4>
-								</div>
-								<div class="panel-collapse collapse in">
-									<div class="panel-body">
-										<b id="NER-results" style="color: black;"></b>
-									</div>
-								</div>
-								<div class="panel-collapse collapse in">
-									<div class="panel-body">
-										<b id="POS-results" style="color: black;"></b>
-									</div>
-								</div>
-								<div class="panel-collapse collapse in">
-									<div class="panel-body">
-										<b id="SC-results" style="color: black;"></b>
-									</div>
-								</div>
-								<div class="panel-collapse collapse in">
-									<div class="panel-body">
-										<b id="CR-results" style="color: black;"></b>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div> -->
-
+					<div id="archiveList"></div>
 				</div>
 				<!-- project team & activity end -->
 
@@ -187,7 +130,8 @@
 	<script src="../js/jquery.js"></script>
 	<script src="../js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../js/jquery-1.8.3.min.js"></script>
-	<script type="../text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="../text/javascript"
+		src="../js/jquery-ui-1.9.2.custom.min.js"></script>
 	<!-- bootstrap -->
 	<script src="../js/bootstrap.min.js"></script>
 	<!-- nice scroll -->
@@ -293,89 +237,29 @@
 	</script>
 
 
-	<script language="javascript" type="text/javascript">
-		var _validFileExtensions = [ ".doc", ".txt" ];
-		function Validate(oForm) {
-			var arrInputs = oForm.getElementsByTagName("input");
-			for (var i = 0; i < arrInputs.length; i++) {
-				var oInput = arrInputs[i];
-				if (oInput.type == "file") {
-					var sFileName = oInput.value;
-					if (sFileName.length > 0) {
-						var blnValid = false;
-						for (var j = 0; j < _validFileExtensions.length; j++) {
-							var sCurExtension = _validFileExtensions[j];
-							if (sFileName.substr(
-									sFileName.length - sCurExtension.length,
-									sCurExtension.length).toLowerCase() == sCurExtension
-									.toLowerCase()) {
-								blnValid = true;
-								break;
-							}
-						}
 
-						if (!blnValid) {
-							alert("Sorry, " + sFileName
-									+ " is invalid, allowed extensions are: "
-									+ _validFileExtensions.join(", "));
-							return false;
-						}
-					} else {
-						alert("Sorry, " + sFileName
-								+ " is invalid, allowed extensions are: "
-								+ _validFileExtensions.join(", "));
-						return false;
-					}
-				} else if (oInput.type == "text") {
-					var a = oInput.value;
-					if (a == "") {
-						alert("Please provide data");
-						return false;
-					}
-				}
-
-			}
-
-			var arrInputs = oForm.getElementsByTagName("textarea");
-			for (var i = 0; i < arrInputs.length; i++) {
-				var oInput = arrInputs[i];
-				if (oInput.name == "input_text") {
-					var a = oInput.value;
-					if (a == "") {
-						alert("Please provide data");
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-	</script>
 
 	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript">
-		function getResults(featureCode, checkboxElement) {
-			if (checkboxElement.checked) {
-				$.ajax({
-					type : "POST",
-					url : "/UETL/getResultForFeature",
-					data : {
-						featureCode : featureCode
-
-					},
-					success : function(response) {
-						console.log('response: ' + response);
-						$('#' + featureCode + "-results").html(response)
-						displayLegend(featureCode);
-					}
-				});
-			} else {
-				$('#' + featureCode + '-results').css('display', 'none');
-				$('#' + featureCode + '-legend').css('display', 'none');
-			}
+		var type = location.search.split('type=')[1];		
+		function loadArchives() {
+			$.ajax({
+				type : "POST",
+				url : "/UETL/ArchiveServlet",
+				data : {
+					type : type
+				},
+				success : function(response) {
+					$('#archiveList').html(response);
+				}
+			});
 		}
 
-		function displayLegend(featureCode) {
-
+		function showResultForArchive(id) {
+			console.log(id);
+			var location = '/UETL/html/ArchiveResult.html?id=' + id + "&type=" + type;
+			console.log("**" + location);
+			window.location.href = location;
 		}
 	</script>
 

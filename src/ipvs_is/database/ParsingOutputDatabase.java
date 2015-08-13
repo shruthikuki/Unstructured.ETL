@@ -25,11 +25,13 @@ public class ParsingOutputDatabase {
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
-			String sql = "INSERT INTO DATA_SOURCE (CONTENT) VALUES (" + "'Peter went to a part in Stuttgart. He liked it very much. Then he visited Audi museum. He felt that it is very beautiful'" + ")";
-			stmt.executeUpdate(sql); 
+			String sql = "INSERT INTO DATA_SOURCE (CONTENT) VALUES ("
+					+ "'Peter went to a part in Stuttgart. He liked it very much. Then he visited Audi museum. He felt that it is very beautiful'"
+					+ ")";
+			stmt.executeUpdate(sql);
 
 			// STEP 5: Extract data from result set
-					stmt.close();
+			stmt.close();
 			conn.close();
 		} catch (SQLException se) {
 			// Handle errors for JDBC
@@ -43,157 +45,205 @@ public class ParsingOutputDatabase {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-			}// nothing we can do
+			} // nothing we can do
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 	}
-	
+
 	public void insertPOS(String token, int begin, int end, String type) {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			//Register JDBC driver
+			// Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
 
-			//Open a connection
+			// Open a connection
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			//Execute a query
+			// Execute a query
 			stmt = conn.createStatement();
-			String sql = "INSERT INTO POS_DATA (TOKEN, BEGIN, END, TYPE) VALUES ("
-					+ "'" + token + "'" + "," + begin + "," + end + "," + "'" + type + "'" +");";
-			stmt.executeUpdate(sql); 
-		} 
-		
+			String sql = "INSERT INTO POS_DATA (TOKEN, BEGIN, END, TYPE) VALUES (" + "'" + token + "'" + "," + begin
+					+ "," + end + "," + "'" + type + "'" + ");";
+			stmt.executeUpdate(sql);
+		}
+
 		catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
-		} 
-		
+		}
+
 		catch (Exception e) {
 			// Handle errors for Class.forName
 			e.printStackTrace();
-		} 
-		
+		}
+
 		finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					stmt.close();
-			} 
-			
+			}
+
 			catch (SQLException se2) {
-			}// nothing we can do
-			
+			} // nothing we can do
+
 			try {
 				if (conn != null)
 					conn.close();
-			} 
-			
+			}
+
 			catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 	}
-	
+
 	public void insertNamedEntity(String token, int begin, int end, String type) {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			//Register JDBC driver
+			// Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
 
-			//Open a connection
+			// Open a connection
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			//Execute a query
+			// Execute a query
 			stmt = conn.createStatement();
-			String sql = "INSERT INTO NAMED_ENTITY_DATA (TOKEN, BEGIN, END, TYPE) VALUES ("
-					+ "'" + token + "'" + "," + begin + "," + end + "," + "'" + type + "'" +");";
-			stmt.executeUpdate(sql); 
-		} 
-		
+			String sql = "INSERT INTO NAMED_ENTITY_DATA (TOKEN, BEGIN, END, TYPE) VALUES (" + "'" + token + "'" + ","
+					+ begin + "," + end + "," + "'" + type + "'" + ");";
+			stmt.executeUpdate(sql);
+		}
+
 		catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
-		} 
-		
+		}
+
 		catch (Exception e) {
 			// Handle errors for Class.forName
 			e.printStackTrace();
-		} 
-		
+		}
+
 		finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					stmt.close();
-			} 
-			
+			}
+
 			catch (SQLException se2) {
-			}// nothing we can do
-			
+			} // nothing we can do
+
 			try {
 				if (conn != null)
 					conn.close();
-			} 
-			
+			}
+
 			catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
+	}
+
+	public void insertSC(String token, int begin, int end) {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// Execute a query
+			stmt = conn.createStatement();
+			String sql = "INSERT INTO SC_DATA (TOKEN, BEGIN, END) VALUES (" + "'" + token + "'" + "," + begin + ","
+					+ end + ");";
+			stmt.executeUpdate(sql);
+		}
+
+		catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		}
+
+		catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		}
+
+		finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			}
+
+			catch (SQLException se2) {
+			} // nothing we can do
+
+			try {
+				if (conn != null)
+					conn.close();
+			}
+
+			catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
 	}
 
 	public void insertCoreference(String token, int begin, int end, int nextBegin, int nextEnd) {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			//Register JDBC driver
+			// Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
 
-			//Open a connection
+			// Open a connection
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			//Execute a query
+			// Execute a query
 			stmt = conn.createStatement();
-			String sql = "INSERT INTO COREFERENCE_DATA (TOKEN, BEGIN, END, TYPE) VALUES ("
-					+ "'" + token + "'" + "," + begin + "," + end + "," + nextBegin + "," + nextEnd +");";
-			stmt.executeUpdate(sql); 
-		} 
-		
+			String sql = "INSERT INTO COREFERENCE_DATA (TOKEN, BEGIN, END, TYPE) VALUES (" + "'" + token + "'" + ","
+					+ begin + "," + end + "," + nextBegin + "," + nextEnd + ");";
+			stmt.executeUpdate(sql);
+		}
+
 		catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
-		} 
-		
+		}
+
 		catch (Exception e) {
 			// Handle errors for Class.forName
 			e.printStackTrace();
-		} 
-		
+		}
+
 		finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					stmt.close();
-			} 
-			
+			}
+
 			catch (SQLException se2) {
-			}// nothing we can do
-			
+			} // nothing we can do
+
 			try {
 				if (conn != null)
 					conn.close();
-			} 
-			
+			}
+
 			catch (SQLException se) {
 				se.printStackTrace();
-			}// end finally try
-		}// end try
+			} // end finally try
+		} // end try
 	}
 }

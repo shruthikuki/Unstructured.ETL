@@ -72,6 +72,10 @@ public class CustomWriter extends CasConsumer_ImplBase {
 							annotation.getEnd(), "Person");
 				} 
 			}
+			if (type.contains(".Spelling")) {
+				databaseConnectionHandler.insertSC(annotation.getCoveredText(), annotation.getBegin(),
+						annotation.getEnd());
+			}
 		}
 	}
 }

@@ -19,6 +19,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import ipvs_is.database.DatabaseConnectionHandler;
 import ipvs_is.trial.Pipeline;
 //import org.apache.tomcat.jni.File;
 
@@ -33,6 +34,7 @@ public class UploadServlet extends HttpServlet {
 	private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; // 40MB
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
 	String fileText;
+	String fileName;
 	StringBuilder sb;
 
 	
@@ -84,15 +86,11 @@ public class UploadServlet extends HttpServlet {
 				// processes only fields that are not form fields
 				if (!item.isFormField()) {
 					
-					/*String fileName = new File(item.getName()).getName();
-					String filePath = uploadPath + File.separator + fileName;
-					//String filePath = "E:\\Study";
-					File storeFile = new File(filePath);
-					// saves the file on disk
-					item.write(storeFile);*/
+					 fileName = new File(item.getName()).getName();
 					
+					fileText=item.getString();
 					Pipeline pipeline = new Pipeline();
-					pipeline.RunPipeline(item.getString());
+					pipeline.RunPipeline(fileText);
 				/*	BufferedReader br = new BufferedReader(new FileReader(filePath));
 				    try {
 				        sb = new StringBuilder();
@@ -115,13 +113,18 @@ public class UploadServlet extends HttpServlet {
 			//request.setAttribute("message", uploadPath.toString());
 //			System.out.println( "Upload has been done successfully!");
 //			System.out.println(sb.toString());
+			DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+			int id;
+			id = databaseConnectionHandler.insertDataSourceContent(fileText, "file",fileName);
+			databaseConnectionHandler.writeResultData(id);
 			response.setContentType("text/html");
 
 			// New location to be redirected
-			String site = new String("html/ResultDisplay.html");
-
+			String site = new String("html/ResultDisplay.html?id=" +id);
+			//response.setIntHeader("id", id);
 			response.setStatus(response.SC_MOVED_TEMPORARILY);
 			response.setHeader("Location", site);
+			response.setHeader("sample","sampleValue");
 			
 		} catch (Exception ex) {
 			//request.setAttribute("message", "There was an error: " + ex.getMessage());

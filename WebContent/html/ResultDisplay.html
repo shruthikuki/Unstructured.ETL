@@ -62,9 +62,7 @@
 			<div class="nav search-row" id="top_menu">
 				<!--  search form start -->
 				<ul class="nav top-menu">
-					<li>
-						
-					</li>
+					<li></li>
 				</ul>
 				<!--  search form end -->
 			</div>
@@ -72,7 +70,7 @@
 			<div class="top-nav notification-row">
 				<!-- notificatoin dropdown start-->
 				<ul class="nav pull-right top-menu">
-					
+
 				</ul>
 				<!-- notificatoin dropdown end-->
 			</div>
@@ -87,8 +85,8 @@
 					<li class="active"><a class="" href="HomePage.html"> <i
 							class="icon_house_alt"></i> <span>Home</span>
 					</a></li>
-					<li class="sub-menu"><a class="" href="FileArchive.html"> <i
-							class="icon_documents_alt"></i> <span>File Archive</span>
+					<li class="sub-menu"><a class="" href="FileArchive.html">
+							<i class="icon_documents_alt"></i> <span>File Archive</span>
 					</a></li>
 					<li class="sub-menu"><a class=""> <i
 							class="icon_document_alt"></i> <span>Text Archive</span>
@@ -212,37 +210,35 @@
 											</table>
 										</div>
 									</div>
-									
-									<div id="SC">
-										<div class="panel-heading">
-											<h4 class="panel-title">
-												<a class="accordion-toggle" data-toggle="collapse"
-													data-parent="#accordion" href="#collapseOne"> Spell
-													Checker</a>
-											</h4>
-										</div>
-										<div class="panel-collapse collapse in">
-											<div class="panel-body">
-												<b id="SC-results" style="color: black;"></b>
-											</div>
-										</div>
-										<div id="SC-legend"></div>
+								</div>
+								<div id="SC">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne"> Spell
+												Checker</a>
+										</h4>
 									</div>
-									<div id="CR">
-										<div class="panel-heading">
-											<h4 class="panel-title">
-												<a class="accordion-toggle" data-toggle="collapse"
-													data-parent="#accordion" href="#collapseOne">CoReference
-													Resolution</a>
-											</h4>
+									<div class="panel-collapse collapse in">
+										<div class="panel-body">
+											<b id="SC-results" style="color: black;"></b>
 										</div>
-										<div class="panel-collapse collapse in">
-											<div class="panel-body">
-												<b id="CR-results" style="color: black;"></b>
-											</div>
-										</div>
-										<div id="CR-legend"></div>
 									</div>
+								</div>
+								<div id="CR">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne">CoReference
+												Resolution</a>
+										</h4>
+									</div>
+									<div class="panel-collapse collapse in">
+										<div class="panel-body">
+											<b id="CR-results" style="color: black;"></b>
+										</div>
+									</div>
+									<div id="CR-legend"></div>
 								</div>
 							</div>
 						</div>
@@ -434,6 +430,7 @@
 		}
 
 		function getResults(featureCode, checkboxElement) {
+			console.log(featureCode);
 			var id = location.search.split('id=')[1];
 			if (checkboxElement.checked) {
 				$("#" + featureCode + "").show();

@@ -44,7 +44,7 @@
         <![endif]-->
 </head>
 
-<body>
+<body onload="init()">
 	<!-- container section start -->
 	<section id="container" class="">
 
@@ -71,7 +71,6 @@
 				<!-- notificatoin dropdown start-->
 				<ul class="nav pull-right top-menu">
 
-					<!-- user login dropdown end -->
 				</ul>
 				<!-- notificatoin dropdown end-->
 			</div>
@@ -83,13 +82,14 @@
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
-					<li class="sub-menu"><a class="" href="Archive.html?type=file"> <i
-							class="icon_documents_alt"></i> <span>File Archive</span>
-
+					<li class="active"><a class="" href="HomePage.html"> <i
+							class="icon_house_alt"></i> <span>Home</span>
 					</a></li>
-					<li class="sub-menu"><a class="" href="Archive.html?type=text"> <i
-							class="icon_documents_alt"></i> <span>Text Archive</span>
-
+					<li class="sub-menu"><a class="" href="FileArchive.html">
+							<i class="icon_documents_alt"></i> <span>File Archive</span>
+					</a></li>
+					<li class="sub-menu"><a class=""> <i
+							class="icon_document_alt"></i> <span>Text Archive</span>
 					</a></li>
 					<li class="sub-menu"><a class=""> <i class="icon_genius"></i>
 							<span>Feed Archive</span>
@@ -105,201 +105,148 @@
 		<section id="main-content">
 			<section class="wrapper">
 				<!--overview start-->
+
 				<div class="row">
 					<div class="col-lg-12">
 						<h3 class="page-header">
-							<i class="fa fa-laptop"></i> Home
+							<i class="fa fa-laptop"></i> Analysis Result
 						</h3>
 						<ol class="breadcrumb">
-							<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+							<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li>
+							<li><i class="fa fa-laptop"></i>Analysis Result</li>
 						</ol>
 					</div>
 				</div>
-
 				<div class="row">
-					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-						<div class="info-box blue-bg">
-							<i class="icon_documents_alt"></i>
-							<div class="count"></div>
-							<div class="title">File Archives</div>
+					<div class="col-md-12 portlets">
+						<div class="form-group">
+							<div class="col-lg-10">
+								<label class="checkbox-inline"> <input type="checkbox"
+									id="inlineCheckbox1" name="POS" value="POS"
+									onchange="getResults('POS',this)"> Parts Of Speech
+									Tagger
+								</label> <label class="checkbox-inline"> <input type="checkbox"
+									id="inlineCheckbox2" name="NER" value="NER"
+									onchange="getResults('NER',this)"> Named Entity
+									Recognition
+								</label> <label class="checkbox-inline"> <input type="checkbox"
+									id="inlineCheckbox3" name="SC" value="SC"
+									onchange="getResults('SC',this)"> Spell Checker
+								</label> <label class="checkbox-inline"> <input type="checkbox"
+									id="inlineCheckbox3" name="CR" value="CR"
+									onchange="getResults('CR',this)"> CoReference
+									Resolution
+								</label>
+
+							</div>
 						</div>
-						<!--/.info-box-->
 					</div>
-					<!--/.col-->
-
-					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-						<div class="info-box brown-bg">
-							<i class="icon_document_alt"></i>
-							<div class="count"></div>
-							<div class="title">Text Archives</div>
-						</div>
-						<!--/.info-box-->
-					</div>
-
-					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-						<div class="info-box brown-bg">
-							<i class="icon_document_alt"></i>
-							<div class="count"></div>
-							<div class="title">Text Archives</div>
-						</div>
-						<!--/.info-box-->
-					</div>
-					<!--/.col-->
-
-
 				</div>
-				<!--/.row-->
-
-
-
-
-
-
-
 				<div class="row">
-					<div class="col-md-4 portlets">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<div class="pull-left">File Input</div>
-								<div class="widget-icons pull-right">
-									<a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
+					<div class="col-md-12 portlets">
+						<div class="panel-group m-bot20" id="accordion">
+							<div class="panel panel-default">
+								<div id="POS">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne"> Parts of
+												Speech Tagger</a>
+										</h4>
+									</div>
+									<div style="display: inline-flex;">
+										<div class="panel-collapse collapse in">
+											<div class="panel-body" style="width: 1000px">
+												<b id="POS-results" style="color: black;"></b>
+											</div>
+										</div>
+										<div id="POS-legend">
+											<table style="margin-right: 20px; margin-left: auto">
+												<tr>
+													<td style="width: 24px; background-color: #F79898;"></td>
+													<td style="padding-left: 10px">Nouns</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #98F7C4;"></td>
+													<td style="padding-left: 10px">Verbs</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #4A7FF0;"></td>
+													<td style="padding-left: 10px">Adjectives</td>
+												</tr>
+											</table>
+										</div>
+									</div>
 								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-body">
-								<div class="padd">
 
-									<div class="form quick-post">
-										<!-- Edit profile form (not working)-->
-										<form name="Form" action="../UploadServlet" method="post"
-											enctype="multipart/form-data" class="form-horizontal"
-											onsubmit="window.location.href='triya_textbox.html'">
-											<!-- Title -->
-											<div class="form-group">
-												<label class="control-label col-lg-2" for="title">File
-													input</label>
-												<div class="col-lg-10">
-													<input type="file" name="datafile" />
-												</div>
+								<div id="NER">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne">Named
+												Entity Recognition</a>
+										</h4>
+									</div>
+									<div style="display: inline-flex;">
+										<div class="panel-collapse collapse in">
+											<div class="panel-body" style="width: 1000px">
+												<b id="NER-results" style="color: black;"></b>
 											</div>
-
-											<!-- Buttons -->
-											<div class="form-group">
-												<!-- Buttons -->
-												<div class="col-lg-offset-2 col-lg-9">
-													<input type="submit" class="btn btn-primary"
-														value="Analyse" /> <input type="reset"
-														class="btn btn-default" value="Reset" />
-												</div>
-											</div>
-										</form>
+										</div>
+										<div id="NER-legend">
+											<table style="margin-right: 20px; margin-left: auto">
+												<tr>
+													<td style="width: 24px; background-color: #F79898;"></td>
+													<td style="padding-left: 10px">Person</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #98F7C4;"></td>
+													<td style="padding-left: 10px">Location</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #4A7FF0;"></td>
+													<td style="padding-left: 10px">Organisation</td>
+												</tr>
+											</table>
+										</div>
 									</div>
 
-
-								</div>
-								<div class="widget-foot">
-									<!-- Footer goes here -->
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 portlets">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<div class="pull-left">Twitter Feeds</div>
-								<div class="widget-icons pull-right">
-									<a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-body">
-								<div class="padd">
-
-									<div class="form quick-post">
-										<!-- Edit profile form (not working)-->
-										<form name="Form" class="form-horizontal"
-											onsubmit="return Validate(this);">
-											<!-- Title -->
-											<div class="form-group">
-												<label class="control-label col-lg-2" for="title">Twitter
-													Feeds</label>
-												<div class="col-lg-10">
-													<input type="text" class="form-control" name="twitter_feed">
-												</div>
+									<div id="SC">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a class="accordion-toggle" data-toggle="collapse"
+													data-parent="#accordion" href="#collapseOne"> Spell
+													Checker</a>
+											</h4>
+										</div>
+										<div class="panel-collapse collapse in">
+											<div class="panel-body">
+												<b id="SC-results" style="color: black;"></b>
 											</div>
-
-											<!-- Buttons -->
-											<div class="form-group">
-												<!-- Buttons -->
-												<div class="col-lg-offset-2 col-lg-9">
-													<input type="submit" class="btn btn-primary"
-														value="Analyse" /> <input type="reset"
-														class="btn btn-default" value="Reset" />
-												</div>
-											</div>
-										</form>
+										</div>
+										<div id="SC-legend"></div>
 									</div>
-
-
-								</div>
-								<div class="widget-foot">
-									<!-- Footer goes here -->
-								</div>
-							</div>
-						</div>
-
-					</div>
-					<div class="col-md-4 portlets">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<div class="pull-left">Text Input</div>
-								<div class="widget-icons pull-right">
-									<a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-									
-								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-body">
-								<div class="padd">
-
-									<div class="form quick-post">
-										<!-- Edit profile form (not working)-->
-										<form name="Form" action="../TextInputServlet" method="post"
-											class="form-horizontal" onsubmit="redirect();">
-											<!-- Title -->
-											<div class="form-group">
-												<label class="control-label col-lg-2" for="title">Text
-													input</label>
-												<div class="col-lg-10">
-													<textarea name="input_text" class="form-control"></textarea>
-												</div>
+									<div id="CR">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a class="accordion-toggle" data-toggle="collapse"
+													data-parent="#accordion" href="#collapseOne">CoReference
+													Resolution</a>
+											</h4>
+										</div>
+										<div class="panel-collapse collapse in">
+											<div class="panel-body">
+												<b id="CR-results" style="color: black;"></b>
 											</div>
-
-											<!-- Buttons -->
-											<div class="form-group">
-												<!-- Buttons -->
-												<div class="col-lg-offset-2 col-lg-9">
-													<input type="submit" class="btn btn-primary"
-														value="Analyse" /> <input type="reset"
-														class="btn btn-default" value="Reset" />
-												</div>
-											</div>
-										</form>
+										</div>
+										<div id="CR-legend"></div>
 									</div>
-
-
-								</div>
-								<div class="widget-foot">
-									<!-- Footer goes here -->
 								</div>
 							</div>
 						</div>
 
 					</div>
-
-				</div>
-				<!-- project team & activity end -->
-
+					<!-- project team & activity end -->
 			</section>
 		</section>
 		<!--main content end-->
@@ -310,7 +257,7 @@
 	<script src="../js/jquery.js"></script>
 	<script src="../js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../js/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript"
+	<script type="../text/javascript"
 		src="../js/jquery-ui-1.9.2.custom.min.js"></script>
 	<!-- bootstrap -->
 	<script src="../js/bootstrap.min.js"></script>
@@ -350,12 +297,17 @@
 	<script src="../js/charts.js"></script>
 	<script src="../js/jquery.slimscroll.min.js"></script>
 	<script>
-		function redirect() {
-			console.log("redirecting..");
-			window.location = 'ResultDisplay.html';
-		}
-
 		//knob
+
+		/* function init() {
+			console.log('called!');
+			var req = new XMLHttpRequest();
+			req.open('GET', document.location, false);
+			req.send(null);
+			var headers = req.getAllResponseHeaders().toLowerCase();
+			alert(headers);
+		} */
+
 		$(function() {
 			$(".knob").knob({
 				'draw' : function() {
@@ -467,6 +419,37 @@
 				}
 			}
 			return true;
+		}
+	</script>
+
+	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		function init() {
+			$("#POS").hide();
+			$("#NER").hide();
+			$("#SC").hide();
+			$("#CR").hide();
+		}
+
+		function getResults(featureCode, checkboxElement) {
+			var id = location.search.split('id=')[1].split('&')[0];
+			if (checkboxElement.checked) {
+				$("#" + featureCode + "").show();
+				$.ajax({
+					type : "POST",
+					url : "/UETL/getResultForArchive",
+					data : {
+						featureCode : featureCode,
+						id : id
+
+					},
+					success : function(response) {
+						$("#" + featureCode + "-results").html(response)
+					}
+				});
+			} else {
+				$("#" + featureCode + "").hide();
+			}
 		}
 	</script>
 

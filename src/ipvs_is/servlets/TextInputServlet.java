@@ -61,7 +61,7 @@ public class TextInputServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		int id;
-		id = databaseConnectionHandler.insertDataSourceContent(Text, "text");
+		id = databaseConnectionHandler.insertDataSourceContent(Text, "text", Text.substring(0, 9) + "...");
 		databaseConnectionHandler.writeResultData(id);
 		response.setContentType("text/html");
 

@@ -42,7 +42,8 @@ public class ResultGenerationServlet extends HttpServlet {
 		 * StringBuilder originalText = new StringBuilder(
 		 * databaseConnectionHandler.getDataSourceContent(dataSourceId));
 		 */
-		StringBuilder originalText = new StringBuilder(databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
+		StringBuilder originalText = new StringBuilder(
+				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
 		HashMap<String, String> posColorMap = new HashMap<String, String>();
 		posColorMap.put("noun", "#F79898");
 		posColorMap.put("verb", "#98F7C4");
@@ -116,17 +117,35 @@ public class ResultGenerationServlet extends HttpServlet {
 	}
 
 	private void getResultForSC(ServletResponse response) {
-		String originalText;
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+		/*
+		 * StringBuilder originalText = new StringBuilder(
+		 * databaseConnectionHandler.getDataSourceContent(dataSourceId));
+		 */
+		StringBuilder originalText = new StringBuilder(databaseConnectionHandler.getDataSourceContent());
+		HashMap<String, String> scColorMap = new HashMap<String, String>();
+		scColorMap.put("person", "#F79898");
 		// get all rows from NER table
 		// for each row
 		// using position of each token, in originalText, append appropriate
 		// divs
 
-		PrintWriter out = null;
+		ArrayList<String> scDataList = databaseConnectionHandler.getAllSCData();
 
+		for (int i = 0; i < scDataList.size(); i++) {
+			int begin = Integer.parseInt(scDataList.get(i));
+			int end = Integer.parseInt(scDataList.get(i + 1));
+			i = i + 1;
+			originalText.insert(end, "</font>");
+			originalText.insert(begin, " <font style = \"background-color:" + "red" + "\">");
+
+		}
+
+		databaseConnectionHandler.updateSCResultData(originalText.toString(), Integer.parseInt(id));
+		PrintWriter out = null;
 		try {
 			out = response.getWriter();
-			out.println("<div><b>Response for SC!!!</b></div>");
+			out.println(originalText);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
