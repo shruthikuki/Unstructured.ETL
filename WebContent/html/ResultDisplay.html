@@ -123,18 +123,18 @@
 							<div class="col-lg-10">
 								<label class="checkbox-inline"> <input type="checkbox"
 									id="inlineCheckbox1" name="POS" value="POS"
-									onchange="getResults('POS',this)"> Parts Of Speech
+									onchange="showResults('POS',this)"> Parts Of Speech
 									Tagger
 								</label> <label class="checkbox-inline"> <input type="checkbox"
 									id="inlineCheckbox2" name="NER" value="NER"
-									onchange="getResults('NER',this)"> Named Entity
+									onchange="showResults('NER',this)"> Named Entity
 									Recognition
 								</label> <label class="checkbox-inline"> <input type="checkbox"
 									id="inlineCheckbox3" name="SC" value="SC"
-									onchange="getResults('SC',this)"> Spell Checker
+									onchange="showResults('SC',this)"> Spell Checker
 								</label> <label class="checkbox-inline"> <input type="checkbox"
 									id="inlineCheckbox3" name="CR" value="CR"
-									onchange="getResults('CR',this)"> CoReference
+									onchange="showResults('CR',this)"> CoReference
 									Resolution
 								</label>
 
@@ -427,30 +427,35 @@
 			$("#NER").hide();
 			$("#SC").hide();
 			$("#CR").hide();
+			
+			getResults("POS");
+			getResults("NER");
+			getResults("SC");
 		}
 
-		function getResults(featureCode, checkboxElement) {
-			console.log(featureCode);
-			var id = location.search.split('id=')[1];
+		function showResults(featureCode, checkboxElement) {
 			if (checkboxElement.checked) {
 				$("#" + featureCode + "").show();
-				$.ajax({
-					type : "POST",
-					url : "/UETL/getResultForFeature",
-					data : {
-						featureCode : featureCode,
-						id : id
-
-					},
-					success : function(response) {
-						console.log('response: ' + response);
-						$("#" + featureCode + "-results").html(response)
-						displayLegend(featureCode);
-					}
-				});
 			} else {
 				$("#" + featureCode + "").hide();
 			}
+		}
+
+		function getResults(featureCode) {
+			var id = location.search.split('id=')[1];
+			$.ajax({
+				type : "POST",
+				url : "/UETL/getResultForFeature",
+				data : {
+					featureCode : featureCode,
+					id : id
+
+				},
+				success : function(response) {
+					$("#" + featureCode + "-results").html(response)
+				}
+			});
+
 		}
 
 		function displayLegend(featureCode) {

@@ -259,7 +259,6 @@ public class DatabaseConnectionHandler {
 				se.printStackTrace();
 			} // end finally try
 		} // end try
-		System.out.println("Goodbye!");
 		return dataSourceContent;
 	}
 
@@ -515,9 +514,7 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			System.out.println("result: " + resultText);
 			sql = "UPDATE RESULT_DATA SET NERRESULT = '" + resultText + "' WHERE DATASOURCEID = " + dataSourceId + ";";
-			System.out.println("sql: " + sql);
 			stmt.executeUpdate(sql);
 
 			stmt.close();
@@ -663,9 +660,7 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			System.out.println("result: " + resultText);
 			sql = "UPDATE RESULT_DATA SET SCRESULT = '" + resultText + "' WHERE DATASOURCEID = " + dataSourceId + ";";
-			System.out.println("sql: " + sql);
 			stmt.executeUpdate(sql);
 
 			stmt.close();

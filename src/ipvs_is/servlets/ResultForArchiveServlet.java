@@ -47,7 +47,7 @@ public class ResultForArchiveServlet extends HttpServlet {
 
 	private void getResultForNER(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-		
+
 		String NERResult = databaseConnectionHandler.getResultData("NERResult", Integer.parseInt(id));
 
 		PrintWriter out = null;
@@ -61,17 +61,14 @@ public class ResultForArchiveServlet extends HttpServlet {
 	}
 
 	private void getResultForSC(ServletResponse response) {
-		String originalText;
-		// get all rows from NER table
-		// for each row
-		// using position of each token, in originalText, append appropriate
-		// divs
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+
+		String SCResult = databaseConnectionHandler.getResultData("SCResult", Integer.parseInt(id));
 
 		PrintWriter out = null;
-
 		try {
 			out = response.getWriter();
-			out.println("<div><b>Response for SC!!!</b></div>");
+			out.println(SCResult);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

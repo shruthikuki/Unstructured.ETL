@@ -44,17 +44,11 @@ public class TextInputServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		// StringBuffer sb = new
-		// StringBuffer(request.getParameter("input_text"));
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		String Text = request.getParameter("input_text");
-		System.out.println(Text);
-
-		// Text="Last year we visited france";
 
 		Pipeline pipeline = new Pipeline();
 		try {
-			System.out.println(Text);
 			pipeline.RunPipeline(Text);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

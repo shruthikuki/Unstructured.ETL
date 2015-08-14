@@ -6,10 +6,13 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.component.CasConsumer_ImplBase;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceLink;
 import ipvs_is.database.DatabaseConnectionHandler;
 import ipvs_is.database.ParsingOutputDatabase;
 
@@ -36,12 +39,20 @@ public class CustomWriter extends CasConsumer_ImplBase {
 		DatabaseConnectionHandler databaseConnectionHandler1 = new DatabaseConnectionHandler();
 		databaseConnectionHandler1.deleteTableContents("POS_DATA");
 		databaseConnectionHandler1.deleteTableContents("NAMED_ENTITY_DATA");
+		databaseConnectionHandler1.deleteTableContents("SC_DATA");
 		ParsingOutputDatabase databaseConnectionHandler = new ParsingOutputDatabase();
 		FSIterator<AnnotationFS> annotationIterator = aCAS.getAnnotationIndex().iterator();
 		while (annotationIterator.hasNext()) {
 			AnnotationFS annotation = annotationIterator.next();
-			
+			System.out.println(annotation.toString());
 			String type = annotation.getType().getName();
+			if(type.contains("Coreference")) {
+				CoreferenceLink coref = (CoreferenceLink) annotation;
+				if(coref.getNext() != null) {
+					System.out.println(annotation.getCoveredText() + coref.getReferenceType() + " : " + coref.getReferenceRelation());
+					System.out.println(coref.getNext().getBegin() + " : " + coref.getNext().getEnd());
+				}
+			}
 			if (type.contains(".pos")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].startsWith("N")) {
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
