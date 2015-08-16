@@ -78,11 +78,8 @@ public class ResultGenerationServlet extends HttpServlet {
 
 	private void getResultForNER(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-		/*
-		 * StringBuilder originalText = new StringBuilder(
-		 * databaseConnectionHandler.getDataSourceContent(dataSourceId));
-		 */
-		StringBuilder originalText = new StringBuilder(databaseConnectionHandler.getDataSourceContent());
+		StringBuilder originalText = new StringBuilder(
+				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
 		HashMap<String, String> nerColorMap = new HashMap<String, String>();
 		nerColorMap.put("person", "#F79898");
 		nerColorMap.put("location", "#98F7C4");
@@ -118,11 +115,8 @@ public class ResultGenerationServlet extends HttpServlet {
 
 	private void getResultForSC(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-		/*
-		 * StringBuilder originalText = new StringBuilder(
-		 * databaseConnectionHandler.getDataSourceContent(dataSourceId));
-		 */
-		StringBuilder originalText = new StringBuilder(databaseConnectionHandler.getDataSourceContent());
+		StringBuilder originalText = new StringBuilder(
+				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
 		HashMap<String, String> scColorMap = new HashMap<String, String>();
 		scColorMap.put("person", "#F79898");
 		// get all rows from NER table
@@ -153,17 +147,57 @@ public class ResultGenerationServlet extends HttpServlet {
 	}
 
 	private void getResultForCR(ServletResponse response) {
-		String originalText;
-		// get all rows from NER table
-		// for each row
-		// using position of each token, in originalText, append approproaite
-		// divs
+
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+		ArrayList<String> colorList = new ArrayList<String>();
+		colorList.add("red");
+		colorList.add("green");
+		colorList.add("blue");
+		colorList.add("grey");
+		StringBuilder originalText = new StringBuilder(
+				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
+		ArrayList<String> idsList = databaseConnectionHandler.getCoRefIds();
+
+		HashMap<Integer, String> idColorMap = new HashMap<Integer, String>();
+		int j = 0;
+		for (String idList : idsList) {
+			for (int i = 0; i < idList.split(",").length; i++) {
+				String id = idList.split(",")[i];
+				idColorMap.put(Integer.parseInt(id), colorList.get(j));
+			}
+			j++;
+		}
+		ArrayList<String> coRefData = new ArrayList<String>();
+		/*for (Integer id : idColorMap.keySet()) {
+			String beginEnd = databaseConnectionHandler.getCoRefInfo(id);
+			coRefData.add(beginEnd.split(",")[0]);
+			coRefData.add(beginEnd.split(",")[1]);
+			coRefData.add(idColorMap.get(id));
+		}*/
+		ArrayList<String> crDataList = databaseConnectionHandler.getCoRefInfo();
+		for(String x : crDataList) {
+			System.out.println(x);
+		}
 
 		PrintWriter out = null;
 
+		for (int i = 0; i < crDataList.size(); i++) {
+			int begin = Integer.parseInt(crDataList.get(i));
+			/*if(i>3 && begin == Integer.parseInt(crDataList.get(i - 3))) {
+				continue;
+			}*/
+			int end = Integer.parseInt(crDataList.get(i + 1));
+			String color = idColorMap.get(Integer.parseInt(crDataList.get(i + 2)));
+			i = i + 2;
+			System.out.println(begin + " : " + end + " : " + color);
+			originalText.insert(end, "</font>");
+			originalText.insert(begin, " <font style = \"background-color:" + color + "\">");
+
+		}
+		System.out.println(originalText);
 		try {
 			out = response.getWriter();
-			out.println("<div><b>Response for CR!!!</b></div>");
+			out.println(originalText);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

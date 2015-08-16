@@ -43,7 +43,7 @@ public class Pipeline {
 
 		TextCategorizer guesser = new TextCategorizer();
 		String language = guesser.categorize(Text);
-
+		System.out.println("language: " + language);
 
 		CollectionReaderDescription cr = createReaderDescription(StringReader.class, StringReader.PARAM_DOCUMENT_TEXT,
 				Text, TextReader.PARAM_LANGUAGE, language.substring(0, 2).toLowerCase());
@@ -59,8 +59,11 @@ public class Pipeline {
 				JazzyChecker.PARAM_MODEL_LOCATION, new File("resources/words.utf-8.txt"));
 
 		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class);
+		
+		AnalysisEngineDescription cc1 = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
+				"resources/output.txt");
 
-		runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, tagger4, cc);
+		runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, tagger4, cc, cc1);
 
 	}
 	

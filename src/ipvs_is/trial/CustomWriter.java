@@ -34,54 +34,87 @@ public class CustomWriter extends CasConsumer_ImplBase {
 		}
 		iCas++;
 	}
-	
+
 	private void processFeatureStructures(CAS aCAS) {
 		DatabaseConnectionHandler databaseConnectionHandler1 = new DatabaseConnectionHandler();
 		databaseConnectionHandler1.deleteTableContents("POS_DATA");
 		databaseConnectionHandler1.deleteTableContents("NAMED_ENTITY_DATA");
 		databaseConnectionHandler1.deleteTableContents("SC_DATA");
+		databaseConnectionHandler1.deleteTableContents("CR_DATA");
 		ParsingOutputDatabase databaseConnectionHandler = new ParsingOutputDatabase();
 		FSIterator<AnnotationFS> annotationIterator = aCAS.getAnnotationIndex().iterator();
 		while (annotationIterator.hasNext()) {
 			AnnotationFS annotation = annotationIterator.next();
-			System.out.println(annotation.toString());
 			String type = annotation.getType().getName();
-			if(type.contains("Coreference")) {
+			/*
+			 * if(type.contains("Coreference")) { CoreferenceLink coref =
+			 * (CoreferenceLink) annotation; if(coref.getNext() != null) {
+			 * System.out.println(annotation.getCoveredText() +
+			 * coref.getReferenceType() + " : " + coref.getReferenceRelation());
+			 * System.out.println(coref.getNext().getBegin() + " : " +
+			 * coref.getNext().getEnd()); } }
+			 */
+			if (type.contains("Coreference")) {
 				CoreferenceLink coref = (CoreferenceLink) annotation;
-				if(coref.getNext() != null) {
-					System.out.println(annotation.getCoveredText() + coref.getReferenceType() + " : " + coref.getReferenceRelation());
-					System.out.println(coref.getNext().getBegin() + " : " + coref.getNext().getEnd());
+				if (databaseConnectionHandler.checkIfCorefExists(coref.getBegin(), coref.getEnd())) {
+					int parentId = 0;
+					if (coref.getNext() != null)
+						parentId = databaseConnectionHandler.insertCR(annotation.getCoveredText(),
+								annotation.getBegin(), annotation.getEnd());
+
+					String childIds = "";
+					CoreferenceLink child = coref.getNext();
+					while (child != null) {
+						int childId = databaseConnectionHandler.insertCR(child.getCoveredText(), child.getBegin(),
+								child.getEnd());
+						childIds += childId + ",";
+
+						child = child.getNext();
+					}
+					childIds += parentId;
+					databaseConnectionHandler.updateCRParent(parentId, childIds);
 				}
+
+				/*
+				 * if(coref.getNext() != null) {
+				 * databaseConnectionHandler.insertCRWithChild(annotation.
+				 * getCoveredText(), annotation.getBegin(), annotation.getEnd(),
+				 * coref.getNext().getCoveredText(), coref.getNext().getBegin(),
+				 * coref.getNext().getEnd()); } else {
+				 * databaseConnectionHandler.insertCRWithoutChild(annotation.
+				 * getCoveredText(), annotation.getBegin(),
+				 * annotation.getEnd()); }
+				 */
 			}
 			if (type.contains(".pos")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].startsWith("N")) {
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Noun");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].startsWith("V")) {
-					
+
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Verb");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("ADJ")) {
-					
+
 					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Adjective");
-				} 
+				}
 			}
-			
+
 			if (type.contains(".ner")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].equals("Location")) {
-				
+
 					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Location");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Organization")) {
-					
+
 					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Organization");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Person")) {
-					
+
 					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
 							annotation.getEnd(), "Person");
-				} 
+				}
 			}
 			if (type.contains(".Spelling")) {
 				databaseConnectionHandler.insertSC(annotation.getCoveredText(), annotation.getBegin(),

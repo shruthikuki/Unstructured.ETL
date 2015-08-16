@@ -434,7 +434,8 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "INSERT INTO RESULT_DATA (DATASOURCEID,POSRESULT,NERRESULT,SCRESULT) VALUES (" + dataSourceId + ",'','','');";
+			sql = "INSERT INTO RESULT_DATA (DATASOURCEID,POSRESULT,NERRESULT,SCRESULT) VALUES (" + dataSourceId
+					+ ",'','','');";
 			stmt.executeUpdate(sql);
 
 			stmt.close();
@@ -646,7 +647,7 @@ public class DatabaseConnectionHandler {
 		} // end try
 		return scDataList;
 	}
-	
+
 	public void updateSCResultData(String resultText, int dataSourceId) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -685,6 +686,109 @@ public class DatabaseConnectionHandler {
 				se.printStackTrace();
 			} // end finally try
 		} // end try
+	}
+
+	public ArrayList<String> getCoRefIds() {
+		// TODO Auto-generated method stub
+		ArrayList<String> idsList = new ArrayList<String>();
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT CHILD_IDS FROM CR_DATA" + ";";
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				if (rs.getString("CHILD_IDS") != null && !rs.getString("CHILD_IDS").equals("")) {
+					idsList.add(rs.getString("CHILD_IDS"));
+					System.out.println(rs.getString("CHILD_IDS"));
+				}
+			}
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			} // nothing we can do
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		return idsList;
+	}
+
+	public ArrayList<String> getCoRefInfo() {
+		Connection conn = null;
+		Statement stmt = null;
+		ArrayList<String> corefInfo = new ArrayList<String>();
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT BEGIN , END , ID from CR_DATA ORDER BY BEGIN DESC;";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			// STEP 5: Extract data from result set
+			while (rs.next()) {
+				// Retrieve by column name
+				int begin = rs.getInt("begin");
+				int end = rs.getInt("end");
+				int id = rs.getInt("id");
+				corefInfo.add(String.valueOf(begin));
+				corefInfo.add(String.valueOf(end));
+				corefInfo.add(String.valueOf(id));
+			}
+			// STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			} // nothing we can do
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		return corefInfo;
 	}
 
 }

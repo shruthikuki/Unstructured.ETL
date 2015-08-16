@@ -431,6 +431,7 @@
 			getResults("POS");
 			getResults("NER");
 			getResults("SC");
+			getResults("CR");
 		}
 
 		function showResults(featureCode, checkboxElement) {
@@ -453,7 +454,8 @@
 				},
 				success : function(response) {
 					$("#" + featureCode + "-results").html(response)
-				}
+				},
+				async: false
 			});
 
 		}
