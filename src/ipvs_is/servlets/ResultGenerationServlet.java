@@ -168,17 +168,8 @@ public class ResultGenerationServlet extends HttpServlet {
 			j++;
 		}
 		ArrayList<String> coRefData = new ArrayList<String>();
-		/*for (Integer id : idColorMap.keySet()) {
-			String beginEnd = databaseConnectionHandler.getCoRefInfo(id);
-			coRefData.add(beginEnd.split(",")[0]);
-			coRefData.add(beginEnd.split(",")[1]);
-			coRefData.add(idColorMap.get(id));
-		}*/
+		
 		ArrayList<String> crDataList = databaseConnectionHandler.getCoRefInfo();
-		for(String x : crDataList) {
-			System.out.println(x);
-		}
-
 		PrintWriter out = null;
 
 		for (int i = 0; i < crDataList.size(); i++) {
@@ -189,12 +180,11 @@ public class ResultGenerationServlet extends HttpServlet {
 			int end = Integer.parseInt(crDataList.get(i + 1));
 			String color = idColorMap.get(Integer.parseInt(crDataList.get(i + 2)));
 			i = i + 2;
-			System.out.println(begin + " : " + end + " : " + color);
 			originalText.insert(end, "</font>");
 			originalText.insert(begin, " <font style = \"background-color:" + color + "\">");
-
 		}
-		System.out.println(originalText);
+		
+		databaseConnectionHandler.updateCRResultData(originalText.toString(), Integer.parseInt(id));
 		try {
 			out = response.getWriter();
 			out.println(originalText);

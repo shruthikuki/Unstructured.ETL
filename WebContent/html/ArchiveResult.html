@@ -85,10 +85,10 @@
 					<li class="active"><a class="" href="HomePage.html"> <i
 							class="icon_house_alt"></i> <span>Home</span>
 					</a></li>
-					<li class="sub-menu"><a class="" href="FileArchive.html">
+					<li class="sub-menu"><a class="" href="Archive.html?type=file">
 							<i class="icon_documents_alt"></i> <span>File Archive</span>
 					</a></li>
-					<li class="sub-menu"><a class=""> <i
+					<li class="sub-menu"><a class="" href="Archive.html?type=text"> <i
 							class="icon_document_alt"></i> <span>Text Archive</span>
 					</a></li>
 					<li class="sub-menu"><a class=""> <i class="icon_genius"></i>
@@ -109,11 +109,9 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h3 class="page-header">
-							<i class="fa fa-laptop"></i> Analysis Result
+							<i class="fa fa-laptop"></i> Archive Result
 						</h3>
 						<ol class="breadcrumb">
-							<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li>
-							<li><i class="fa fa-laptop"></i>Analysis Result</li>
 						</ol>
 					</div>
 				</div>
@@ -426,10 +424,18 @@
 	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript">
 		function init() {
+			var type = location.search.split('id=')[1].split('&')[1].split('=')[1];
 			$("#POS").hide();
 			$("#NER").hide();
 			$("#SC").hide();
 			$("#CR").hide();
+			if (type == 'text') {
+				$('.breadcrumb').html(
+						'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>Text Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
+			} else if (type == 'file') {
+				$('.breadcrumb').html(
+				'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>File Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
+			}
 		}
 
 		function getResults(featureCode, checkboxElement) {
@@ -438,7 +444,7 @@
 				$("#" + featureCode + "").show();
 				$.ajax({
 					type : "POST",
-					url : "/UETL/getResultForArchive",
+					url : "../getResultForArchive",
 					data : {
 						featureCode : featureCode,
 						id : id

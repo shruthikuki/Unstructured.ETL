@@ -34,11 +34,6 @@ import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
 public class Pipeline {
-	// public static String filePath;
-
-	/*
-	 * public Pipeline(String path) { filePath=path; }
-	 */
 	public void RunPipeline(String Text) throws Exception {
 
 		TextCategorizer guesser = new TextCategorizer();
@@ -48,8 +43,6 @@ public class Pipeline {
 		CollectionReaderDescription cr = createReaderDescription(StringReader.class, StringReader.PARAM_DOCUMENT_TEXT,
 				Text, TextReader.PARAM_LANGUAGE, language.substring(0, 2).toLowerCase());
 
-	
-
 		AnalysisEngineDescription seg = createEngineDescription(BreakIteratorSegmenter.class);
 		AnalysisEngineDescription tagger = createEngineDescription(StanfordPosTagger.class);
 		AnalysisEngineDescription tagger1 = createEngineDescription(StanfordNamedEntityRecognizer.class);
@@ -58,79 +51,9 @@ public class Pipeline {
 		AnalysisEngineDescription tagger4 = createEngineDescription(JazzyChecker.class,
 				JazzyChecker.PARAM_MODEL_LOCATION, new File("resources/words.utf-8.txt"));
 
-		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class);
-		
-		AnalysisEngineDescription cc1 = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
-				"resources/output.txt");
+		AnalysisEngineDescription cc = createEngineDescription(FeatureExtractor.class);
 
-		runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, tagger4, cc, cc1);
+		runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, tagger4, cc);
 
 	}
-	
-	/*public void RunPipelineForFileUpload(String fileText) throws Exception {
-
-		String fileText;
-		StringBuilder sb;
-
-		BufferedReader br = new BufferedReader(new FileReader(filePath));
-		try {
-			sb = new StringBuilder();
-			String line = br.readLine();
-
-			while (line != null) {
-				sb.append(line);
-				sb.append("\n");
-				line = br.readLine();
-			}
-			fileText = sb.toString();
-		} finally {
-			br.close();
-		}
-
-		TextCategorizer guesser = new TextCategorizer();
-		String language = guesser.categorize(fileText);
-
-		System.out.println(fileText.toString());
-		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-		databaseConnectionHandler.insertDataSourceContent(fileText.toString(), "file");
-//		System.out.println(language + ": " + language.substring(0, 2).toLowerCase());
-
-		// CollectionReaderDescription cr = createReaderDescription(
-		// TextReader.class, TextReader.PARAM_SOURCE_LOCATION,
-		// filePath, TextReader.PARAM_LANGUAGE, language.substring(0,
-		// 2).toLowerCase());
-		CollectionReaderDescription cr = createReaderDescription(StringReader.class, StringReader.PARAM_DOCUMENT_TEXT,
-				fileText.toString(), TextReader.PARAM_LANGUAGE, language.substring(0, 2).toLowerCase());
-		
-		 * CollectionReaderDescription cr = createReaderDescription(
-		 * StringReader.class, StringReader.PARAM_DOCUMENT_TEXT, "",
-		 * StringReader.PARAM_LANGUAGE, language.substring(0, 2).toLowerCase());
-		 
-
-		AnalysisEngineDescription seg = createEngineDescription(BreakIteratorSegmenter.class);
-		AnalysisEngineDescription tagger = createEngineDescription(StanfordPosTagger.class);
-		AnalysisEngineDescription tagger1 = createEngineDescription(StanfordNamedEntityRecognizer.class);
-		AnalysisEngineDescription tagger2 = createEngineDescription(StanfordParser.class);
-		AnalysisEngineDescription tagger3 = createEngineDescription(StanfordCoreferenceResolver.class);
-		AnalysisEngineDescription tagger4 = createEngineDescription(JazzyChecker.class,
-				JazzyChecker.PARAM_MODEL_LOCATION, new File("resources/words.utf-8.txt"));
-
-		AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
-				"resources/output.txt");
-		
-		AnalysisEngineDescription cc = createEngineDescription(CustomWriter.class);
-
-		// AnalysisEngineDescription cc = createEngineDescription(
-		// XmlWriterInline.class, XmlWriterInline.PARAM_TARGET_LOCATION,
-		// "target/xmlTrial.txt");
-		//
-		runPipeline(cr, seg, tagger , tagger1, tagger2, tagger3, tagger4 , cc);
-//		System.out.println("Completed");
-		
-		
-//		System.out.println("File write complete! Saved to: " + new File("target/Trial.txt").getAbsolutePath());
-	}
-*/
-	
-
 }

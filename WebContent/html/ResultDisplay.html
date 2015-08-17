@@ -85,10 +85,10 @@
 					<li class="active"><a class="" href="HomePage.html"> <i
 							class="icon_house_alt"></i> <span>Home</span>
 					</a></li>
-					<li class="sub-menu"><a class="" href="FileArchive.html">
+					<li class="sub-menu"><a class="" href="Archive.html?type=file">
 							<i class="icon_documents_alt"></i> <span>File Archive</span>
 					</a></li>
-					<li class="sub-menu"><a class=""> <i
+					<li class="sub-menu"><a class="" href="Archive.html?type=text"> <i
 							class="icon_document_alt"></i> <span>Text Archive</span>
 					</a></li>
 					<li class="sub-menu"><a class=""> <i class="icon_genius"></i>
@@ -446,7 +446,7 @@
 			var id = location.search.split('id=')[1];
 			$.ajax({
 				type : "POST",
-				url : "/UETL/getResultForFeature",
+				url : "../getResultForFeature",
 				data : {
 					featureCode : featureCode,
 					id : id

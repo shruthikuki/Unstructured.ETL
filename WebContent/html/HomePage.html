@@ -44,7 +44,7 @@
         <![endif]-->
 </head>
 
-<body>
+<body onload = 'init();'>
 	<!-- container section start -->
 	<section id="container" class="">
 
@@ -120,7 +120,7 @@
 					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 						<div class="info-box blue-bg">
 							<i class="icon_documents_alt"></i>
-							<div class="count"></div>
+							<div class="count count-file"></div>
 							<div class="title">File Archives</div>
 						</div>
 						<!--/.info-box-->
@@ -130,8 +130,8 @@
 					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 						<div class="info-box brown-bg">
 							<i class="icon_document_alt"></i>
-							<div class="count"></div>
-							<div class="title">Text Archives</div>
+							<div class="count count-twitter"></div>
+							<div class="title">Twitter Archives</div>
 						</div>
 						<!--/.info-box-->
 					</div>
@@ -139,7 +139,7 @@
 					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 						<div class="info-box brown-bg">
 							<i class="icon_document_alt"></i>
-							<div class="count"></div>
+							<div class="count count-text"></div>
 							<div class="title">Text Archives</div>
 						</div>
 						<!--/.info-box-->
@@ -350,6 +350,25 @@
 	<script src="../js/charts.js"></script>
 	<script src="../js/jquery.slimscroll.min.js"></script>
 	<script>
+	function init() {
+		getCount('text');
+		getCount('file');
+	}
+	
+	function getCount(type) {
+		$.ajax({
+			type : "POST",
+			url : "../ArchiveCountServlet",
+			data : {
+				type : type
+			},
+			success : function(response) {
+				$('.count-' + type).html(response);
+			},
+			async:false
+		});
+	}
+	
 		function redirect() {
 			console.log("redirecting..");
 			window.location = 'ResultDisplay.html';

@@ -16,7 +16,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceLink;
 import ipvs_is.database.DatabaseConnectionHandler;
 import ipvs_is.database.ParsingOutputDatabase;
 
-public class CustomWriter extends CasConsumer_ImplBase {
+public class FeatureExtractor extends CasConsumer_ImplBase {
 
 	private int iCas;
 
@@ -46,14 +46,6 @@ public class CustomWriter extends CasConsumer_ImplBase {
 		while (annotationIterator.hasNext()) {
 			AnnotationFS annotation = annotationIterator.next();
 			String type = annotation.getType().getName();
-			/*
-			 * if(type.contains("Coreference")) { CoreferenceLink coref =
-			 * (CoreferenceLink) annotation; if(coref.getNext() != null) {
-			 * System.out.println(annotation.getCoveredText() +
-			 * coref.getReferenceType() + " : " + coref.getReferenceRelation());
-			 * System.out.println(coref.getNext().getBegin() + " : " +
-			 * coref.getNext().getEnd()); } }
-			 */
 			if (type.contains("Coreference")) {
 				CoreferenceLink coref = (CoreferenceLink) annotation;
 				if (databaseConnectionHandler.checkIfCorefExists(coref.getBegin(), coref.getEnd())) {
@@ -74,17 +66,6 @@ public class CustomWriter extends CasConsumer_ImplBase {
 					childIds += parentId;
 					databaseConnectionHandler.updateCRParent(parentId, childIds);
 				}
-
-				/*
-				 * if(coref.getNext() != null) {
-				 * databaseConnectionHandler.insertCRWithChild(annotation.
-				 * getCoveredText(), annotation.getBegin(), annotation.getEnd(),
-				 * coref.getNext().getCoveredText(), coref.getNext().getBegin(),
-				 * coref.getNext().getEnd()); } else {
-				 * databaseConnectionHandler.insertCRWithoutChild(annotation.
-				 * getCoveredText(), annotation.getBegin(),
-				 * annotation.getEnd()); }
-				 */
 			}
 			if (type.contains(".pos")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].startsWith("N")) {

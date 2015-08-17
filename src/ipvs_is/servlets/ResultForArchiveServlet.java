@@ -76,17 +76,14 @@ public class ResultForArchiveServlet extends HttpServlet {
 	}
 
 	private void getResultForCR(ServletResponse response) {
-		String originalText;
-		// get all rows from NER table
-		// for each row
-		// using position of each token, in originalText, append approproaite
-		// divs
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+
+		String NERResult = databaseConnectionHandler.getResultData("CRResult", Integer.parseInt(id));
 
 		PrintWriter out = null;
-
 		try {
 			out = response.getWriter();
-			out.println("<div><b>Response for CR!!!</b></div>");
+			out.println(NERResult);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -434,8 +434,8 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "INSERT INTO RESULT_DATA (DATASOURCEID,POSRESULT,NERRESULT,SCRESULT) VALUES (" + dataSourceId
-					+ ",'','','');";
+			sql = "INSERT INTO RESULT_DATA (DATASOURCEID,POSRESULT,NERRESULT,SCRESULT,CRRESULT) VALUES (" + dataSourceId
+					+ ",'','','','');";
 			stmt.executeUpdate(sql);
 
 			stmt.close();
@@ -709,7 +709,6 @@ public class DatabaseConnectionHandler {
 			while (rs.next()) {
 				if (rs.getString("CHILD_IDS") != null && !rs.getString("CHILD_IDS").equals("")) {
 					idsList.add(rs.getString("CHILD_IDS"));
-					System.out.println(rs.getString("CHILD_IDS"));
 				}
 			}
 			stmt.close();
@@ -789,6 +788,102 @@ public class DatabaseConnectionHandler {
 			} // end finally try
 		} // end try
 		return corefInfo;
+	}
+
+	public void updateCRResultData(String resultText, int dataSourceId) {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// STEP 3: Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			stmt = conn.createStatement();
+			String sql;
+			sql = "UPDATE RESULT_DATA SET CRRESULT = '" + resultText + "' WHERE DATASOURCEID = " + dataSourceId + ";";
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			} // nothing we can do
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+
+	}
+
+	public int getArchiveCount(String type) {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			// Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// Execute a query
+
+			String sql = "SELECT COUNT(*) FROM DATA_SOURCE WHERE TYPE='" + type + "';";
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			rs.next();
+			count = rs.getInt(1);
+		}
+
+		catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		}
+
+		catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		}
+
+		finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			}
+
+			catch (SQLException se2) {
+			} // nothing we can do
+
+			try {
+				if (conn != null)
+					conn.close();
+			}
+
+			catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		return count;
 	}
 
 }

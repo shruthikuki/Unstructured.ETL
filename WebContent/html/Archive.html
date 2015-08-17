@@ -42,6 +42,31 @@
           <script src="js/respond.min.js"></script>
           <script src="js/lte-ie7.js"></script>
         <![endif]-->
+
+<style>
+table, td, th {
+	border: 4px double black;
+}
+
+th {
+	text-align: center;
+	background-color: #394a59;
+	color: white;
+	background-color: #394a59;
+}
+
+td {
+	padding: 5px;
+}
+
+.title {
+	cursor: pointer;
+}
+
+.title-header {
+	width: 270px;
+}
+</style>
 </head>
 
 <body onload="loadArchives();">
@@ -83,11 +108,11 @@
 					<li class="active"><a class="" href="HomePage.html"> <i
 							class="icon_house_alt"></i> <span>Home</span>
 					</a></li>
-					<li class="sub-menu"><a class=""> <i
-							class="icon_documents_alt"></i> <span>File Archive</span>
+					<li class="sub-menu"><a class="" href="Archive.html?type=file">
+							<i class="icon_documents_alt"></i> <span>File Archive</span>
 					</a></li>
-					<li class="sub-menu"><a class=""> <i
-							class="icon_document_alt"></i> <span>Text Archive</span>
+					<li class="sub-menu"><a class="" href="Archive.html?type=text">
+							<i class="icon_document_alt"></i> <span>Text Archive</span>
 					</a></li>
 					<li class="sub-menu"><a class=""> <i class="icon_genius"></i>
 							<span>Feed Archive</span>
@@ -107,16 +132,18 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h3 class="page-header">
-							<i class="fa fa-laptop"></i> File Archive
+							<i class="fa fa-laptop"></i>
+							<div id="archiveHeader">
 						</h3>
 						<ol class="breadcrumb">
 							<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li>
-							<li><i class="fa fa-laptop"></i>File Archive</li>
+							<li id="breadcrumbTitle"></li>
 						</ol>
 					</div>
 				</div>
 				<div class="row">
-					<div id="archiveList"></div>
+					<div id="archiveList"
+						style="max-height: 410px; overflow-y: auto; max-width: 340px; overflow-x: auto; margin-left: 20px;"></div>
 				</div>
 				<!-- project team & activity end -->
 
@@ -241,11 +268,21 @@
 
 	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript">
-		var type = location.search.split('type=')[1];		
+		var type = location.search.split('type=')[1];
 		function loadArchives() {
+			if (type == 'text') {
+				$('#archiveHeader').text('TEXT ARCHIVE');
+				$('#breadcrumbTitle').html(
+						'<i class="fa fa-laptop"></i>Text Archive');
+			} else if (type == 'file') {
+				$('#archiveHeader').text('FILE ARCHIVE');
+				$('#breadcrumbTitle').html(
+						'<i class="fa fa-laptop"></i>File Archive');
+			}
+
 			$.ajax({
 				type : "POST",
-				url : "/UETL/ArchiveServlet",
+				url : "../ArchiveServlet",
 				data : {
 					type : type
 				},
@@ -257,7 +294,8 @@
 
 		function showResultForArchive(id) {
 			console.log(id);
-			var location = '/UETL/html/ArchiveResult.html?id=' + id + "&type=" + type;
+			var location = '../html/ArchiveResult.html?id=' + id + "&type="
+					+ type;
 			console.log("**" + location);
 			window.location.href = location;
 		}

@@ -1,7 +1,7 @@
 applications:
 - disk_quota: 1024M
   host: unstructured-etl
-  name: Unstructured ETL
+  name: UETL
   path: target\UETL.war
   domain: mybluemix.net
   instances: 1
