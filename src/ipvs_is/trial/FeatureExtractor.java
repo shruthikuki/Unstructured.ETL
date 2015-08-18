@@ -43,21 +43,23 @@ public class FeatureExtractor extends CasConsumer_ImplBase {
 		databaseConnectionHandler1.deleteTableContents("CR_DATA");
 		ParsingOutputDatabase databaseConnectionHandler = new ParsingOutputDatabase();
 		FSIterator<AnnotationFS> annotationIterator = aCAS.getAnnotationIndex().iterator();
+		
 		while (annotationIterator.hasNext()) {
 			AnnotationFS annotation = annotationIterator.next();
+			String coveredText = annotation.getCoveredText().replaceAll("'", "''");
 			String type = annotation.getType().getName();
 			if (type.contains("Coreference")) {
 				CoreferenceLink coref = (CoreferenceLink) annotation;
 				if (databaseConnectionHandler.checkIfCorefExists(coref.getBegin(), coref.getEnd())) {
 					int parentId = 0;
 					if (coref.getNext() != null)
-						parentId = databaseConnectionHandler.insertCR(annotation.getCoveredText(),
+						parentId = databaseConnectionHandler.insertCR(coveredText,
 								annotation.getBegin(), annotation.getEnd());
 
 					String childIds = "";
 					CoreferenceLink child = coref.getNext();
 					while (child != null) {
-						int childId = databaseConnectionHandler.insertCR(child.getCoveredText(), child.getBegin(),
+						int childId = databaseConnectionHandler.insertCR(child.getCoveredText().replaceAll("'", "''"), child.getBegin(),
 								child.getEnd());
 						childIds += childId + ",";
 
@@ -69,15 +71,15 @@ public class FeatureExtractor extends CasConsumer_ImplBase {
 			}
 			if (type.contains(".pos")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].startsWith("N")) {
-					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertPOS(coveredText, annotation.getBegin(),
 							annotation.getEnd(), "Noun");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].startsWith("V")) {
 
-					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertPOS(coveredText, annotation.getBegin(),
 							annotation.getEnd(), "Verb");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("ADJ")) {
 
-					databaseConnectionHandler.insertPOS(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertPOS(coveredText, annotation.getBegin(),
 							annotation.getEnd(), "Adjective");
 				}
 			}
@@ -85,20 +87,20 @@ public class FeatureExtractor extends CasConsumer_ImplBase {
 			if (type.contains(".ner")) {
 				if (type.split("\\.")[type.split("\\.").length - 1].equals("Location")) {
 
-					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertNamedEntity(coveredText, annotation.getBegin(),
 							annotation.getEnd(), "Location");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Organization")) {
 
-					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertNamedEntity(coveredText, annotation.getBegin(),
 							annotation.getEnd(), "Organization");
 				} else if (type.split("\\.")[type.split("\\.").length - 1].equals("Person")) {
 
-					databaseConnectionHandler.insertNamedEntity(annotation.getCoveredText(), annotation.getBegin(),
+					databaseConnectionHandler.insertNamedEntity(coveredText, annotation.getBegin(),
 							annotation.getEnd(), "Person");
 				}
 			}
 			if (type.contains(".Spelling")) {
-				databaseConnectionHandler.insertSC(annotation.getCoveredText(), annotation.getBegin(),
+				databaseConnectionHandler.insertSC(coveredText, annotation.getBegin(),
 						annotation.getEnd());
 			}
 		}

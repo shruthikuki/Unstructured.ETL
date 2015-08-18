@@ -44,6 +44,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		 */
 		StringBuilder originalText = new StringBuilder(
 				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
+		String databaseText;
 		HashMap<String, String> posColorMap = new HashMap<String, String>();
 		posColorMap.put("noun", "#F79898");
 		posColorMap.put("verb", "#98F7C4");
@@ -65,7 +66,8 @@ public class ResultGenerationServlet extends HttpServlet {
 					" <font style = \"background-color:" + posColorMap.get(posType.toLowerCase()) + "\">");
 
 		}
-		databaseConnectionHandler.updatePOSResultData(originalText.toString(), Integer.parseInt(id));
+		databaseText = originalText.toString().replaceAll("'", "''");
+		databaseConnectionHandler.updatePOSResultData(databaseText, Integer.parseInt(id));
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
@@ -80,6 +82,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		StringBuilder originalText = new StringBuilder(
 				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
+		String databaseText;
 		HashMap<String, String> nerColorMap = new HashMap<String, String>();
 		nerColorMap.put("person", "#F79898");
 		nerColorMap.put("location", "#98F7C4");
@@ -101,8 +104,8 @@ public class ResultGenerationServlet extends HttpServlet {
 					" <font style = \"background-color:" + nerColorMap.get(nerType.toLowerCase()) + "\">");
 
 		}
-
-		databaseConnectionHandler.updateNERResultData(originalText.toString(), Integer.parseInt(id));
+		databaseText = originalText.toString().replaceAll("'", "''");
+		databaseConnectionHandler.updateNERResultData(databaseText, Integer.parseInt(id));
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
@@ -117,6 +120,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		StringBuilder originalText = new StringBuilder(
 				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
+		String databaseText;
 		HashMap<String, String> scColorMap = new HashMap<String, String>();
 		scColorMap.put("person", "#F79898");
 		// get all rows from NER table
@@ -134,8 +138,9 @@ public class ResultGenerationServlet extends HttpServlet {
 			originalText.insert(begin, " <font style = \"background-color:" + "red" + "\">");
 
 		}
-
-		databaseConnectionHandler.updateSCResultData(originalText.toString(), Integer.parseInt(id));
+		databaseText = originalText.toString().replaceAll("'", "''");
+		databaseConnectionHandler.updateSCResultData(databaseText, Integer.parseInt(id));
+		
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
@@ -156,6 +161,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		colorList.add("grey");
 		StringBuilder originalText = new StringBuilder(
 				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
+		String databaseText;
 		ArrayList<String> idsList = databaseConnectionHandler.getCoRefIds();
 
 		HashMap<Integer, String> idColorMap = new HashMap<Integer, String>();
@@ -183,8 +189,8 @@ public class ResultGenerationServlet extends HttpServlet {
 			originalText.insert(end, "</font>");
 			originalText.insert(begin, " <font style = \"background-color:" + color + "\">");
 		}
-		
-		databaseConnectionHandler.updateCRResultData(originalText.toString(), Integer.parseInt(id));
+		databaseText = originalText.toString().replaceAll("'", "''");
+		databaseConnectionHandler.updateCRResultData(databaseText, Integer.parseInt(id));
 		try {
 			out = response.getWriter();
 			out.println(originalText);

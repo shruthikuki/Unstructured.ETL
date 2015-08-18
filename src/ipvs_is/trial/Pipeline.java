@@ -39,9 +39,14 @@ public class Pipeline {
 		TextCategorizer guesser = new TextCategorizer();
 		String language = guesser.categorize(Text);
 		System.out.println("language: " + language);
-
+		String languageCode = null;
+		if(language.equals("german"))
+			languageCode = "de";
+		else if(language.equals("english"))
+			languageCode = "en";
+		System.out.println("language: " + languageCode);
 		CollectionReaderDescription cr = createReaderDescription(StringReader.class, StringReader.PARAM_DOCUMENT_TEXT,
-				Text, TextReader.PARAM_LANGUAGE, language.substring(0, 2).toLowerCase());
+				Text, TextReader.PARAM_LANGUAGE, languageCode);
 
 		AnalysisEngineDescription seg = createEngineDescription(BreakIteratorSegmenter.class);
 		AnalysisEngineDescription tagger = createEngineDescription(StanfordPosTagger.class);

@@ -28,28 +28,13 @@ import ipvs_is.trial.Pipeline;
  */
 @WebServlet("/UploadServlet")
 public class UploadServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private static final String UPLOAD_DIRECTORY = "upload";
-	private static final int THRESHOLD_SIZE = 1024 * 1024 * 3; // 3MB
-	private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; // 40MB
-	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
 	String fileText;
 	String fileName;
 	StringBuilder sb;
 
-	
-	
-	@Override
-	public void init() throws ServletException {
-		// TODO Auto-generated method stub
-		super.init();
-	}
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
-			throws ServletException, IOException {
+	throws ServletException, IOException {
 		// checks if the request actually contains upload file
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			PrintWriter writer = response.getWriter();
@@ -60,20 +45,7 @@ public class UploadServlet extends HttpServlet {
 
 		// configures upload settings
 		DiskFileItemFactory factory = new DiskFileItemFactory();
-		factory.setSizeThreshold(THRESHOLD_SIZE);
-		factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
-		//factory.setRepository(new File(("E:\\Study")));
 		ServletFileUpload upload = new ServletFileUpload(factory);
-		/*upload.setFileSizeMax(MAX_FILE_SIZE);
-		upload.setSizeMax(MAX_REQUEST_SIZE);*/
-
-		// constructs the directory path to store upload file
-	/*	String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
-		// creates the directory if it does not exist
-		File uploadDir = new File(uploadPath);
-		if (!uploadDir.exists()) {
-			uploadDir.mkdir();
-		}*/
 
 		try {
 			// parses the request's content to extract file data
@@ -85,53 +57,34 @@ public class UploadServlet extends HttpServlet {
 				FileItem item = (FileItem) iter.next();
 				// processes only fields that are not form fields
 				if (!item.isFormField()) {
-					
-					 fileName = new File(item.getName()).getName();
-					
-					fileText=item.getString();
+					fileName = new File(item.getName()).getName();
+					fileText = item.getString();
 					Pipeline pipeline = new Pipeline();
 					pipeline.RunPipeline(fileText);
-				/*	BufferedReader br = new BufferedReader(new FileReader(filePath));
-				    try {
-				        sb = new StringBuilder();
-				        String line = br.readLine();
-
-				        while (line != null) {
-				            sb.append(line);
-				            sb.append(System.lineSeparator());
-				            line = br.readLine();
-				        }
-				        fileText = sb.toString();
-				    } finally {
-				        br.close();
-				    }
-					*/
-					
 				}
 			}
-			//request.setAttribute("message", "Upload has been done successfully!");
-			//request.setAttribute("message", uploadPath.toString());
-//			System.out.println( "Upload has been done successfully!");
-//			System.out.println(sb.toString());
+			fileText.replaceAll("'", "''");
 			DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 			int id;
-			id = databaseConnectionHandler.insertDataSourceContent(fileText, "file",fileName);
+			id = databaseConnectionHandler.insertDataSourceContent(fileText, "file", fileName);
 			databaseConnectionHandler.writeResultData(id);
 			response.setContentType("text/html");
 
 			// New location to be redirected
-			String site = new String("html/ResultDisplay.html?id=" +id);
-			//response.setIntHeader("id", id);
+			String site = new String("html/ResultDisplay.html?id=" + id);
+			// response.setIntHeader("id", id);
 			response.setStatus(response.SC_MOVED_TEMPORARILY);
 			response.setHeader("Location", site);
-			response.setHeader("sample","sampleValue");
-			
+			response.setHeader("sample", "sampleValue");
+
 		} catch (Exception ex) {
-			//request.setAttribute("message", "There was an error: " + ex.getMessage());
-			System.out.println("There was an error: " + ex.getMessage());
+			// request.setAttribute("message", "There was an error: " +
+			// ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws  ServletException, IOException {
-	    doPost(req, res);
+
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doPost(req, res);
 	}
 }
