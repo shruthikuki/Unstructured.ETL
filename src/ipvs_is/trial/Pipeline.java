@@ -54,7 +54,7 @@ public class Pipeline {
 		AnalysisEngineDescription tagger2 = createEngineDescription(StanfordParser.class);
 		AnalysisEngineDescription tagger3 = createEngineDescription(StanfordCoreferenceResolver.class);
 		AnalysisEngineDescription tagger4 = createEngineDescription(JazzyChecker.class,
-				JazzyChecker.PARAM_MODEL_LOCATION, new File("resources/words.utf-8.txt"));
+				JazzyChecker.PARAM_MODEL_LOCATION, new File(this.getClass().getResource("/words.utf-8.txt").toURI()));
 
 		AnalysisEngineDescription cc = createEngineDescription(FeatureExtractor.class);
 

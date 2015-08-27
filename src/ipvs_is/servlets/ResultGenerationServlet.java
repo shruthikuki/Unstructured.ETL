@@ -7,12 +7,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +36,6 @@ public class ResultGenerationServlet extends HttpServlet {
 
 	private void getResultForPOS(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-		/*
-		 * StringBuilder originalText = new StringBuilder(
-		 * databaseConnectionHandler.getDataSourceContent(dataSourceId));
-		 */
 		StringBuilder originalText = new StringBuilder(
 				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
 		String databaseText;
@@ -49,10 +43,6 @@ public class ResultGenerationServlet extends HttpServlet {
 		posColorMap.put("noun", "#F79898");
 		posColorMap.put("verb", "#98F7C4");
 		posColorMap.put("adjective", "#4A7FF0");
-		// get all rows from POS table
-		// for each row
-		// using position of each token, in originalText, append appropriate
-		// divs
 
 		ArrayList<String> posDataList = databaseConnectionHandler.getAllPOSData();
 
@@ -87,10 +77,6 @@ public class ResultGenerationServlet extends HttpServlet {
 		nerColorMap.put("person", "#F79898");
 		nerColorMap.put("location", "#98F7C4");
 		nerColorMap.put("organization", "#4A7FF0");
-		// get all rows from NER table
-		// for each row
-		// using position of each token, in originalText, append appropriate
-		// divs
 
 		ArrayList<String> nerDataList = databaseConnectionHandler.getAllNERData();
 
@@ -121,12 +107,6 @@ public class ResultGenerationServlet extends HttpServlet {
 		StringBuilder originalText = new StringBuilder(
 				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
 		String databaseText;
-		HashMap<String, String> scColorMap = new HashMap<String, String>();
-		scColorMap.put("person", "#F79898");
-		// get all rows from NER table
-		// for each row
-		// using position of each token, in originalText, append appropriate
-		// divs
 
 		ArrayList<String> scDataList = databaseConnectionHandler.getAllSCData();
 
@@ -140,7 +120,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		}
 		databaseText = originalText.toString().replaceAll("'", "''");
 		databaseConnectionHandler.updateSCResultData(databaseText, Integer.parseInt(id));
-		
+
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
@@ -155,9 +135,18 @@ public class ResultGenerationServlet extends HttpServlet {
 
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		ArrayList<String> colorList = new ArrayList<String>();
-		colorList.add("red");
-		colorList.add("green");
-		colorList.add("blue");
+		
+		colorList.add("#FF6040");
+		colorList.add("#80C000");
+		colorList.add("#E09870");
+		colorList.add("#FF8000");
+		colorList.add("#C0FF00");
+		colorList.add("#80C0FF");
+		colorList.add("#FF6040");
+		colorList.add("#80FF80");
+		colorList.add("#FFA000");
+		colorList.add("#FF80FF");
+		colorList.add("#40FF40");
 		colorList.add("grey");
 		StringBuilder originalText = new StringBuilder(
 				databaseConnectionHandler.getDataSourceContent(Integer.parseInt(id)));
@@ -174,21 +163,54 @@ public class ResultGenerationServlet extends HttpServlet {
 			j++;
 		}
 		ArrayList<String> coRefData = new ArrayList<String>();
-		
+
 		ArrayList<String> crDataList = databaseConnectionHandler.getCoRefInfo();
 		PrintWriter out = null;
+		String overlapText = "";
+		String entire = "";
+		Map<Integer, String> overlap = new TreeMap<Integer, String>(Collections.reverseOrder());
+		ArrayList<String> overlapDataList = new ArrayList<String>();
+		String color, overlapColor;
 
 		for (int i = 0; i < crDataList.size(); i++) {
 			int begin = Integer.parseInt(crDataList.get(i));
-			/*if(i>3 && begin == Integer.parseInt(crDataList.get(i - 3))) {
-				continue;
-			}*/
 			int end = Integer.parseInt(crDataList.get(i + 1));
-			String color = idColorMap.get(Integer.parseInt(crDataList.get(i + 2)));
-			i = i + 2;
-			originalText.insert(end, "</font>");
-			originalText.insert(begin, " <font style = \"background-color:" + color + "\">");
+
+			if (i < crDataList.size() - 3 && begin == Integer.parseInt(crDataList.get(i + 3))) {
+				j = i;
+				for (j = i; j + 3 < crDataList.size()
+						&& Integer.parseInt(crDataList.get(j)) == Integer.parseInt(crDataList.get(j + 3)); j = j + 3) {
+					entire = crDataList.get(j) + "," + crDataList.get(j + 1) + "," + crDataList.get(j + 2);
+					overlap.put(Integer.parseInt(crDataList.get(j + 1)), entire);
+					entire = "";
+				}
+				entire = crDataList.get(j) + "," + crDataList.get(j + 1) + "," + crDataList.get(j + 2);
+				overlap.put(Integer.parseInt(crDataList.get(j + 1)), entire);
+				entire = "";
+				
+				for (Integer key : overlap.keySet()) {
+					entire = overlap.get(key);
+					for (String entireItem : entire.split(","))
+						overlapDataList.add(entireItem);
+					originalText.insert(Integer.parseInt(overlapDataList.get(1)), "</font>");
+					overlapColor = idColorMap.get(Integer.parseInt(overlapDataList.get(2)));
+					overlapText = " <font style = \"background-color:" + overlapColor + "\">" + overlapText;
+					overlapDataList.clear();
+				}
+				originalText.insert(begin, overlapText);
+				i = j + 2;
+				overlap.clear();
+				overlapText = "";
+			}
+
+			else {
+				color = idColorMap.get(Integer.parseInt(crDataList.get(i + 2)));
+				i = i + 2;
+				originalText.insert(end, "</font>");
+				originalText.insert(begin, " <font style = \"background-color:" + color + "\">");
+			}
 		}
+
 		databaseText = originalText.toString().replaceAll("'", "''");
 		databaseConnectionHandler.updateCRResultData(databaseText, Integer.parseInt(id));
 		try {

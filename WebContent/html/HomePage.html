@@ -44,7 +44,7 @@
         <![endif]-->
 </head>
 
-<body onload = 'init();'>
+<body onload='init();'>
 	<!-- container section start -->
 	<section id="container" class="">
 
@@ -83,12 +83,12 @@
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
-					<li class="sub-menu"><a class="" href="Archive.html?type=file"> <i
-							class="icon_documents_alt"></i> <span>File Archive</span>
+					<li class="sub-menu"><a class="" href="Archive.html?type=file">
+							<i class="icon_documents_alt"></i> <span>File Archive</span>
 
 					</a></li>
-					<li class="sub-menu"><a class="" href="Archive.html?type=text"> <i
-							class="icon_documents_alt"></i> <span>Text Archive</span>
+					<li class="sub-menu"><a class="" href="Archive.html?type=text">
+							<i class="icon_documents_alt"></i> <span>Text Archive</span>
 
 					</a></li>
 					<li class="sub-menu"><a class=""> <i class="icon_genius"></i>
@@ -152,10 +152,6 @@
 
 
 
-
-
-
-
 				<div class="row">
 					<div class="col-md-4 portlets">
 						<div class="panel panel-default">
@@ -209,6 +205,7 @@
 								<div class="pull-left">Twitter Feeds</div>
 								<div class="widget-icons pull-right">
 									<a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
+
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -217,14 +214,14 @@
 
 									<div class="form quick-post">
 										<!-- Edit profile form (not working)-->
-										<form name="Form" class="form-horizontal"
-											onsubmit="return Validate(this);">
+										<form name="Form" method="post"
+											class="form-horizontal" onsubmit="redirect();">
 											<!-- Title -->
 											<div class="form-group">
-												<label class="control-label col-lg-2" for="title">Twitter
-													Feeds</label>
+												<label class="control-label col-lg-2" for="title">#
+												</label>
 												<div class="col-lg-10">
-													<input type="text" class="form-control" name="twitter_feed">
+													<textarea name="input_text" class="form-control" id="twitterString"></textarea>
 												</div>
 											</div>
 
@@ -232,8 +229,8 @@
 											<div class="form-group">
 												<!-- Buttons -->
 												<div class="col-lg-offset-2 col-lg-9">
-													<input type="submit" class="btn btn-primary"
-														value="Analyse" /> <input type="reset"
+													<input type="button" class="btn btn-primary"
+														value="Analyse" onclick="submitTwitterFeed()" /> <input type="reset"
 														class="btn btn-default" value="Reset" />
 												</div>
 											</div>
@@ -255,7 +252,7 @@
 								<div class="pull-left">Text Input</div>
 								<div class="widget-icons pull-right">
 									<a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-									
+
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -350,28 +347,43 @@
 	<script src="../js/charts.js"></script>
 	<script src="../js/jquery.slimscroll.min.js"></script>
 	<script>
-	function init() {
-		getCount('text');
-		getCount('file');
-	}
-	
-	function getCount(type) {
-		$.ajax({
-			type : "POST",
-			url : "../ArchiveCountServlet",
-			data : {
-				type : type
-			},
-			success : function(response) {
-				$('.count-' + type).html(response);
-			},
-			async:false
-		});
-	}
-	
+		function init() {
+			getCount('text');
+			getCount('file');
+		}
+
+		function getCount(type) {
+			$.ajax({
+				type : "POST",
+				url : "../ArchiveCountServlet",
+				data : {
+					type : type
+				},
+				success : function(response) {
+					$('.count-' + type).html(response);
+				},
+				async : false
+			});
+		}
+
 		function redirect() {
 			console.log("redirecting..");
 			window.location = 'ResultDisplay.html';
+		}
+		
+		function submitTwitterFeed() {
+			var searchString = $('#twitterString').val();
+			$.ajax({
+				type : "GET",
+				url : "https://ca25d850-4ef7-46bb-a083-e88c2c408915:N2g0lUeEWN@cdeservice.mybluemix.net:443/api/v1/messages/search?q=" + searchString + "&size=5",
+				data : {
+
+				},
+				success : function(response) {
+					console.log(response);
+				},
+				async : false
+			});
 		}
 
 		//knob
