@@ -32,21 +32,24 @@ import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.tudarmstadt.ukp.dkpro.core.tokit.GermanSeparatedParticleAnnotator;
 
 public class Pipeline {
-	public void RunPipeline(String Text) throws Exception {
+	public String RunPipeline(String Text) throws Exception {
 
 		TextCategorizer guesser = new TextCategorizer();
 		String language = guesser.categorize(Text);
 		System.out.println("language: " + language);
 		String languageCode = null;
-		if(language.equals("german"))
+		if (language.equals("german"))
 			languageCode = "de";
-		else if(language.equals("english"))
+		else if (language.equals("english"))
 			languageCode = "en";
 		System.out.println("language: " + languageCode);
 		CollectionReaderDescription cr = createReaderDescription(StringReader.class, StringReader.PARAM_DOCUMENT_TEXT,
 				Text, TextReader.PARAM_LANGUAGE, languageCode);
+
+		AnalysisEngineDescription germanAnnotator = createEngineDescription(GermanSeparatedParticleAnnotator.class);
 
 		AnalysisEngineDescription seg = createEngineDescription(BreakIteratorSegmenter.class);
 		AnalysisEngineDescription tagger = createEngineDescription(StanfordPosTagger.class);
@@ -58,7 +61,11 @@ public class Pipeline {
 
 		AnalysisEngineDescription cc = createEngineDescription(FeatureExtractor.class);
 
-		runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, tagger4, cc);
+		if (languageCode.equals("en")) 
+			runPipeline(cr, seg, tagger, tagger1, tagger2, tagger3, tagger4, cc);
+		else if(languageCode.equals("de"))
+			runPipeline(cr, seg, tagger, tagger1, germanAnnotator, cc);
+		return languageCode;
 
 	}
 }

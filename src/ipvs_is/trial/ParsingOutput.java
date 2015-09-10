@@ -9,21 +9,12 @@ import ipvs_is.database.ParsingOutputDatabase;
 public class ParsingOutput {
 
 	public static void main(String[] args) throws Exception {
-		// DatabaseConnectionHandler databaseConnectionHandler = new
-		// DatabaseConnectionHandler();
-		// databaseConnectionHandler.insert();
-		// System.out.println ("\nParts Of Speech");
-		// POS();
-		// System.out.println ("\nNamed Entity");
-		// namedEntity();
-		// System.out.println ("\nCoreference");
-		// coreference();
 	}
 
 	public void POS() throws Exception {
 //		System.out.println("deleting POS");
-		DatabaseConnectionHandler databaseConnectionHandler1 = new DatabaseConnectionHandler();
-		databaseConnectionHandler1.deleteTableContents("POS_DATA");
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+		databaseConnectionHandler.deleteTableContents("POS_DATA");
 
 		String outputText, buffer, begin, end, posValue;
 		int length;
@@ -31,7 +22,6 @@ public class ParsingOutput {
 		BufferedReader br = new BufferedReader(new FileReader("resources/output.txt"));
 		String previousLine = br.readLine();
 
-		ParsingOutputDatabase databaseConnectionHandler = new ParsingOutputDatabase();
 
 		while ((outputText = br.readLine()) != null) {
 			if (outputText.startsWith("N")) {

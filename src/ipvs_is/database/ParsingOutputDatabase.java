@@ -2,7 +2,6 @@ package ipvs_is.database;
 
 import java.sql.*;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class ParsingOutputDatabase {
 
@@ -13,7 +12,7 @@ public class ParsingOutputDatabase {
 	static final String USER = "bd6c79c61fba4f";
 	static final String PASS = "9bcd28a7";
 
-	public void insert() {
+	/*public void insert() {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -378,7 +377,6 @@ public class ParsingOutputDatabase {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		Statement stmt = null;
-		ResultSet rs = null;
 		try {
 			// Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
@@ -481,4 +479,4 @@ public class ParsingOutputDatabase {
 		else
 			return false;
 	}
-}
+*/}

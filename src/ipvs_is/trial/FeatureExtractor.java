@@ -6,25 +6,19 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Feature;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.component.CasConsumer_ImplBase;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceLink;
 import ipvs_is.database.DatabaseConnectionHandler;
-import ipvs_is.database.ParsingOutputDatabase;
-
 public class FeatureExtractor extends CasConsumer_ImplBase {
-
 	private int iCas;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 	}
-
 	@Override
 	public void process(CAS aCAS) throws AnalysisEngineProcessException {
 		Iterator<CAS> viewIt = aCAS.getViewIterator();
@@ -36,12 +30,11 @@ public class FeatureExtractor extends CasConsumer_ImplBase {
 	}
 
 	private void processFeatureStructures(CAS aCAS) {
-		DatabaseConnectionHandler databaseConnectionHandler1 = new DatabaseConnectionHandler();
-		databaseConnectionHandler1.deleteTableContents("POS_DATA");
-		databaseConnectionHandler1.deleteTableContents("NAMED_ENTITY_DATA");
-		databaseConnectionHandler1.deleteTableContents("SC_DATA");
-		databaseConnectionHandler1.deleteTableContents("CR_DATA");
-		ParsingOutputDatabase databaseConnectionHandler = new ParsingOutputDatabase();
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+		databaseConnectionHandler.deleteTableContents("POS_DATA");
+		databaseConnectionHandler.deleteTableContents("NAMED_ENTITY_DATA");
+		databaseConnectionHandler.deleteTableContents("SC_DATA");
+		databaseConnectionHandler.deleteTableContents("CR_DATA");
 		FSIterator<AnnotationFS> annotationIterator = aCAS.getAnnotationIndex().iterator();
 		
 		while (annotationIterator.hasNext()) {

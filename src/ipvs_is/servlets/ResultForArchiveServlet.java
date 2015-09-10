@@ -37,6 +37,7 @@ public class ResultForArchiveServlet extends HttpServlet {
 
 		PrintWriter out = null;
 		try {
+			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(POSResult);
 		} catch (IOException e) {
@@ -52,6 +53,7 @@ public class ResultForArchiveServlet extends HttpServlet {
 
 		PrintWriter out = null;
 		try {
+			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(NERResult);
 		} catch (IOException e) {
@@ -67,6 +69,7 @@ public class ResultForArchiveServlet extends HttpServlet {
 
 		PrintWriter out = null;
 		try {
+			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(SCResult);
 		} catch (IOException e) {
@@ -82,6 +85,7 @@ public class ResultForArchiveServlet extends HttpServlet {
 
 		PrintWriter out = null;
 		try {
+			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(NERResult);
 		} catch (IOException e) {

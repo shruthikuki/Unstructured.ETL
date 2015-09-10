@@ -1,31 +1,21 @@
 package ipvs_is.servlets;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 import ipvs_is.database.DatabaseConnectionHandler;
 import ipvs_is.trial.Pipeline;
-//import org.apache.tomcat.jni.File;
 
-/**
- * Servlet implementation class UploadServlet
- */
 @WebServlet("/UploadServlet")
 public class UploadServlet extends HttpServlet {
 	String fileText;
@@ -33,8 +23,8 @@ public class UploadServlet extends HttpServlet {
 	StringBuilder sb;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-
-	throws ServletException, IOException {
+			throws ServletException, IOException {
+		String languageCode = null;
 		// checks if the request actually contains upload file
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			PrintWriter writer = response.getWriter();
@@ -42,16 +32,13 @@ public class UploadServlet extends HttpServlet {
 			writer.flush();
 			return;
 		}
-
 		// configures upload settings
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
-
 		try {
 			// parses the request's content to extract file data
 			List formItems = upload.parseRequest(request);
 			Iterator iter = formItems.iterator();
-
 			// iterates over form's fields
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();
@@ -60,7 +47,7 @@ public class UploadServlet extends HttpServlet {
 					fileName = new File(item.getName()).getName();
 					fileText = item.getString();
 					Pipeline pipeline = new Pipeline();
-					pipeline.RunPipeline(fileText);
+					languageCode = pipeline.RunPipeline(fileText);
 				}
 			}
 			fileText.replaceAll("'", "''");
@@ -69,22 +56,14 @@ public class UploadServlet extends HttpServlet {
 			id = databaseConnectionHandler.insertDataSourceContent(fileText, "file", fileName);
 			databaseConnectionHandler.writeResultData(id);
 			response.setContentType("text/html");
-
 			// New location to be redirected
-			String site = new String("html/ResultDisplay.html?id=" + id);
+			String site = new String("html/ResultDisplay.html?id=" + id + "&languageCode=" + languageCode);
 			// response.setIntHeader("id", id);
 			response.setStatus(response.SC_MOVED_TEMPORARILY);
 			response.setHeader("Location", site);
 			response.setHeader("sample", "sampleValue");
-
 		} catch (Exception ex) {
-			// request.setAttribute("message", "There was an error: " +
-			// ex.getMessage());
 			ex.printStackTrace();
 		}
-	}
-
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		doPost(req, res);
 	}
 }

@@ -33,7 +33,6 @@ public class ResultGenerationServlet extends HttpServlet {
 			getResultForCR(response);
 		}
 	};
-
 	private void getResultForPOS(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		StringBuilder originalText = new StringBuilder(
@@ -43,9 +42,7 @@ public class ResultGenerationServlet extends HttpServlet {
 		posColorMap.put("noun", "#F79898");
 		posColorMap.put("verb", "#98F7C4");
 		posColorMap.put("adjective", "#4A7FF0");
-
 		ArrayList<String> posDataList = databaseConnectionHandler.getAllPOSData();
-
 		for (int i = 0; i < posDataList.size(); i++) {
 			int begin = Integer.parseInt(posDataList.get(i));
 			int end = Integer.parseInt(posDataList.get(i + 1));
@@ -54,16 +51,15 @@ public class ResultGenerationServlet extends HttpServlet {
 			originalText.insert(end, "</font>");
 			originalText.insert(begin,
 					" <font style = \"background-color:" + posColorMap.get(posType.toLowerCase()) + "\">");
-
 		}
 		databaseText = originalText.toString().replaceAll("'", "''");
 		databaseConnectionHandler.updatePOSResultData(databaseText, Integer.parseInt(id));
 		PrintWriter out = null;
 		try {
+			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(originalText);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -94,10 +90,10 @@ public class ResultGenerationServlet extends HttpServlet {
 		databaseConnectionHandler.updateNERResultData(databaseText, Integer.parseInt(id));
 		PrintWriter out = null;
 		try {
+			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(originalText);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -116,17 +112,16 @@ public class ResultGenerationServlet extends HttpServlet {
 			i = i + 1;
 			originalText.insert(end, "</font>");
 			originalText.insert(begin, " <font style = \"background-color:" + "red" + "\">");
-
 		}
 		databaseText = originalText.toString().replaceAll("'", "''");
 		databaseConnectionHandler.updateSCResultData(databaseText, Integer.parseInt(id));
 
 		PrintWriter out = null;
 		try {
+			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(originalText);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -214,10 +209,10 @@ public class ResultGenerationServlet extends HttpServlet {
 		databaseText = originalText.toString().replaceAll("'", "''");
 		databaseConnectionHandler.updateCRResultData(databaseText, Integer.parseInt(id));
 		try {
+			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(originalText);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
