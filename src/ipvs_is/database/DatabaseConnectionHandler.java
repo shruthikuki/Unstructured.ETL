@@ -103,7 +103,7 @@ public class DatabaseConnectionHandler {
 		} // end try
 	}
 
-	public int insertDataSourceContent(String dataSourceContent, String type, String name) {
+	public int insertDataSourceContent(String dataSourceContent, String type, String name, String langaugeCode) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int id = 0;
@@ -116,8 +116,8 @@ public class DatabaseConnectionHandler {
 
 			// STEP 4: Execute a query
 			String sql;
-			sql = "INSERT INTO DATA_SOURCE (content, type,name) VALUES ('" + dataSourceContent + "','" + type + "','"
-					+ name + "');";
+			sql = "INSERT INTO DATA_SOURCE (content, type,name, languageCode) VALUES ('" + dataSourceContent + "','" + type + "','"
+					+ name + "','"+ langaugeCode + "');";
 			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.executeUpdate();
 			ResultSet rs = pstmt.getGeneratedKeys();
@@ -540,7 +540,7 @@ public class DatabaseConnectionHandler {
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT id,name from DATA_SOURCE WHERE  type='" + DataSourceType + "';";
+			sql = "SELECT id,name,languageCode from DATA_SOURCE WHERE  type='" + DataSourceType + "';";
 			ResultSet rs = stmt.executeQuery(sql);
 
 			// STEP 5: Extract data from result set
@@ -548,6 +548,7 @@ public class DatabaseConnectionHandler {
 				// Retrieve by column name
 				datalist.add(rs.getString("id"));
 				datalist.add(rs.getString("name"));
+				datalist.add(rs.getString("languageCode"));
 			}
 			// STEP 6: Clean-up environment
 			rs.close();

@@ -19,23 +19,37 @@ public class TextInputServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String languageCode = null;
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		String Text = request.getParameter("input_text");
+
 		int id;
 		Pipeline pipeline = new Pipeline();
 		try {
+			String site;
 			languageCode = pipeline.RunPipeline(Text);
-			id = databaseConnectionHandler.insertDataSourceContent(Text.replaceAll("'", "''"), "text",
-					Text.substring(0, 24).replaceAll("'", "''") + "...");
-			databaseConnectionHandler.writeResultData(id);
-			response.setContentType("text/html");
+			if (languageCode.equals("unsupported")) {
+				site = new String("html/Error.html");
+				response.setStatus(response.SC_MOVED_TEMPORARILY);
+				response.setHeader("Location", site);
+				response.setHeader("sample", "sampleValue");
+			} else {
+				if (Text.length() >= 24)
+					id = databaseConnectionHandler.insertDataSourceContent(Text.replaceAll("'", "''"), "text",
+							Text.substring(0, 24).replaceAll("'", "''") + "...", languageCode);
+				else
+					id = databaseConnectionHandler.insertDataSourceContent(Text.replaceAll("'", "''"), "text",
+							Text.replaceAll("'", "''"), languageCode);
+				databaseConnectionHandler.writeResultData(id);
+				response.setContentType("text/html");
 
-			// New location to be redirected
-			String site = new String("html/ResultDisplay.html?id=" + id + "&languageCode=" + languageCode);
-			response.setStatus(response.SC_MOVED_TEMPORARILY);
-			response.setHeader("Location", site);
-			response.setHeader("sample", "sampleValue");
+				// New location to be redirected
+				site = new String("html/ResultDisplay.html?id=" + id + "&languageCode=" + languageCode);
+				response.setStatus(response.SC_MOVED_TEMPORARILY);
+				response.setHeader("Location", site);
+				response.setHeader("sample", "sampleValue");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

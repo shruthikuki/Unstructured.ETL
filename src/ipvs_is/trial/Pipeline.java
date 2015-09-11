@@ -45,6 +45,8 @@ public class Pipeline {
 			languageCode = "de";
 		else if (language.equals("english"))
 			languageCode = "en";
+		else
+			languageCode = "unsupported";
 		System.out.println("language: " + languageCode);
 		CollectionReaderDescription cr = createReaderDescription(StringReader.class, StringReader.PARAM_DOCUMENT_TEXT,
 				Text, TextReader.PARAM_LANGUAGE, languageCode);

@@ -55,11 +55,12 @@
 					<li class="sub-menu"><a class="" href="Archive.html?type=file">
 							<i class="icon_documents_alt"></i> <span>File Archive</span>
 					</a></li>
-					<li class="sub-menu"><a class="" href="Archive.html?type=text"> <i
-							class="icon_document_alt"></i> <span>Text Archive</span>
+					<li class="sub-menu"><a class="" href="Archive.html?type=text">
+							<i class="icon_document_alt"></i> <span>Text Archive</span>
 					</a></li>
-					<li class="sub-menu"><a class=""> <i class="icon_genius"></i>
-							<span>Feed Archive</span>
+					<li class="sub-menu"><a class=""
+						href="Archive.html?type=tweet"> <i class="icon_genius"></i> <span>Feed
+								Archive</span>
 					</a></li>
 
 				</ul>
@@ -94,11 +95,11 @@
 									id="inlineCheckbox2" name="NER" value="NER"
 									onchange="getResults('NER',this)"> Named Entity
 									Recognition
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox3" name="SC" value="SC"
+								</label> <label id="scCheckbox" class="checkbox-inline"> <input
+									type="checkbox" id="inlineCheckbox3" name="SC" value="SC"
 									onchange="getResults('SC',this)"> Spell Checker
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox3" name="CR" value="CR"
+								</label> <label id="crCheckbox" class="checkbox-inline"> <input
+									type="checkbox" id="inlineCheckbox3" name="CR" value="CR"
 									onchange="getResults('CR',this)"> CoReference
 									Resolution
 								</label>
@@ -247,35 +248,46 @@
 	<script type="text/javascript">
 		function init() {
 			var type = location.search.split('id=')[1].split('&')[1].split('=')[1];
+			var languageCode = location.search.split('languageCode=')[1];
+
+			if (languageCode == 'de') {
+				$('#scCheckbox').hide();
+				$('#crCheckbox').hide();
+			}
+
 			$("#POS").hide();
 			$("#NER").hide();
 			$("#SC").hide();
 			$("#CR").hide();
 			if (type == 'text') {
-				$('.breadcrumb').html(
-						'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>Text Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
+				$('.breadcrumb')
+						.html(
+								'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>Text Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
 			} else if (type == 'file') {
-				$('.breadcrumb').html(
-				'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>File Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
+				$('.breadcrumb')
+						.html(
+								'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>File Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
 			}
 		}
 		function getResults(featureCode, checkboxElement) {
 			var id = location.search.split('id=')[1].split('&')[0];
 			if (checkboxElement.checked) {
 				$("#" + featureCode + "").show();
-				$.ajax({
-					type : "POST",
-					url : "../getResultForArchive",
-					data : {
-						featureCode : featureCode,
-						id : id
+				$
+						.ajax({
+							type : "POST",
+							url : "../getResultForArchive",
+							data : {
+								featureCode : featureCode,
+								id : id
 
-					},
-					contentType: "application/x-www-form-urlencoded;charset=UTF-8", 
-					success : function(response) {
-						$("#" + featureCode + "-results").html(response)
-					}
-				});
+							},
+							contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+							success : function(response) {
+								$("#" + featureCode + "-results")
+										.html(response)
+							}
+						});
 			} else {
 				$("#" + featureCode + "").hide();
 			}

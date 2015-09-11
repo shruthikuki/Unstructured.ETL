@@ -4,10 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="unstructred ETL">
-<meta name="author" content="Triya Chatterjee">
-
 <title>Unstructured ETL</title>
-
 <!-- Bootstrap CSS -->
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap theme -->
@@ -16,53 +13,61 @@
 <!-- font icon -->
 <link href="../css/elegant-icons-style.css" rel="stylesheet" />
 <link href="../css/font-awesome.min.css" rel="stylesheet" />
+<!-- owl carousel -->
+<link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
+<link href="../css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
 <!-- Custom styles -->
+<link rel="stylesheet" href="../css/fullcalendar.css">
 <link href="../css/widgets.css" rel="stylesheet">
 <link href="../css/style.css" rel="stylesheet">
 <link href="../css/style-responsive.css" rel="stylesheet" />
 <link href="../css/xcharts.min.css" rel=" stylesheet">
 <link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-<style>
-table, td, th {
-	border: 4px double black;
-}
-
-th {
-	text-align: center;
-	background-color: #394a59;
-	color: white;
-	background-color: #394a59;
-}
-
-td {
-	padding: 5px;
-}
-
-.title {
-	cursor: pointer;
-}
-
-.title-header {
-	width: 270px;
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+<style type="text/css">
+#loading-indicator {
+	position: absolute;
+	left: 700px;
+	top: 300px;
+	z-index: 1;
 }
 </style>
-</head>
+<body onload='init();'>
 
-<body onload="loadArchives();">
 	<!-- container section start -->
 	<section id="container" class="">
+		<img src="../images/ActivityIndicator.gif" id="loading-indicator"
+			style="display: none" />
+
 		<header class="header dark-bg">
 			<div class="toggle-nav">
 				<div class="icon-reorder tooltips"
 					data-original-title="Toggle Navigation" data-placement="bottom"></div>
 			</div>
+
 			<!--logo start-->
-			<a href="HomePage.html" class="logo">Unstructured <span class="lite">ETL</span></a>
+			<a href="index.html" class="logo">Unstructured <span class="lite">ETL</span></a>
 			<!--logo end-->
+
 			<div class="nav search-row" id="top_menu">
+				<!--  search form start -->
+				<ul class="nav top-menu">
+					<li></li>
+				</ul>
+				<!--  search form end -->
+			</div>
+
+			<div class="top-nav notification-row">
+				<!-- notificatoin dropdown start-->
+				<ul class="nav pull-right top-menu">
+
+					<!-- user login dropdown end -->
+				</ul>
+				<!-- notificatoin dropdown end-->
 			</div>
 		</header>
 		<!--header end-->
+
 		<!--sidebar start-->
 		<aside>
 			<div id="sidebar" class="nav-collapse ">
@@ -73,13 +78,15 @@ td {
 					</a></li>
 					<li class="sub-menu"><a class="" href="Archive.html?type=file">
 							<i class="icon_documents_alt"></i> <span>File Archive</span>
+
 					</a></li>
 					<li class="sub-menu"><a class="" href="Archive.html?type=text">
-							<i class="icon_document_alt"></i> <span>Text Archive</span>
+							<i class="icon_documents_alt"></i> <span>Text Archive</span>
+
 					</a></li>
-					<li class="sub-menu"><a class="" href="Archive.html?type=tweet">
-					 <i class="icon_genius"></i>
-							<span>Feed Archive</span>
+					<li class="sub-menu"><a class=""
+						href="Archive.html?type=tweet"> <i class="icon_genius"></i> <span>Feed
+								Archive</span>
 					</a></li>
 
 				</ul>
@@ -87,100 +94,48 @@ td {
 			</div>
 		</aside>
 		<!--sidebar end-->
-
 		<!--main content start-->
 		<section id="main-content">
 			<section class="wrapper">
 				<!--overview start-->
-
 				<div class="row">
 					<div class="col-lg-12">
 						<h3 class="page-header">
-							<i class="fa fa-laptop"></i>
-							<div id="archiveHeader">
+							<i class="fa fa-laptop"></i> Error
 						</h3>
-						<ol class="breadcrumb">
-							<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li>
-							<li id="breadcrumbTitle"></li>
-						</ol>
 					</div>
 				</div>
-				<div class="row">
-					<div id="archiveList"
-						style="max-height: 410px; overflow-y: auto; max-width: 340px; overflow-x: auto; margin-left: 20px;"></div>
-				</div>
-				<!-- project team & activity end -->
 
+				<div class="row">Language detection has failed. Please try
+					again.</div>
 			</section>
 		</section>
 		<!--main content end-->
 	</section>
 	<!-- container section start -->
-
 	<!-- javascripts -->
 	<script src="../js/jquery.js"></script>
 	<script src="../js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../js/jquery-1.8.3.min.js"></script>
-	<script type="../text/javascript"
+	<script type="text/javascript"
 		src="../js/jquery-ui-1.9.2.custom.min.js"></script>
 	<!-- bootstrap -->
 	<script src="../js/bootstrap.min.js"></script>
 	<!-- nice scroll -->
 	<script src="../js/jquery.scrollTo.min.js"></script>
 	<script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
-	<script src="../js/jquery.rateit.min.js"></script>
-	<!-- custom select -->
 	<script src="../js/jquery.customSelect.min.js"></script>
 	<!--custome script for all page-->
 	<script src="../js/scripts.js"></script>
+	<!-- custom script for this page-->
 	<script src="../js/jquery.autosize.min.js"></script>
 	<script src="../js/jquery.placeholder.min.js"></script>
-	<script src="../js/gdp-data.js"></script>
 	<script src="../js/morris.min.js"></script>
 	<script src="../js/jquery.slimscroll.min.js"></script>
-	<script>
-	
-		//custom select box
 
-		$(function() {
-			$('select.styled').customSelect();
-		});
 
-	</script>
-	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript">
-		var type = location.search.split('type=')[1];
-		function loadArchives() {
-			if (type == 'text') {
-				$('#archiveHeader').text('TEXT ARCHIVE');
-				$('#breadcrumbTitle').html(
-						'<i class="fa fa-laptop"></i>Text Archive');
-			} else if (type == 'file') {
-				$('#archiveHeader').text('FILE ARCHIVE');
-				$('#breadcrumbTitle').html(
-						'<i class="fa fa-laptop"></i>File Archive');
-			}
 
-			$.ajax({
-				type : "POST",
-				url : "../ArchiveServlet",
-				data : {
-					type : type
-				},
-				success : function(response) {
-					$('#archiveList').html(response);
-				}
-			});
-		}
 
-		function showResultForArchive(id, languageCode) {
-			console.log(id);
-			var location = '../html/ArchiveResult.html?id=' + id + "&type="
-					+ type + "&languageCode=" + languageCode;
-			console.log("**" + location);
-			window.location.href = location;
-		}
-	</script>
 
 
 </body>

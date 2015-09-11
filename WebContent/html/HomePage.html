@@ -24,10 +24,20 @@
 <link href="../css/xcharts.min.css" rel=" stylesheet">
 <link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+<style type="text/css">
+#loading-indicator {
+	position: absolute;
+	left: 700px;
+	top: 300px;
+	z-index: 1;
+}
+</style>
 <body onload='init();'>
+
 	<!-- container section start -->
 	<section id="container" class="">
-
+		<img src="../images/ActivityIndicator.gif" id="loading-indicator"
+			style="display: none" />
 
 		<header class="header dark-bg">
 			<div class="toggle-nav">
@@ -71,8 +81,9 @@
 							<i class="icon_documents_alt"></i> <span>Text Archive</span>
 
 					</a></li>
-					<li class="sub-menu"><a class=""> <i class="icon_genius"></i>
-							<span>Feed Archive</span>
+					<li class="sub-menu"><a class=""
+						href="Archive.html?type=tweet"> <i class="icon_genius"></i> <span>Feed
+								Archive</span>
 					</a></li>
 
 				</ul>
@@ -109,7 +120,7 @@
 					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 						<div class="info-box brown-bg">
 							<i class="icon_document_alt"></i>
-							<div class="count count-twitter"></div>
+							<div class="count count-tweet"></div>
 							<div class="title">Twitter Archives</div>
 						</div>
 						<!--/.info-box-->
@@ -141,7 +152,7 @@
 										<!-- Edit profile form (not working)-->
 										<form name="Form" action="../UploadServlet" method="post"
 											enctype="multipart/form-data" class="form-horizontal"
-											onsubmit="window.location.href='triya_textbox.html'">
+											onsubmit="showBusyIndicator();">
 											<!-- Title -->
 											<div class="form-group">
 												<label class="control-label col-lg-2" for="title">File
@@ -183,14 +194,15 @@
 
 									<div class="form quick-post">
 										<!-- Edit profile form (not working)-->
-										<form name="Form" method="post"
-											class="form-horizontal" action="../TwitterInputServlet">
+										<form name="Form" method="post" class="form-horizontal"
+											action="../TwitterInputServlet" onsubmit="showBusyIndicator();">
 											<!-- Title -->
 											<div class="form-group">
 												<label class="control-label col-lg-2" for="title">#
 												</label>
 												<div class="col-lg-10">
-													<textarea name="query" class="form-control" id="twitterString"></textarea>
+													<textarea name="query" class="form-control"
+														id="twitterString"></textarea>
 												</div>
 											</div>
 
@@ -227,7 +239,7 @@
 									<div class="form quick-post">
 										<!-- Edit profile form (not working)-->
 										<form name="Form" action="../TextInputServlet" method="post"
-											class="form-horizontal" onsubmit="redirect();">
+											class="form-horizontal" onsubmit="showBusyIndicator();">
 											<!-- Title -->
 											<div class="form-group">
 												<label class="control-label col-lg-2" for="title">Text
@@ -283,6 +295,7 @@
 		function init() {
 			getCount('text');
 			getCount('file');
+			getCount('tweet');
 		}
 
 		function getCount(type) {
@@ -303,30 +316,17 @@
 			console.log("redirecting..");
 			window.location = 'ResultDisplay.html';
 		}
+
+		function showBusyIndicator() {
+			var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"></div>');
+			pleaseWaitDiv.modal();
+			$('#loading-indicator').show();
+		}
 		
-		/* function submitTwitterFeed() {
-			var searchString = $('#twitterString').val();
-			$.ajax({
-				type : "GET",
-				dataType: "jsonp",
-				url : "https://ca25d850-4ef7-46bb-a083-e88c2c408915:N2g0lUeEWN@cdeservice.mybluemix.net:443/api/v1/messages/search?q=" + searchString + "&size=5",
-				data : {
-
-				},
-				jsonpCallback : function(response) {
-					console.log(response);
-				},
-				async : false
-			});
-		} */
-
-				//custom select box
-
+		//custom select box
 		$(function() {
 			$('select.styled').customSelect();
 		});
-
-	
 	</script>
 	<script type="text/javascript">
 		function validateForm() {

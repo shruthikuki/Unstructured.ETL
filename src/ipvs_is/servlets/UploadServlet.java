@@ -50,18 +50,26 @@ public class UploadServlet extends HttpServlet {
 					languageCode = pipeline.RunPipeline(fileText);
 				}
 			}
-			fileText.replaceAll("'", "''");
-			DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
-			int id;
-			id = databaseConnectionHandler.insertDataSourceContent(fileText, "file", fileName);
-			databaseConnectionHandler.writeResultData(id);
-			response.setContentType("text/html");
-			// New location to be redirected
-			String site = new String("html/ResultDisplay.html?id=" + id + "&languageCode=" + languageCode);
-			// response.setIntHeader("id", id);
-			response.setStatus(response.SC_MOVED_TEMPORARILY);
-			response.setHeader("Location", site);
-			response.setHeader("sample", "sampleValue");
+			String site;
+			if (languageCode.equals("unsupported")) {
+				site = new String("html/Error.html");
+				response.setStatus(response.SC_MOVED_TEMPORARILY);
+				response.setHeader("Location", site);
+				response.setHeader("sample", "sampleValue");
+			} else {
+				fileText.replaceAll("'", "''");
+				DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+				int id;
+				id = databaseConnectionHandler.insertDataSourceContent(fileText, "file", fileName, languageCode);
+				databaseConnectionHandler.writeResultData(id);
+				response.setContentType("text/html");
+				// New location to be redirected
+				site = new String("html/ResultDisplay.html?id=" + id + "&languageCode=" + languageCode);
+				// response.setIntHeader("id", id);
+				response.setStatus(response.SC_MOVED_TEMPORARILY);
+				response.setHeader("Location", site);
+				response.setHeader("sample", "sampleValue");
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

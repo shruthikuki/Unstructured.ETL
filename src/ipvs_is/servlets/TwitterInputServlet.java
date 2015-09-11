@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ipvs_is.database.DatabaseConnectionHandler;
+import ipvs_is.trial.Pipeline;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -23,7 +25,10 @@ public class TwitterInputServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String queryString = request.getParameter("query");
-
+		String languageCode = null;
+		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
+		Pipeline pipeline = new Pipeline();
+		int id;
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true).setOAuthConsumerKey("IOA47SmcjlVK5Fm9nhRPSyz8P")
 				.setOAuthConsumerSecret("SLjtMd8rAxMjwsIDAIwN9tuYPFNaMfn4nF7BYnYV1OX54qMier")
@@ -32,6 +37,7 @@ public class TwitterInputServlet extends HttpServlet {
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		Twitter twitter = tf.getInstance();
 		try {
+			String site;
 			Query query = new Query(queryString);
 			int index = 0;
 			QueryResult result;
@@ -43,7 +49,7 @@ public class TwitterInputServlet extends HttpServlet {
 				List<Status> tweets = result.getTweets();
 				for (Status tweet : tweets) {
 					index++;
-					if (index <= 10)
+					if (index <= 5)
 						if (tweet.getLang().equals("en")) {
 							System.out.println("tweet: " + index + " : " + tweet.getText());
 							tweetText.append(tweet.getText());
@@ -51,10 +57,26 @@ public class TwitterInputServlet extends HttpServlet {
 						}
 				}
 			} while (((query = result.nextQuery()) != null));
-			System.out.println("tweetText: " + tweetText);
+			languageCode = pipeline.RunPipeline(tweetText.toString());
+			if (languageCode.equals("unsupported")) {
+				site = new String("html/Error.html");
+				response.setStatus(response.SC_MOVED_TEMPORARILY);
+				response.setHeader("Location", site);
+				response.setHeader("sample", "sampleValue");
+			} else {
+				id = databaseConnectionHandler.insertDataSourceContent(tweetText.toString().replaceAll("'", "''"),
+						"tweet", "#" + queryString, languageCode);
+				databaseConnectionHandler.writeResultData(id);
+				site = new String("html/ResultDisplay.html?id=" + id + "&languageCode=" + languageCode);
+				response.setStatus(response.SC_MOVED_TEMPORARILY);
+				response.setHeader("Location", site);
+			}
 		} catch (TwitterException te) {
 			te.printStackTrace();
 			System.out.println("Failed to search tweets: " + te.getMessage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
