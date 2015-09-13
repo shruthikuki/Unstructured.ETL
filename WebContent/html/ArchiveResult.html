@@ -83,6 +83,25 @@
 						</ol>
 					</div>
 				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse"
+										data-parent="#accordion" href="#collapseOne">Original Text</a>
+								</h4>
+							</div>
+							<div class="panel-collapse collapse in">
+								<div class="panel-body">
+									<b id="originalText" style="color: black;"></b>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="row">
 					<div class="col-md-12 portlets">
 						<div class="form-group">
@@ -268,7 +287,27 @@
 						.html(
 								'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>File Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
 			}
+			
+			getOriginalText();
 		}
+
+		function getOriginalText() {
+			var id = location.search.split('id=')[1].split('&')[0];
+
+			$.ajax({
+				type : "POST",
+				url : "../GetOriginalText",
+				data : {
+					id : id
+				},
+				success : function(response) {
+					console.log(response);
+					$("#originalText").html(response)
+				},
+				async : false
+			});
+		}
+
 		function getResults(featureCode, checkboxElement) {
 			var id = location.search.split('id=')[1].split('&')[0];
 			if (checkboxElement.checked) {

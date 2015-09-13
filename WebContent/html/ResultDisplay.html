@@ -13,15 +13,29 @@
 <!-- font icon -->
 <link href="../css/elegant-icons-style.css" rel="stylesheet" />
 <link href="../css/font-awesome.min.css" rel="stylesheet" />
+<!-- owl carousel -->
+<link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
+<link href="../css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
 <!-- Custom styles -->
 <link href="../css/widgets.css" rel="stylesheet">
 <link href="../css/style.css" rel="stylesheet">
 <link href="../css/style-responsive.css" rel="stylesheet" />
 <link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+<style type="text/css">
+#loading-indicator {
+	position: absolute;
+	left: 700px;
+	top: 300px;
+	z-index: 1;
+}
+</style>
 <body onload="init()">
 	<!-- container section start -->
 	<section id="container" class="">
-
+		<div class="modal" id="pleaseWaitDialog" data-backdrop="static"
+			data-keyboard="false"></div>
+		<img src="../images/ActivityIndicator.gif" id="loading-indicator"
+			style="display: none" />
 
 		<header class="header dark-bg">
 			<div class="toggle-nav">
@@ -65,9 +79,9 @@
 					<li class="sub-menu"><a class="" href="Archive.html?type=text">
 							<i class="icon_document_alt"></i> <span>Text Archive</span>
 					</a></li>
-					<li class="sub-menu"><a class="" href="Archive.html?type=tweet">
-					 <i class="icon_genius"></i>
-							<span>Feed Archive</span>
+					<li class="sub-menu"><a class=""
+						href="Archive.html?type=tweet"> <i class="icon_genius"></i> <span>Feed
+								Archive</span>
 					</a></li>
 
 				</ul>
@@ -93,22 +107,39 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse"
+										data-parent="#accordion" href="#collapseOne">Original Text</a>
+								</h4>
+							</div>
+							<div class="panel-collapse collapse in">
+								<div class="panel-body">
+									<b id="originalText" style="color: black;"></b>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-12 portlets">
 						<div class="form-group">
 							<div class="col-lg-10">
-								<label id="posCheckbox" class="checkbox-inline"> <input type="checkbox"
-									 name="POS" value="POS"
+								<label id="posCheckbox" class="checkbox-inline"> <input
+									type="checkbox" name="POS" value="POS"
 									onchange="showResults('POS',this)"> Parts Of Speech
 									Tagger
-								</label> <label id="nerCheckbox" class="checkbox-inline"> <input type="checkbox"
-									 name="NER" value="NER"
+								</label> <label id="nerCheckbox" class="checkbox-inline"> <input
+									type="checkbox" name="NER" value="NER"
 									onchange="showResults('NER',this)"> Named Entity
 									Recognition
-								</label> <label id="scCheckbox" class="checkbox-inline"> <input type="checkbox"
-									 name="SC" value="SC"
+								</label> <label id="scCheckbox" class="checkbox-inline"> <input
+									type="checkbox" name="SC" value="SC"
 									onchange="showResults('SC',this)"> Spell Checker
-								</label> <label id="crCheckbox" class="checkbox-inline"> <input type="checkbox"
-									 name="CR" value="CR"
+								</label> <label id="crCheckbox" class="checkbox-inline"> <input
+									type="checkbox" name="CR" value="CR"
 									onchange="showResults('CR',this)"> CoReference
 									Resolution
 								</label>
@@ -252,11 +283,27 @@
 			$('select.styled').customSelect();
 		});
 	</script>
-	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+	<!-- <script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script> -->
 	<script type="text/javascript">
+		/* var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"></div>'); */
+		var pleaseWaitDiv = $('.modal');
+		function showBusyIndicator() {
+			console.log('busy called new');
+			console.log($('#loading-indicator'));
+			pleaseWaitDiv.modal();
+			$('#loading-indicator').show();
+		}
+
+		function hideBusyIndicator() {
+			console.log('busy hidden');
+			pleaseWaitDiv.modal('hide');
+			$('#loading-indicator').hide();
+		}
+
 		function init() {
+			showBusyIndicator();
 			var languageCode = location.search.split('languageCode=')[1];
-			if(languageCode == 'de') {
+			if (languageCode == 'de') {
 				$('#scCheckbox').hide();
 				$('#crCheckbox').hide();
 			}
@@ -265,12 +312,34 @@
 			$("#SC").hide();
 			$("#CR").hide();
 
+			getOriginalText();
+
 			getResults("POS");
 			getResults("NER");
 			if (languageCode == 'en') {
 				getResults("SC");
 				getResults("CR");
 			}
+			hideBusyIndicator();
+
+		}
+
+		function getOriginalText() {
+			var id = location.search.split('id=')[1].split('&')[0];
+			
+			$
+			.ajax({
+				type : "POST",
+				url : "../GetOriginalText",
+				data : {
+					id : id
+				},
+				success : function(response) {
+					console.log(response);
+					$("#originalText").html(response)
+				},
+				async : false
+			});
 		}
 
 		function showResults(featureCode, checkboxElement) {
@@ -283,20 +352,21 @@
 
 		function getResults(featureCode) {
 			var id = location.search.split('id=')[1].split('&')[0];
-			$.ajax({
-				type : "POST",
-				url : "../getResultForFeature",
-				data : {
-					featureCode : featureCode,
-					id : id
+			$
+					.ajax({
+						type : "POST",
+						url : "../getResultForFeature",
+						data : {
+							featureCode : featureCode,
+							id : id
 
-				},
-				contentType: "application/x-www-form-urlencoded;charset=UTF-8", 
-				success : function(response) {
-					$("#" + featureCode + "-results").html(response)
-				},
-				async : false
-			});
+						},
+						contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+						success : function(response) {
+							$("#" + featureCode + "-results").html(response)
+						},
+						async : false
+					});
 
 		}
 

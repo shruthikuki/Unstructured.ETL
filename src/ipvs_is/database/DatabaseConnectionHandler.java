@@ -108,13 +108,14 @@ public class DatabaseConnectionHandler {
 		PreparedStatement pstmt = null;
 		int id = 0;
 		try {
-			// STEP 2: Register JDBC driver
+			/*// STEP 2: Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);*/
+			
+			conn = ConnectionFactory.getConnection();
 
-			// STEP 4: Execute a query
 			String sql;
 			sql = "INSERT INTO DATA_SOURCE (content, type,name, languageCode) VALUES ('" + dataSourceContent + "','" + type + "','"
 					+ name + "','"+ langaugeCode + "');";
@@ -154,12 +155,8 @@ public class DatabaseConnectionHandler {
 		Statement stmt = null;
 		String dataSourceContent = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
+			conn = ConnectionFactory.getConnection();
+			
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
@@ -203,12 +200,8 @@ public class DatabaseConnectionHandler {
 		Statement stmt = null;
 		String dataSourceContent = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
+			conn = ConnectionFactory.getConnection();
+			
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
 			String sql;
@@ -252,11 +245,7 @@ public class DatabaseConnectionHandler {
 		Statement stmt = null;
 		String result = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -301,11 +290,7 @@ public class DatabaseConnectionHandler {
 		Statement stmt = null;
 		String dataSourceContent = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -355,11 +340,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -408,11 +389,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -449,11 +426,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -489,11 +462,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -531,11 +500,7 @@ public class DatabaseConnectionHandler {
 
 		ArrayList<String> datalist = new ArrayList<String>();
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -583,11 +548,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -634,11 +595,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -677,11 +634,7 @@ public class DatabaseConnectionHandler {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -723,11 +676,7 @@ public class DatabaseConnectionHandler {
 		Statement stmt = null;
 		ArrayList<String> corefInfo = new ArrayList<String>();
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -777,11 +726,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -821,11 +766,7 @@ public class DatabaseConnectionHandler {
 		ResultSet rs = null;
 		int count = 0;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 
@@ -872,11 +813,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// STEP 4: Execute a query
 			stmt = conn.createStatement();
@@ -914,11 +851,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 			stmt = conn.createStatement();
@@ -962,11 +895,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 			stmt = conn.createStatement();
@@ -1010,11 +939,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 			stmt = conn.createStatement();
@@ -1058,11 +983,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 			stmt = conn.createStatement();
@@ -1111,11 +1032,7 @@ public class DatabaseConnectionHandler {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 
@@ -1176,11 +1093,7 @@ public class DatabaseConnectionHandler {
 		ResultSet rs = null;
 		int id = 0;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 
@@ -1234,11 +1147,7 @@ public class DatabaseConnectionHandler {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 
@@ -1286,11 +1195,7 @@ public class DatabaseConnectionHandler {
 		ResultSet rs = null;
 		int count = 0;
 		try {
-			// Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionFactory.getConnection();
 
 			// Execute a query
 

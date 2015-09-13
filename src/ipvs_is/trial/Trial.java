@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import org.apache.commons.jxpath.ri.model.beans.LangAttributePointer;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -28,6 +29,15 @@ import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
+
 public class Trial {
 	
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -39,9 +49,27 @@ public class Trial {
 
 
 	public static void main(String[] args) throws Exception {
+		
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true).setOAuthConsumerKey("IOA47SmcjlVK5Fm9nhRPSyz8P")
+				.setOAuthConsumerSecret("SLjtMd8rAxMjwsIDAIwN9tuYPFNaMfn4nF7BYnYV1OX54qMier")
+				.setOAuthAccessToken("38613900-oxvKmvKxSbXnWjSwLyMCghoLYGzntJLjUjmWqpcbL")
+				.setOAuthAccessTokenSecret("qIoPeSg9on3Xf6WJq4aGkXOXq30sOUR5SAsutElhsFnCU");
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		Twitter twitter = tf.getInstance();
+		
+		Query query = new Query("sunny");
+		query.setCount(20);
+		QueryResult result = twitter.search(query);
+		
+		List<Status> tweets = result.getTweets();
+		for (Status tweet : tweets) {
+			System.out.println("Tweet: " + tweet.getText());
+		}
+		
 
 		
-		Connection conn = null;
+		/*Connection conn = null;
 		Statement stmt = null;
 		try {
 			// STEP 2: Register JDBC driver
@@ -94,7 +122,7 @@ public class Trial {
 				se.printStackTrace();
 			}// end finally try
 		}// end try
-
+*/
 	
 
 		

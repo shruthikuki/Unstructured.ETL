@@ -39,24 +39,25 @@ public class TwitterInputServlet extends HttpServlet {
 		try {
 			String site;
 			Query query = new Query(queryString);
+			query.setCount(5);
 			int index = 0;
 			QueryResult result;
 			StringBuilder tweetText = new StringBuilder();
-			do {
+			/*do {*/
 
 				result = twitter.search(query);
 
 				List<Status> tweets = result.getTweets();
 				for (Status tweet : tweets) {
-					index++;
-					if (index <= 5)
+					/*index++;
+					if (index <= 5)*/
 						if (tweet.getLang().equals("en")) {
 							System.out.println("tweet: " + index + " : " + tweet.getText());
 							tweetText.append(tweet.getText());
 							tweetText.append("\n");
 						}
 				}
-			} while (((query = result.nextQuery()) != null));
+			/*} while (((query = result.nextQuery()) != null));*/
 			languageCode = pipeline.RunPipeline(tweetText.toString());
 			if (languageCode.equals("unsupported")) {
 				site = new String("html/Error.html");
