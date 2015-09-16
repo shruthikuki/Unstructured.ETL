@@ -19,8 +19,15 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+/**
+ * TwitterInputServlet
+ * Obtains the twitter hashtag provided by the user. Invoke Twitter4J framework based on the hashtag to obtain the tweets,
+ * concatenate the tweets into a string and call the pipeline to run the analysis
+ */
+
 @WebServlet("/TwitterInputServlet")
 public class TwitterInputServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -43,22 +50,20 @@ public class TwitterInputServlet extends HttpServlet {
 			int index = 0;
 			QueryResult result;
 			StringBuilder tweetText = new StringBuilder();
-			/*do {*/
 
-				result = twitter.search(query);
+			result = twitter.search(query);
 
-				List<Status> tweets = result.getTweets();
-				for (Status tweet : tweets) {
-					/*index++;
-					if (index <= 5)*/
-						if (tweet.getLang().equals("en")) {
-							System.out.println("tweet: " + index + " : " + tweet.getText());
-							tweetText.append(tweet.getText());
-							tweetText.append("\n");
-						}
+			List<Status> tweets = result.getTweets();
+			for (Status tweet : tweets) {
+				if (tweet.getLang().equals("en")) {
+					System.out.println("tweet: " + index + " : " + tweet.getText());
+					tweetText.append(tweet.getText());
+					tweetText.append("\n");
 				}
-			/*} while (((query = result.nextQuery()) != null));*/
-			languageCode = pipeline.RunPipeline(tweetText.toString());
+			}
+			
+			languageCode = pipeline.RunPipelineForTwitter(tweetText.toString(), "en");
+			
 			if (languageCode.equals("unsupported")) {
 				site = new String("html/Error.html");
 				response.setStatus(response.SC_MOVED_TEMPORARILY);
@@ -76,10 +81,7 @@ public class TwitterInputServlet extends HttpServlet {
 			te.printStackTrace();
 			System.out.println("Failed to search tweets: " + te.getMessage());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-
 }

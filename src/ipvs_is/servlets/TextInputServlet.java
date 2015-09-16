@@ -9,6 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import ipvs_is.database.DatabaseConnectionHandler;
 import ipvs_is.trial.Pipeline;
 
+/**
+ * TextInputServlet
+ * Read the text from the user input, call the pipeline function to run the analysis and store the input text as original text
+ * in the database
+ */
+
 @WebServlet("/TextInputServlet")
 public class TextInputServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -54,5 +60,4 @@ public class TextInputServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
 }

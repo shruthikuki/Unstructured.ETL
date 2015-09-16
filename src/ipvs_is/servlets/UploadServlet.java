@@ -16,8 +16,16 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ipvs_is.database.DatabaseConnectionHandler;
 import ipvs_is.trial.Pipeline;
 
+/**
+ * TextInputServlet
+ * Read the file content gievn by the user input, call the pipeline function to run the analysis and store the file text as 
+ * original text in the database
+ */
+
 @WebServlet("/UploadServlet")
 public class UploadServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
 	String fileText;
 	String fileName;
 	StringBuilder sb;
@@ -50,13 +58,15 @@ public class UploadServlet extends HttpServlet {
 					languageCode = pipeline.RunPipeline(fileText);
 				}
 			}
+			
 			String site;
 			if (languageCode.equals("unsupported")) {
 				site = new String("html/Error.html");
 				response.setStatus(response.SC_MOVED_TEMPORARILY);
 				response.setHeader("Location", site);
 				response.setHeader("sample", "sampleValue");
-			} else {
+			} 
+			else {
 				fileText.replaceAll("'", "''");
 				DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 				int id;
@@ -65,12 +75,12 @@ public class UploadServlet extends HttpServlet {
 				response.setContentType("text/html");
 				// New location to be redirected
 				site = new String("html/ResultDisplay.html?id=" + id + "&languageCode=" + languageCode);
-				// response.setIntHeader("id", id);
 				response.setStatus(response.SC_MOVED_TEMPORARILY);
 				response.setHeader("Location", site);
 				response.setHeader("sample", "sampleValue");
 			}
-		} catch (Exception ex) {
+		} 
+		catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}

@@ -28,7 +28,7 @@
 					data-original-title="Toggle Navigation" data-placement="bottom"></div>
 			</div>
 			<!--logo start-->
-			<a href="index.html" class="logo">Unstructured <span class="lite">ETL</span></a>
+			<a href="/" class="logo">Unstructured <span class="lite">ETL</span></a>
 			<!--logo end-->
 			<div class="nav search-row" id="top_menu">
 				<!--  search form start -->
@@ -49,7 +49,7 @@
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
-					<li class="active"><a class="" href="HomePage.html"> <i
+					<li class="active"><a class="" href="/"> <i
 							class="icon_house_alt"></i> <span>Home</span>
 					</a></li>
 					<li class="sub-menu"><a class="" href="Archive.html?type=file">
@@ -241,7 +241,7 @@
 	<script src="../js/jquery.js"></script>
 	<script src="../js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../js/jquery-1.8.3.min.js"></script>
-	<script type="../text/javascript"
+	<script type="text/javascript"
 		src="../js/jquery-ui-1.9.2.custom.min.js"></script>
 	<!-- bootstrap -->
 	<script src="../js/bootstrap.min.js"></script>
@@ -264,6 +264,7 @@
 		});
 	</script>
 	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+	
 	<script type="text/javascript">
 		function init() {
 			var type = location.search.split('id=')[1].split('&')[1].split('=')[1];
@@ -281,11 +282,11 @@
 			if (type == 'text') {
 				$('.breadcrumb')
 						.html(
-								'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>Text Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
+								'<li><i class="fa fa-home"></i><a href="/">Home</a></li> <li><i class="fa fa-laptop"></i>Text Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
 			} else if (type == 'file') {
 				$('.breadcrumb')
 						.html(
-								'<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li> <li><i class="fa fa-laptop"></i>File Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
+								'<li><i class="fa fa-home"></i><a href="/">Home</a></li> <li><i class="fa fa-laptop"></i>File Archive</li> <li><i class="fa fa-laptop"></i>Archive Result</li>');
 			}
 			
 			getOriginalText();
@@ -296,7 +297,7 @@
 
 			$.ajax({
 				type : "POST",
-				url : "../GetOriginalText",
+				url : "/GetOriginalText",
 				data : {
 					id : id
 				},
@@ -315,7 +316,7 @@
 				$
 						.ajax({
 							type : "POST",
-							url : "../getResultForArchive",
+							url : "/getResultForArchive",
 							data : {
 								featureCode : featureCode,
 								id : id
@@ -332,7 +333,5 @@
 			}
 		}
 	</script>
-
-
 </body>
 </html>

@@ -57,7 +57,7 @@ td {
 					data-original-title="Toggle Navigation" data-placement="bottom"></div>
 			</div>
 			<!--logo start-->
-			<a href="HomePage.html" class="logo">Unstructured <span class="lite">ETL</span></a>
+			<a href="/" class="logo">Unstructured <span class="lite">ETL</span></a>
 			<!--logo end-->
 			<div class="nav search-row" id="top_menu">
 			</div>
@@ -68,7 +68,7 @@ td {
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
-					<li class="active"><a class="" href="HomePage.html"> <i
+					<li class="active"><a class="" href="/"> <i
 							class="icon_house_alt"></i> <span>Home</span>
 					</a></li>
 					<li class="sub-menu"><a class="" href="Archive.html?type=file">
@@ -100,7 +100,7 @@ td {
 							<div id="archiveHeader">
 						</h3>
 						<ol class="breadcrumb">
-							<li><i class="fa fa-home"></i><a href="HomePage.html">Home</a></li>
+							<li><i class="fa fa-home"></i><a href="/">Home</a></li>
 							<li id="breadcrumbTitle"></li>
 						</ol>
 					</div>
@@ -121,7 +121,7 @@ td {
 	<script src="../js/jquery.js"></script>
 	<script src="../js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../js/jquery-1.8.3.min.js"></script>
-	<script type="../text/javascript"
+	<script type="text/javascript"
 		src="../js/jquery-ui-1.9.2.custom.min.js"></script>
 	<!-- bootstrap -->
 	<script src="../js/bootstrap.min.js"></script>
@@ -139,15 +139,14 @@ td {
 	<script src="../js/morris.min.js"></script>
 	<script src="../js/jquery.slimscroll.min.js"></script>
 	<script>
-	
 		//custom select box
-
 		$(function() {
 			$('select.styled').customSelect();
 		});
 
 	</script>
 	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+	
 	<script type="text/javascript">
 		var type = location.search.split('type=')[1];
 		function loadArchives() {
@@ -163,7 +162,7 @@ td {
 
 			$.ajax({
 				type : "POST",
-				url : "../ArchiveServlet",
+				url : "/ArchiveServlet",
 				data : {
 					type : type
 				},
@@ -175,13 +174,11 @@ td {
 
 		function showResultForArchive(id, languageCode) {
 			console.log(id);
-			var location = '../html/ArchiveResult.html?id=' + id + "&type="
+			var location = 'ArchiveResult.html?id=' + id + "&type="
 					+ type + "&languageCode=" + languageCode;
 			console.log("**" + location);
 			window.location.href = location;
 		}
 	</script>
-
-
 </body>
 </html>

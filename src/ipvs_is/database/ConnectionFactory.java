@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * ConnectionFactory
+ * Configuration of database connection
+ */
+
 public class ConnectionFactory {
 
 	private static ConnectionFactory instance = new ConnectionFactory();
@@ -20,7 +25,8 @@ public class ConnectionFactory {
 	private ConnectionFactory() {
 		try {
 			Class.forName(JDBC_DRIVER);
-		} catch (ClassNotFoundException e) {
+		} 
+		catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -28,7 +34,8 @@ public class ConnectionFactory {
 	private Connection createConnection() {
 		try {
 			connection = DriverManager.getConnection(DB_URL, USER, PASS);
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			System.out.println("ERROR: Unable to Connect to Database.");
 		}
 		return connection;

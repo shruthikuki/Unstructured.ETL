@@ -11,11 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import ipvs_is.database.DatabaseConnectionHandler;
 
+/**
+ * ArchiveCountServlet
+ * Obtains the count of file, twitter feed and text input stored in the database 
+ */
+
 @WebServlet("/ArchiveCountServlet")
 public class ArchiveCountServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	public ArchiveCountServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -6,23 +6,23 @@
 <meta name="description" content="unstructred ETL">
 <title>Unstructured ETL</title>
 <!-- Bootstrap CSS -->
-<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap theme -->
-<link href="../css/bootstrap-theme.css" rel="stylesheet">
+<link href="/css/bootstrap-theme.css" rel="stylesheet">
 <!--external css-->
 <!-- font icon -->
-<link href="../css/elegant-icons-style.css" rel="stylesheet" />
-<link href="../css/font-awesome.min.css" rel="stylesheet" />
+<link href="/css/elegant-icons-style.css" rel="stylesheet" />
+<link href="/css/font-awesome.min.css" rel="stylesheet" />
 <!-- owl carousel -->
-<link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
-<link href="../css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/owl.carousel.css" type="text/css">
+<link href="/css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
 <!-- Custom styles -->
-<link rel="stylesheet" href="../css/fullcalendar.css">
-<link href="../css/widgets.css" rel="stylesheet">
-<link href="../css/style.css" rel="stylesheet">
-<link href="../css/style-responsive.css" rel="stylesheet" />
-<link href="../css/xcharts.min.css" rel=" stylesheet">
-<link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/fullcalendar.css">
+<link href="/css/widgets.css" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<link href="/css/style-responsive.css" rel="stylesheet" />
+<link href="/css/xcharts.min.css" rel=" stylesheet">
+<link href="/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
 <style type="text/css">
 #loading-indicator {
@@ -36,7 +36,7 @@
 
 	<!-- container section start -->
 	<section id="container" class="">
-		<img src="../images/ActivityIndicator.gif" id="loading-indicator"
+		<img src="/images/ActivityIndicator.gif" id="loading-indicator"
 			style="display: none" />
 
 		<header class="header dark-bg">
@@ -73,16 +73,16 @@
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
-					<li class="sub-menu"><a class="" href="Archive.html?type=file">
+					<li class="sub-menu"><a class="" href="/html/Archive.html?type=file">
 							<i class="icon_documents_alt"></i> <span>File Archive</span>
 
 					</a></li>
-					<li class="sub-menu"><a class="" href="Archive.html?type=text">
+					<li class="sub-menu"><a class="" href="/html/Archive.html?type=text">
 							<i class="icon_documents_alt"></i> <span>Text Archive</span>
 
 					</a></li>
 					<li class="sub-menu"><a class=""
-						href="Archive.html?type=tweet"> <i class="icon_genius"></i> <span>Feed
+						href="/html/Archive.html?type=tweet"> <i class="icon_genius"></i> <span>Feed
 								Archive</span>
 					</a></li>
 
@@ -150,9 +150,9 @@
 
 									<div class="form quick-post">
 										<!-- Edit profile form (not working)-->
-										<form name="Form" action="../UploadServlet" method="post"
+										<form name="Form" action="/UploadServlet" method="post"
 											enctype="multipart/form-data" class="form-horizontal"
-											onsubmit="showBusyIndicator();">
+											onsubmit="return Validate(this)">
 											<!-- Title -->
 											<div class="form-group">
 												<label class="control-label col-lg-2" for="title">File
@@ -195,7 +195,7 @@
 									<div class="form quick-post">
 										<!-- Edit profile form (not working)-->
 										<form name="Form" method="post" class="form-horizontal"
-											action="../TwitterInputServlet" onsubmit="showBusyIndicator();">
+											action="/TwitterInputServlet" onsubmit="return Validate(this)">
 											<!-- Title -->
 											<div class="form-group">
 												<label class="control-label col-lg-2" for="title">#
@@ -238,8 +238,8 @@
 
 									<div class="form quick-post">
 										<!-- Edit profile form (not working)-->
-										<form name="Form" action="../TextInputServlet" method="post"
-											class="form-horizontal" onsubmit="showBusyIndicator();">
+										<form name="Form" action="/TextInputServlet" method="post"
+											class="form-horizontal" onsubmit="return Validate(this)">
 											<!-- Title -->
 											<div class="form-group">
 												<label class="control-label col-lg-2" for="title">Text
@@ -273,24 +273,25 @@
 	</section>
 	<!-- container section start -->
 	<!-- javascripts -->
-	<script src="../js/jquery.js"></script>
-	<script src="../js/jquery-ui-1.10.4.min.js"></script>
-	<script src="../js/jquery-1.8.3.min.js"></script>
+	<script src="/js/jquery.js"></script>
+	<script src="/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="/js/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript"
-		src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+		src="/js/jquery-ui-1.9.2.custom.min.js"></script>
 	<!-- bootstrap -->
-	<script src="../js/bootstrap.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
 	<!-- nice scroll -->
-	<script src="../js/jquery.scrollTo.min.js"></script>
-	<script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
-	<script src="../js/jquery.customSelect.min.js"></script>
+	<script src="/js/jquery.scrollTo.min.js"></script>
+	<script src="/js/jquery.nicescroll.js" type="text/javascript"></script>
+	<script src="/js/jquery.customSelect.min.js"></script>
 	<!--custome script for all page-->
-	<script src="../js/scripts.js"></script>
+	<script src="/js/scripts.js"></script>
 	<!-- custom script for this page-->
-	<script src="../js/jquery.autosize.min.js"></script>
-	<script src="../js/jquery.placeholder.min.js"></script>
-	<script src="../js/morris.min.js"></script>
-	<script src="../js/jquery.slimscroll.min.js"></script>
+	<script src="/js/jquery.autosize.min.js"></script>
+	<script src="/js/jquery.placeholder.min.js"></script>
+	<script src="/js/morris.min.js"></script>
+	<script src="/js/jquery.slimscroll.min.js"></script>
+	
 	<script>
 		function init() {
 			getCount('text');
@@ -317,31 +318,12 @@
 			window.location = 'ResultDisplay.html';
 		}
 
-		function showBusyIndicator() {
-			var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"></div>');
-			pleaseWaitDiv.modal();
-			$('#loading-indicator').show();
-		}
-		
+
 		//custom select box
 		$(function() {
 			$('select.styled').customSelect();
 		});
-	</script>
-	<script type="text/javascript">
-		function validateForm() {
-			var a = document.forms["Form"]["input_text"].value;
-			var b = document.forms["Form"]["datafile"].value;
-			var c = document.forms["Form"]["twitter_feed"].value;
-			if (a == "" && b == "" && c == "") {
-				alert("Please provide data in atleast 1 field");
-				return false;
-			}
-		}
-	</script>
 
-
-	<script language="javascript" type="text/javascript">
 		var _validFileExtensions = [ ".doc", ".txt" ];
 		function Validate(oForm) {
 			var arrInputs = oForm.getElementsByTagName("input");
@@ -369,28 +351,20 @@
 							return false;
 						}
 					} else {
-						alert("Sorry, " + sFileName
-								+ " is invalid, allowed extensions are: "
-								+ _validFileExtensions.join(", "));
+						alert("Please provide input in atleast 1 field");
 						return false;
 					}
-				} else if (oInput.type == "text") {
-					var a = oInput.value;
-					if (a == "") {
-						alert("Please provide data");
-						return false;
-					}
-				}
+				} 
 
 			}
 
 			var arrInputs = oForm.getElementsByTagName("textarea");
 			for (var i = 0; i < arrInputs.length; i++) {
 				var oInput = arrInputs[i];
-				if (oInput.name == "input_text") {
+				if (oInput.name == "input_text" || oInput.name == "query") {
 					var a = oInput.value;
 					if (a == "") {
-						alert("Please provide data");
+						alert("Please provide input in atleast 1 field");
 						return false;
 					}
 				}
@@ -399,8 +373,11 @@
 			return true;
 		}
 		
+		function showBusyIndicator() {
+			var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"></div>');
+			pleaseWaitDiv.modal();
+			$('#loading-indicator').show();
+		}		
 	</script>
-
-
 </body>
 </html>

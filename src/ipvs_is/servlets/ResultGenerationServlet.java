@@ -16,23 +16,35 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * ResultGenerationServlet
+ * Obtains the analysis result stored in the database (got from pipeline processing) and constructs the result appropriately
+ * for visualization for each feature
+ */
+
 public class ResultGenerationServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
 	String dataSourceId, id;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String featureCode = request.getParameter("featureCode");
 		id = request.getParameter("id");
+
 		if (featureCode.equals("NER")) {
 			getResultForNER(response);
-		} else if (featureCode.equals("POS")) {
+		} 
+		else if (featureCode.equals("POS")) {
 			getResultForPOS(response);
-		} else if (featureCode.equals("SC")) {
+		} 
+		else if (featureCode.equals("SC")) {
 			getResultForSC(response);
-		} else if (featureCode.equals("CR")) {
+		} 
+		else if (featureCode.equals("CR")) {
 			getResultForCR(response);
 		}
-	};
+	}
+
 	private void getResultForPOS(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		StringBuilder originalText = new StringBuilder(
@@ -55,10 +67,20 @@ public class ResultGenerationServlet extends HttpServlet {
 		databaseText = originalText.toString().replaceAll("'", "''");
 		databaseConnectionHandler.updatePOSResultData(databaseText, Integer.parseInt(id));
 		PrintWriter out = null;
+
+		String[] lines = originalText.toString().split("\r\n|\r|\n");
+
+		String responseString = "";
+
+		for (String line : lines) {
+			System.out.println("line: " + line);
+			responseString += line + "<br/>";
+		}
+
 		try {
 			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
-			out.println(originalText);
+			out.println(responseString);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,10 +111,20 @@ public class ResultGenerationServlet extends HttpServlet {
 		databaseText = originalText.toString().replaceAll("'", "''");
 		databaseConnectionHandler.updateNERResultData(databaseText, Integer.parseInt(id));
 		PrintWriter out = null;
+
+		String[] lines = originalText.toString().split("\r\n|\r|\n");
+
+		String responseString = "";
+
+		for (String line : lines) {
+			System.out.println("line: " + line);
+			responseString += line + "<br/>";
+		}
+
 		try {
 			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
-			out.println(originalText);
+			out.println(responseString);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -117,10 +149,20 @@ public class ResultGenerationServlet extends HttpServlet {
 		databaseConnectionHandler.updateSCResultData(databaseText, Integer.parseInt(id));
 
 		PrintWriter out = null;
+
+		String[] lines = originalText.toString().split("\r\n|\r|\n");
+
+		String responseString = "";
+
+		for (String line : lines) {
+			System.out.println("line: " + line);
+			responseString += line + "<br/>";
+		}
+
 		try {
 			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
-			out.println(originalText);
+			out.println(responseString);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -130,7 +172,7 @@ public class ResultGenerationServlet extends HttpServlet {
 
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
 		ArrayList<String> colorList = new ArrayList<String>();
-		
+
 		colorList.add("#FF6040");
 		colorList.add("#80C000");
 		colorList.add("#E09870");
@@ -157,7 +199,6 @@ public class ResultGenerationServlet extends HttpServlet {
 			}
 			j++;
 		}
-		ArrayList<String> coRefData = new ArrayList<String>();
 
 		ArrayList<String> crDataList = databaseConnectionHandler.getCoRefInfo();
 		PrintWriter out = null;
@@ -182,14 +223,14 @@ public class ResultGenerationServlet extends HttpServlet {
 				entire = crDataList.get(j) + "," + crDataList.get(j + 1) + "," + crDataList.get(j + 2);
 				overlap.put(Integer.parseInt(crDataList.get(j + 1)), entire);
 				entire = "";
-				
+
 				for (Integer key : overlap.keySet()) {
 					entire = overlap.get(key);
 					for (String entireItem : entire.split(","))
 						overlapDataList.add(entireItem);
 					originalText.insert(Integer.parseInt(overlapDataList.get(1)), "</font>");
 					overlapColor = idColorMap.get(Integer.parseInt(overlapDataList.get(2)));
-					overlapText = " <font style = \"background-color:" + overlapColor + "\">" + overlapText;
+					overlapText =  overlapText + " <font style = \"background-color:" + overlapColor + "\">";
 					overlapDataList.clear();
 				}
 				originalText.insert(begin, overlapText);
@@ -208,13 +249,22 @@ public class ResultGenerationServlet extends HttpServlet {
 
 		databaseText = originalText.toString().replaceAll("'", "''");
 		databaseConnectionHandler.updateCRResultData(databaseText, Integer.parseInt(id));
+
+		String[] lines = originalText.toString().split("\r\n|\r|\n");
+
+		String responseString = "";
+
+		for (String line : lines) {
+			System.out.println("line: " + line);
+			responseString += line + "<br/>";
+		}
+
 		try {
 			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
-			out.println(originalText);
+			out.println(responseString);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 }

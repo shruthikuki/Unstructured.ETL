@@ -12,6 +12,14 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceLink;
 import ipvs_is.database.DatabaseConnectionHandler;
+
+/**
+ * FeatureExtractor
+ * After the pipeline has been processed, details of the feature is present in a Cas file. 
+ * This is a custom defined writer that reads into the Cas file, obtains details for each feature and writes required
+ * data into the database 
+ */
+
 public class FeatureExtractor extends CasConsumer_ImplBase {
 	private int iCas;
 

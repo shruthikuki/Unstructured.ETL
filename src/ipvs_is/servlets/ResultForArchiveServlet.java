@@ -11,24 +11,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * ResultForArchiveServlet
+ * Obtains the result data stored in the database for archive
+ */
+
 @WebServlet("/getResultForArchive")
 public class ResultForArchiveServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
 	String dataSourceId, id;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String featureCode = request.getParameter("featureCode");
 		id = request.getParameter("id");
+
 		if (featureCode.equals("NER")) {
 			getResultForNER(response);
-		} else if (featureCode.equals("POS")) {
+		} 
+		else if (featureCode.equals("POS")) {
 			getResultForPOS(response);
-		} else if (featureCode.equals("SC")) {
+		} 
+		else if (featureCode.equals("SC")) {
 			getResultForSC(response);
-		} else if (featureCode.equals("CR")) {
+		} 
+		else if (featureCode.equals("CR")) {
 			getResultForCR(response);
 		}
-	};
+	}
 
 	private void getResultForPOS(ServletResponse response) {
 		DatabaseConnectionHandler databaseConnectionHandler = new DatabaseConnectionHandler();
@@ -40,8 +50,8 @@ public class ResultForArchiveServlet extends HttpServlet {
 			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(POSResult);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -56,8 +66,8 @@ public class ResultForArchiveServlet extends HttpServlet {
 			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(NERResult);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -72,8 +82,8 @@ public class ResultForArchiveServlet extends HttpServlet {
 			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(SCResult);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -88,10 +98,9 @@ public class ResultForArchiveServlet extends HttpServlet {
 			response.setContentType("application/x-www-form-urlencoded;charset=UTF-8");
 			out = response.getWriter();
 			out.println(NERResult);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 }
