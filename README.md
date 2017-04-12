@@ -10,5 +10,5 @@ which will contain short names of the past data user has performed analysis upon
 This page will contain the Original Text along with check boxes for each feature. User can
 click on the check box of the feature he/she wants to view.
 
-STEPS TO ANALYSE THE TEXT
+STEPS TO ANALYSE THE TEXT <br />
 The currently used database system does not allow new data, hence this application is only partially working
