@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="unstructred ETL">
+<title>Unstructured ETL</title>
+<!-- Bootstrap CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<!-- bootstrap theme -->
+<link href="../css/bootstrap-theme.css" rel="stylesheet">
+<!--external css-->
+<!-- font icon -->
+<link href="../css/elegant-icons-style.css" rel="stylesheet" />
+<link href="../css/font-awesome.min.css" rel="stylesheet" />
+<!-- owl carousel -->
+<link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
+<link href="../css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+<!-- Custom styles -->
+<link href="../css/widgets.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet">
+<link href="../css/style-responsive.css" rel="stylesheet" />
+<link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+<style type="text/css">
+#loading-indicator {
+	position: absolute;
+	left: 700px;
+	top: 300px;
+	z-index: 1;
+}
+</style>
+<body onload="init()">
+	<!-- container section start -->
+	<section id="container" class="">
+		<div class="modal" id="pleaseWaitDialog" data-backdrop="static"
+			data-keyboard="false"></div>
+		<img src="../images/ActivityIndicator.gif" id="loading-indicator"
+			style="display: none" />
+
+		<header class="header dark-bg">
+			<div class="toggle-nav">
+				<div class="icon-reorder tooltips"
+					data-original-title="Toggle Navigation" data-placement="bottom"></div>
+			</div>
+
+			<!--logo start-->
+			<a href="index.html" class="logo">Unstructured <span class="lite">ETL</span></a>
+			<!--logo end-->
+
+			<div class="nav search-row" id="top_menu">
+				<!--  search form start -->
+				<ul class="nav top-menu">
+					<li></li>
+				</ul>
+				<!--  search form end -->
+			</div>
+
+			<div class="top-nav notification-row">
+				<!-- notificatoin dropdown start-->
+				<ul class="nav pull-right top-menu">
+
+				</ul>
+				<!-- notificatoin dropdown end-->
+			</div>
+		</header>
+		<!--header end-->
+
+		<!--sidebar start-->
+		<aside>
+			<div id="sidebar" class="nav-collapse ">
+				<!-- sidebar menu start-->
+				<ul class="sidebar-menu">
+					<li class="active"><a class="" href="/"> <i
+							class="icon_house_alt"></i> <span>Home</span>
+					</a></li>
+					<li class="sub-menu"><a class="" href="Archive.html?type=file">
+							<i class="icon_documents_alt"></i> <span>File Archive</span>
+					</a></li>
+					<li class="sub-menu"><a class="" href="Archive.html?type=text">
+							<i class="icon_document_alt"></i> <span>Text Archive</span>
+					</a></li>
+					<li class="sub-menu"><a class=""
+						href="Archive.html?type=tweet"> <i class="icon_genius"></i> <span>Feed
+								Archive</span>
+					</a></li>
+
+				</ul>
+				<!-- sidebar menu end-->
+			</div>
+		</aside>
+		<!--sidebar end-->
+
+		<!--main content start-->
+		<section id="main-content">
+			<section class="wrapper">
+				<!--overview start-->
+
+				<div class="row">
+					<div class="col-lg-12">
+						<h3 class="page-header">
+							<i class="fa fa-laptop"></i> Analysis Result
+						</h3>
+						<ol class="breadcrumb">
+							<li><i class="fa fa-home"></i><a href="/">Home</a></li>
+							<li><i class="fa fa-laptop"></i>Analysis Result</li>
+						</ol>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse"
+										data-parent="#accordion" href="#collapseOne">Original Text</a>
+								</h4>
+							</div>
+							<div class="panel-collapse collapse in">
+								<div class="panel-body">
+									<b id="originalText" style="color: black;"></b>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 portlets">
+						<div class="form-group">
+							<div class="col-lg-10">
+								<label id="posCheckbox" class="checkbox-inline"> <input
+									type="checkbox" name="POS" value="POS"
+									onchange="showResults('POS',this)"> Parts Of Speech
+									Tagger
+								</label> <label id="nerCheckbox" class="checkbox-inline"> <input
+									type="checkbox" name="NER" value="NER"
+									onchange="showResults('NER',this)"> Named Entity
+									Recognition
+								</label> <label id="scCheckbox" class="checkbox-inline"> <input
+									type="checkbox" name="SC" value="SC"
+									onchange="showResults('SC',this)"> Spell Checker
+								</label> <label id="crCheckbox" class="checkbox-inline"> <input
+									type="checkbox" name="CR" value="CR"
+									onchange="showResults('CR',this)"> CoReference
+									Resolution
+								</label>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 portlets">
+						<div class="panel-group m-bot20" id="accordion">
+							<div class="panel panel-default">
+								<div id="POS">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne"> Parts of
+												Speech Tagger</a>
+										</h4>
+									</div>
+									<div style="display: inline-flex;">
+										<div class="panel-collapse collapse in">
+											<div class="panel-body" style="width: 1000px">
+												<b id="POS-results" style="color: black;"></b>
+											</div>
+										</div>
+										<div id="POS-legend">
+											<table style="margin-right: 20px; margin-left: auto">
+												<tr>
+													<td style="width: 24px; background-color: #F79898;"></td>
+													<td style="padding-left: 10px">Nouns</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #98F7C4;"></td>
+													<td style="padding-left: 10px">Verbs</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #4A7FF0;"></td>
+													<td style="padding-left: 10px">Adjectives</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+
+								<div id="NER">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne">Named
+												Entity Recognition</a>
+										</h4>
+									</div>
+									<div style="display: inline-flex;">
+										<div class="panel-collapse collapse in">
+											<div class="panel-body" style="width: 1000px">
+												<b id="NER-results" style="color: black;"></b>
+											</div>
+										</div>
+										<div id="NER-legend">
+											<table style="margin-right: 20px; margin-left: auto">
+												<tr>
+													<td style="width: 24px; background-color: #F79898;"></td>
+													<td style="padding-left: 10px">Person</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #98F7C4;"></td>
+													<td style="padding-left: 10px">Location</td>
+												</tr>
+												<tr>
+													<td style="width: 24px; background-color: #4A7FF0;"></td>
+													<td style="padding-left: 10px">Organisation</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+								<div id="SC">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne"> Spell
+												Checker</a>
+										</h4>
+									</div>
+									<div class="panel-collapse collapse in">
+										<div class="panel-body">
+											<b id="SC-results" style="color: black;"></b>
+										</div>
+									</div>
+								</div>
+								<div id="CR">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne">CoReference
+												Resolution</a>
+										</h4>
+									</div>
+									<div class="panel-collapse collapse in">
+										<div class="panel-body">
+											<b id="CR-results" style="color: black;"></b>
+										</div>
+									</div>
+									<div id="CR-legend"></div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- project team & activity end -->
+			</section>
+		</section>
+		<!--main content end-->
+	</section>
+	<!-- container section start -->
+
+	<!-- javascripts -->
+	<script src="../js/jquery.js"></script>
+	<script src="../js/jquery-ui-1.10.4.min.js"></script>
+	<script src="../js/jquery-1.8.3.min.js"></script>
+	<script type="../text/javascript"
+		src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+	<!-- bootstrap -->
+	<script src="../js/bootstrap.min.js"></script>
+	<!-- nice scroll -->
+	<script src="../js/jquery.scrollTo.min.js"></script>
+	<script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
+	<!-- custom select -->
+	<script src="../js/jquery.customSelect.min.js"></script>
+	<!--custome script for all page-->
+	<script src="../js/scripts.js"></script>
+	<!-- custom script for this page-->
+	<script src="../js/jquery.autosize.min.js"></script>
+	<script src="../js/jquery.placeholder.min.js"></script>
+	<script src="../js/morris.min.js"></script>
+	<script src="../js/jquery.slimscroll.min.js"></script>
+	<script>
+		//custom select box
+		$(function() {
+			$('select.styled').customSelect();
+		});
+	</script>
+	<!-- <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script> -->
+	<script type="text/javascript">
+		/* var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"></div>'); */
+		var pleaseWaitDiv = $('.modal');
+		function showBusyIndicator() {
+			console.log('busy called new');
+			console.log($('#loading-indicator'));
+			pleaseWaitDiv.modal();
+			$('#loading-indicator').show();
+		}
+
+		function hideBusyIndicator() {
+			console.log('busy hidden');
+			pleaseWaitDiv.modal('hide');
+			$('#loading-indicator').hide();
+		}
+
+		function init() {
+			showBusyIndicator();
+			var languageCode = location.search.split('languageCode=')[1];
+			if (languageCode == 'de') {
+				$('#scCheckbox').hide();
+				$('#crCheckbox').hide();
+			}
+			$("#POS").hide();
+			$("#NER").hide();
+			$("#SC").hide();
+			$("#CR").hide();
+
+			getOriginalText();
+
+			getResults("POS");
+			getResults("NER");
+			if (languageCode == 'en') {
+				getResults("SC");
+				getResults("CR");
+			}
+			hideBusyIndicator();
+
+		}
+
+		function getOriginalText() {
+			var id = location.search.split('id=')[1].split('&')[0];
+			
+			$
+			.ajax({
+				type : "POST",
+				url : "/GetOriginalText",
+				data : {
+					id : id
+				},
+				success : function(response) {
+					console.log(response);
+					$("#originalText").html(response)
+				},
+				async : false,
+				contentType : "application/x-www-form-urlencoded;charset=UTF-8"
+			});
+		}
+
+		function showResults(featureCode, checkboxElement) {
+			if (checkboxElement.checked) {
+				$("#" + featureCode + "").show();
+			} else {
+				$("#" + featureCode + "").hide();
+			}
+		}
+
+		function getResults(featureCode) {
+			var id = location.search.split('id=')[1].split('&')[0];
+			$
+					.ajax({
+						type : "POST",
+						url : "/getResultForFeature",
+						data : {
+							featureCode : featureCode,
+							id : id
+
+						},
+						contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+						success : function(response) {
+							$("#" + featureCode + "-results").html(response)
+						},
+						async : false
+					});
+
+		}
+	</script>
+</body>
+</html>
